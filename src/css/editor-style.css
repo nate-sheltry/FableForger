@@ -1,0 +1,7 @@
+.chapter-title {
+  text-align: center;
+}
+
+.ql-toolbar .ql-formats .ql-font-size .ql-picker-options .ql-picker-item {
+  content: attr("data-value");
+}
