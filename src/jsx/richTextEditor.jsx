@@ -54,21 +54,3 @@ function makeEditor(selector){
 }
 
 export default makeEditor;
-
-const isMonotonic = function(nums){
-    const start = performance
-    let increasing = false;
-    let decreasing = false;
-    for(let i = 0; i < nums.length - 1; i++){
-        if(nums[i] > nums[i+1]){
-            increasing = true;
-        }
-        else if(nums[i] < nums[i+1]){
-            decreasing = true;
-        }
-        if(increasing && decreasing){
-            break;
-        }
-    }
-    return !increasing || !decreasing
-}
