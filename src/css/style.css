@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Playfair+Display&display=swap');
+
+:root {
+    --primary-color: #ced9dd;
+    --secondary-color: #a0b9bd;
+    --tertiary-color: #385f6d;
+    --accent-color: #4a230A;
+    --ivory: #f0e8e3;
+}
+
+body {
+    margin: auto;
+    padding: 0;
+    background-color: var(--primary-color);
+    color: var(--tertiary-color);
+}
+
+body,
+h1 h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--ivory);
+}
+
+h3 {
+    color: var(--tertiary-color);
+}
+
+h1,
+h2,
+h3,
+p {
+    padding: .5em;
+    margin: 0;
+}
+
+p {
+    font-family: 'Abel', sans-serif;
+    color: var(--tertiary-color);
+}
+
+header {
+    background-color: var(--secondary-color);
+}
+
+header h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.main-editor {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    min-height: 50vw;
+}
+
+.ql-container.ql-snow {
+    border: 1px solid var(--ivory);
+}
+
+.writing-area {
+    grid-column: 2 / span 1;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
+.outline {
+    background-color: var(--accent-color);
+    color: var(--ivory);
+}
+
+.list-bar {
+    background-color: var(--tertiary-color);
+    color: var(--ivory);
+}
+
+footer {
+    background-color: var(--ivory);
+    color: var(--secondary-color);
+    padding: 10px;
+    text-align: center;
+}

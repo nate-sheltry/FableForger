@@ -5,3 +5,7 @@
 .ql-toolbar .ql-formats .ql-font-size .ql-picker-options .ql-picker-item {
   content: attr("data-value");
 }
+
+.ql-toolbar .ql-snow{
+border: 1px solid var(--ivory);
+}
