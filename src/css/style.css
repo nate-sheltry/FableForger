@@ -8,6 +8,10 @@
     --ivory: #f0e8e3;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: auto;
     padding: 0;
