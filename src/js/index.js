@@ -29,7 +29,7 @@ request.onsuccess = () => {
     const transaction = db.transaction("books", "readwrite");
 
     const store = transaction.objectStore("books");
-    const bookDatabaseQuery = store.getAll()
+    const bookDatabaseQuery = store.getAll();
 
     // This part is where we add data to our database.
     store.put({ id: 1, name: "The Alchemist", author: "Paulo Coelho", about: "Mysticism" });
