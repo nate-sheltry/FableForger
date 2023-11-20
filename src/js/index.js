@@ -38,7 +38,6 @@ request.onsuccess = () => {
     store.put({ id: 4, name: "Harry Potter and the Deathly Hallows", author: "J.K Rowling", about: "Fantasy"});
 
     bookDatabaseQuery.onsuccess = () => {
-
         bookDatabaseQuery.result.forEach(book => {
             // console.log(book.name);
             const listBar = document.querySelector(".list-bar");
