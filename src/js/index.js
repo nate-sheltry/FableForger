@@ -29,8 +29,7 @@ request.onsuccess = () => {
     const transaction = db.transaction("books", "readwrite");
 
     const store = transaction.objectStore("books");
-    const nameIndex = store.index("books_name");
-    const detailsIndex = store.index("name_author_about");
+    const bookDatabaseQuery = store.getAll()
 
     // This part is where we add data to our database.
     store.put({ id: 1, name: "The Alchemist", author: "Paulo Coelho", about: "Mysticism" });
@@ -38,21 +37,18 @@ request.onsuccess = () => {
     store.put({ id: 3, name: "The Hobbit", author: "J.R.R Tolkien", about: "Fantasy"});
     store.put({ id: 4, name: "Harry Potter and the Deathly Hallows", author: "J.K Rowling", about: "Fantasy"});
 
-    // Different ways to query the data.
-    const idQuery = store.get(1);
-    const nameQuery = nameIndex.getAll(["The Da Vinci Code"]);
-    const detailsQuery = detailsIndex.get(["The Hobbit", "J.R.R Tolkien", "Fantasy" ]);
+    bookDatabaseQuery.onsuccess = () => {
 
-    idQuery.onsuccess = () => {
-        console.log(`idQuery `, idQuery.result);
-    }
+        bookDatabaseQuery.result.forEach(book => {
+            // console.log(book.name);
+            const listBar = document.querySelector(".list-bar");
+            const ul = document.createElement("ul");
+            ul.innerHTML = `<li><a class="bookname" href="#">${book.name}</a></li>`;
 
-    nameQuery.onsuccess = () => {
-        console.log(`nameQuery `, nameQuery.result);
-    }
+            listBar.append(ul);
+        });
 
-    detailsQuery.onsuccess = () => {
-        console.log(`detailsQuery `, detailsQuery.result);
+        console.log(`Database: `, bookDatabaseQuery.result);
     }
 
     transaction.oncomplete = () => {

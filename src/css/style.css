@@ -25,6 +25,15 @@ h1 h2 {
     color: var(--ivory);
 }
 
+.bookname {
+    text-decoration: none;
+    color: var(--ivory);
+}
+
+.bookname:hover {
+    color: var(--secondary-color);
+}
+
 h3 {
     color: var(--tertiary-color);
 }
