@@ -1,4 +1,6 @@
-<!doctype html>
+<!--src/editor/index.html-->
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,6 +12,7 @@
   <body>
     <header>
       <h1>Fable Forger</h1>
+      <div id="loginStatus">No one is logged in, <a href="../index.html">Login Here</a></div>
     </header>
     <main class="main-editor">
       <div class="outline"><h2>Outline</h2></div>
@@ -21,7 +24,8 @@
       </div>
       <div class="list-bar"><h2>List Bar</h2></div>
     </main>
-    <script src="../js/script.js" type="module" defer></script>
     <footer><p>Footer info © 2023</p></footer>
+    <script src="../js/script.js" type="module" defer></script>
+    <script src="../js/loggedInStatus.js" type="module" defer></script>
   </body>
 </html>

@@ -1,13 +1,50 @@
-<!doctype html>
+<!--src/index.html-->
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fable Forger | Home</title>
-  </head>
-  <body>
-    <header>
-      <h1>Fable Forger</h1>
-    </header>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fable Forger | Login</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+  <header>
+    <h1>Fable Forger</h1>
+  </header>
+  <main>
+    <h2>Welcome to Fable Forger!</h2>
+    <section id="loginSection">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" required />
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" required />
+        <button type="submit">Login</button>
+      </form>
+    </section>
+    <section id="registrationSection">
+      <h2>No Account? No Problem! Create one!</h2>
+      <div class="registration-form">
+        <h2>User Registration</h2>
+        <form id="registrationForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    </section>
+  </main>
+  <footer>
+    <p>Footer info © 2023</p>
+  </footer>
+  <script src="js/registration.js"></script>
+  <script src="js/script.js" type="module" defer></script>
+  <script src="js/login.js" type="module" defer></script>
+</body>
 </html>
