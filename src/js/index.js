@@ -1,6 +1,5 @@
 let db = null;
 let objectStore = null;
-import { FALSE } from "sass";
 import { guid } from "./uid.js";
 // console.log("Generated unique id:", guid());
 
