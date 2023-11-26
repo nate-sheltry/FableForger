@@ -1,56 +1,76 @@
-// Create a variable for the database using API/s, check through all
-// the different API/s incase the user/s are using a different browser.
-const indexed_DB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB
-|| window.shimIndexedDB;
+let db = null;
+let objectStore = null;
+import { FALSE } from "sass";
+import { guid } from "./uid.js";
+// console.log("Generated unique id:", guid());
 
-// Make a request to Open a database, if that database doesn't exist then create one.
-const request = indexed_DB.open("fableForgerDb", 1);
+const IDB = () => {
+    //? Make request to create/open indexedDB.
+    let indexed_DB = indexedDB.open("booksDB", 2);
+    console.log("Indexed DB:", indexed_DB);
+    
+    indexed_DB.addEventListener("error", (err) => {
+        console.warn("Error", err);
+    })
 
-//  Check for any errors, if there are any handle them
-// using the indexedDB onerror method.
-request.onerror = (event) => {
-    console.error(`An error occured while loading the ${request}.`);
-    console.error(event);
+    indexed_DB.addEventListener("success", (ev) => {
+        db = ev.target.result;
+        console.log("Success:", db);
+
+        let transaction = makeTX("bookStore", "readwrite");
+        transaction.oncomplete = (ev) => {
+            console.log(ev);
+        }
+
+        let book2 = addBook( guid(), "Rainy Dayz", "Abdul Mahl", false );
+
+        let store = transaction.objectStore("bookStore");
+        // let storeRequest = store.add(book2);
+
+        storeRequest.addEventListener("success", (ev) => {
+            console.log("Success in adding object", ev);
+        })
+
+        storeRequest.addEventListener("error", (err) => {
+            console.log("Erorr", err)
+        })
+    })
+
+    indexed_DB.addEventListener("upgradeneeded", (ev) => {
+        db = ev.target.result;
+        let oldVersion = ev.oldVersion;
+        let newVersion = ev.newVersion || db.version;
+        console.log("Updated from version", oldVersion, "to version", newVersion);
+        console.log("Upgrade:", db);
+
+        if(!db.objectStoreNames.contains("bookStore")) {
+            objectStore = db.createObjectStore("bookStore", {
+                keyPath: "id"
+            });
+        }
+    })
+
+    indexed_DB.addEventListener("submit", (ev) => {
+
+    })
 }
 
-// Call the onupgradeneeded method to handle the 
-// structure of our database.
-request.onupgradeneeded = () => {
-    const db = request.result;
-    // Create storage for the database.
-    const store = db.createObjectStore("books", { keyPath: "id", autoIncrement: true });
-    store.createIndex("books_name", ["name"], { unique: true });
-    store.createIndex("name_author_about", ["name", "author", "about"], { unique: true });
-};
-
-// Handle successful database opening.
-request.onsuccess = () => {
-    const db = request.result;
-    const transaction = db.transaction("books", "readwrite");
-
-    const store = transaction.objectStore("books");
-    const bookDatabaseQuery = store.getAll();
-
-    // This part is where we add data to our database.
-    store.put({ id: 1, name: "The Alchemist", author: "Paulo Coelho", about: "Mysticism" });
-    store.put({ id: 2, name: "The Da Vinci Code", author: "Dan Brown", about: "Mystery"});
-    store.put({ id: 3, name: "The Hobbit", author: "J.R.R Tolkien", about: "Fantasy"});
-    store.put({ id: 4, name: "Harry Potter and the Deathly Hallows", author: "J.K Rowling", about: "Fantasy"});
-
-    bookDatabaseQuery.onsuccess = () => {
-        bookDatabaseQuery.result.forEach(book => {
-            // console.log(book.name);
-            const listBar = document.querySelector(".list-bar");
-            const ul = document.createElement("ul");
-            ul.innerHTML = `<li><a class="bookname" href="#">${book.name}</a></li>`;
-
-            listBar.append(ul);
-        });
-
-        console.log(`Database: `, bookDatabaseQuery.result);
+function makeTX(storeName, mode) {
+    let transaction = db.transaction(storeName, mode);
+    transaction.onerror = (err) => {
+        console.warn(err);
     }
-
-    transaction.oncomplete = () => {
-        db.close();
-    }
+    return transaction;
 }
+
+function addBook(id, bookname, author, isAvailable) {
+    let obj = {
+        id: id,
+        bookname: bookname,
+        author: author,
+        isAvailable: isAvailable
+    }
+    return obj;
+}
+
+IDB();
