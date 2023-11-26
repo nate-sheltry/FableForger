@@ -6,7 +6,7 @@ import { guid } from "./uid.js";
 const IDB = () => {
     //? Make request to create/open indexedDB.
     let indexed_DB = indexedDB.open("booksDB", 2);
-    console.log("Indexed DB:", indexed_DB);
+    // console.log("Indexed DB:", indexed_DB);
     
     indexed_DB.addEventListener("error", (err) => {
         console.warn("Error", err);
