@@ -16,7 +16,7 @@ const IDB = () => {
         db = ev.target.result;
         console.log("Success:", db);
 
-        let transaction = makeTX("bookStore", "readwrite");
+        let transaction = makeTransaction("bookStore", "readwrite");
         transaction.oncomplete = (ev) => {
             console.log(ev);
         }
@@ -54,7 +54,7 @@ const IDB = () => {
     })
 }
 
-function makeTX(storeName, mode) {
+function makeTransaction(storeName, mode) {
     let transaction = db.transaction(storeName, mode);
     transaction.onerror = (err) => {
         console.warn(err);
