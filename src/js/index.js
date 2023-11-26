@@ -24,13 +24,13 @@ const IDB = () => {
         let book2 = addBook( guid(), "Rainy Dayz", "Abdul Mahl", false );
 
         let store = transaction.objectStore("bookStore");
-        // let storeRequest = store.add(book2);
+        // let addToStoreRequest = store.add(book2);
 
-        storeRequest.addEventListener("success", (ev) => {
+        addToStoreRequest.addEventListener("success", (ev) => {
             console.log("Success in adding object", ev);
         })
 
-        storeRequest.addEventListener("error", (err) => {
+        addToStoreRequest.addEventListener("error", (err) => {
             console.log("Erorr", err)
         })
     })
