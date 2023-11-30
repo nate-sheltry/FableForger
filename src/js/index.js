@@ -21,7 +21,7 @@ const IDB = () => {
     })
 
     DBOpenReq.addEventListener("success", (ev) => {
-        // DB opened... after upgradeneede.
+        // DB opened... after upgradeneeded.
         db = ev.target.result;
         console.log("Success", db);
         // buildList();
