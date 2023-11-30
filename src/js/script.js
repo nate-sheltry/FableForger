@@ -24,7 +24,7 @@ import {
     getAllChaptersForProject,
     updateChapter,
     deleteChapterFromProject
-  } from "indexedDBManager.js";
+  } from "./indexManager.js";
 
 makeEditor(".editor");
 
