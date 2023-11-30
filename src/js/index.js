@@ -14,7 +14,7 @@ const IDB = () => {
     console.log("indexedDB supported:", indexedDBSupport());
 
     //? Make a request to open / create a database.
-    let DBOpenReq = indexedDB.open("booksDB", 2);
+    let DBOpenReq = indexedDB.open("projectsDB", 2);
 
     DBOpenReq.addEventListener("error", (err) => {
         console.warn(err);
