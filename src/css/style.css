@@ -6,6 +6,7 @@
     --tertiary-color: #385f6d;
     --accent-color: #4a230A;
     --ivory: #f0e8e3;
+    --header: 'Playfair Display', serif;
 }
 
 body {
@@ -16,7 +17,7 @@ body {
 }
 
 body,
-h1 h2 {
+h1 h2  {
     font-family: 'Playfair Display', serif;
     color: var(--ivory);
 }
@@ -50,7 +51,7 @@ header h1 {
 .main-editor {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    min-height: 50vw;
+    min-height: 80vw;
 }
 
 .ql-container.ql-snow {
@@ -78,4 +79,90 @@ footer {
     color: var(--secondary-color);
     padding: 10px;
     text-align: center;
+}
+
+/*Pop Up Item Card*/
+.item-card{
+    position:relative;
+    outline:2px solid var(--secondary-color);
+    border:2px solid var(--primary-color);
+    border-radius:20px;
+    width:16em;
+    height:30em;
+    padding:1em;
+    background-color:var(--ivory);
+    margin:1em auto;
+}
+.item-card [contenteditable]:focus{
+    outline:2px solid var(--primary-color);
+    border:2px solid var(--secondary-color);
+}
+.item-card .item-description,
+.item-card .item-header {
+    margin-top:1em;
+    background-color:white;
+    border-radius:10px;
+    text-overflow:ellipsis;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    color:black;
+    border:2px solid var(--primary-color);
+}
+.item-card .item-header{
+    width:228.8px;
+    height:3em;
+    font-size:1.2rem;
+    font-family:var(--header);
+}
+.item-card .item-description {
+    width:232px;
+    height:18rem;
+    padding:.5em;
+}
+.item-card .item-exit-btn {
+    position:absolute;
+    top: 2px;
+    right:10px;
+    width:2rem;
+    height:2rem;
+    background:none;
+    text-align:center;
+    border:none;
+    font-weight:600;
+    font-size:1.25rem;
+    color:var(--tertiary-color);
+    border-radius:10px;
+    opacity:.7;
+
+}
+.item-card .item-exit-btn:hover{
+    opacity:1;
+}
+.item-card .item-exit-btn:active{
+    color:var(--accent-color);
+}
+.item-card .item-delete-btn,
+.item-card .item-save-btn {
+    position: absolute;
+    bottom: 20px;
+    font-weight:bold;
+    border-radius:10px;
+    color:white;
+}
+.item-card .item-save-btn {
+    width:6em;
+    height:2.2em;
+    right: 1.5em;
+    font-size:1.1rem;
+    color:white;
+    background-color:rgb(60, 179, 90);
+    border-color:rgb(60, 179, 90);
+}
+.item-card .item-delete-btn {
+    width:4em;
+    left: 2em;
+    height:1.8em;
+    font-size:1rem;
+    background-color:rgb(202, 36, 66);
+    border-color:rgb(202, 36, 66);
 }
