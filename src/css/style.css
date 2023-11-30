@@ -9,6 +9,10 @@
     --header: 'Playfair Display', serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: auto;
     padding: 0;
@@ -20,6 +24,15 @@ body,
 h1 h2  {
     font-family: 'Playfair Display', serif;
     color: var(--ivory);
+}
+
+.bookname {
+    text-decoration: none;
+    color: var(--ivory);
+}
+
+.bookname:hover {
+    color: var(--secondary-color);
 }
 
 h3 {

@@ -26,6 +26,7 @@ import {
     deleteChapterFromProject
   } from "./indexManager.js";
 
+
 makeEditor(".editor");
 
 // console.log(document.querySelector('.ql-font-size .ql-picker-options .ql-picker-item'))
