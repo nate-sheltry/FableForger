@@ -12,17 +12,39 @@
       <h1>Fable Forger</h1>
     </header>
     <main class="main-editor">
-      <div class="outline"><h2>Outline</h2></div>
+      <div class="outline">
+        <h2>Outline</h2>
+        <button
+          class="back left-corner-button"
+          id="left-panel-back"
+          title="Return to projects directory"
+        >
+          &#9001;
+        </button>
+        <button
+          class="new-project right-corner-button"
+          id="left-panel-btn"
+          title="Add item to list"
+        >
+          +
+        </button>
+        <h3 class="subtitle">Projects</h3>
+        <div class="content"></div>
+      </div>
       <div class="writing-area">
         <div class="editor">
-          <h3 class="ql-align-center">Chapter Title</h3>
-          <p class="ql-align-left"></p>
+          <button class="new-project" id="no-project-btn">
+            Start A New Project
+          </button>
         </div>
       </div>
-      <div class="list-bar"><h2>List Bar</h2></div>
+      <div class="list-bar">
+        <h2>List Bar</h2>
+        <button class="corner-button" id="right-panel-btn">+</button>
+      </div>
     </main>
-    <script src="../js/script.js" type="module"></script>
-    <script src="../js/index.js" type="module"></script>
+    <script src="../js/script.js" type="module" defer></script>
+    <!-- <script src="../js/editor-btns.js" type="module"></script> -->
     <footer><p>Footer info © 2023</p></footer>
   </body>
 </html>
