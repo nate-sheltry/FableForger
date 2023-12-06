@@ -81,8 +81,16 @@ function getEditorData(chapter){
 }
 
 function setEditorData(content){
-    QuillOb.editor.setContents(content);
-    QuillOb.editor.history.clear()
+    console.log(content.ops)
+    QuillOb.editor.setText('');
+    for(let i = 0; i < content.ops.length; i++){
+        setTimeout(()=>{unpackData({ops: [content.ops[i]]})}, 0);
+    }
+    setTimeout(()=>{QuillOb.editor.history.clear()}, 200)
+}
+
+function unpackData(content){
+    QuillOb.editor.updateContents(content);
 }
 
 function closeEditor(){
@@ -98,10 +106,8 @@ function closeEditor(){
 }
 
 function clearHistory(){
-    const history = QuillOb.editor.getModule('history')
+    const history = QuillOb.editor.history
     if(history) history.clear()
-    closeEditor()
-    makeEditor('.editor')
 }
 
 function getEditorDataSchedule(delay = 5000 ,func){
