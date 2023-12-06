@@ -82,6 +82,7 @@ function getEditorData(chapter){
 
 function setEditorData(content){
     QuillOb.editor.setContents(content);
+    QuillOb.editor.history.clear()
 }
 
 function closeEditor(){
