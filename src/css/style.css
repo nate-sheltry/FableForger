@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Abel&family=Playfair+Display&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Playfair+Display&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Stalemate');
+
 
 :root {
   --primary-color: #ced9dd;
@@ -14,18 +16,25 @@
 }
 
 body {
-  margin: auto;
-  padding: 0;
-  background-color: var(--primary-color);
-  color: var(--tertiary-color);
+    margin: auto;
+    padding: 0;
+    background-image: url(../images/wooden-table.png);
+    background-size: 100% 100%;
+    color: var(--tertiary-color);
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Stalemate', sans-serif;
 }
 
 body,
-h1 h2 {
-  font-family: "Playfair Display", serif;
-  color: var(--ivory);
-}
+h1 h2  {
+    font-family: 'Stalemate', sans-serif;
+    color: var(--ivory);
 
+}
+main {
+    height: 100%;
+}
 .bookname {
   text-decoration: none;
   color: var(--ivory);
@@ -53,20 +62,30 @@ p {
 }
 
 header {
-  background-color: var(--secondary-color);
+    background-color: none;
+    text-align: center;
 }
 
 header h1 {
-  margin-top: 0;
-  margin-bottom: 0;
+    background-image: url('/images/old_paper2-turned.jpg');
+    rotate: 2deg;
+    background-position: left bottom;
+    background-size: 160% 170%;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
+    width: 250px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+    color: rgba(48, 31, 16, 0.866);
+    font-weight: bold;
 }
 
 .main-editor {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  height: calc(100vh - 132px);
-  max-height: calc(100vh - 132px);
-  overflow-y:hidden;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    height: calc(100vh - 132px);
+    max-height: calc(100vh - 132px);
+    overflow-y:hidden;
 }
 
 .ql-container.ql-snow {
@@ -78,8 +97,89 @@ header h1 {
     height:100%;
     flex-direction: column;
     grid-column: 2 / span 1;
-    overflow:hidden;
+
+    background-color: var(--secondary-color);
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
 }
+
+.editor {
+    background-image: url(../images/old-paper-turned.jpg);
+    background-size: 100% 100%;
+    padding-top: 70px;
+    padding-bottom: 70px;
+    padding-left: 35px;
+    padding-right: 15px;
+    overflow-y: hidden;
+    min-height: 67.82vmin;
+    max-height: 67.82vmin;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to right, rgba(198, 140, 58, 0.793), rgba(0, 0, 0, 0.804));
+    border-radius: 5px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+  }
+.outline {
+    display:flex;
+    flex-direction:column;
+    background-image: url(../images/cover.jpg);
+    background-size: 100% 100%;
+    background-repeat: repeat-y;
+    color: var(--ivory);
+    position: relative;
+    height: 100%;
+    overflow-y: hidden;
+    box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.749);
+    z-index: 2;
+    text-align: center;
+    padding:20px;
+    color: rgba(198, 158, 58, 0.752);
+}
+
+.list-bar {
+    background-image: url(../images/old_paper2.jpg);
+    background-size: 100% 100%;
+    background-repeat: repeat-y;
+    background-color: var(--tertiary-color);
+    color: var(--ivory);
+    overflow-y: scroll;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.63);
+    z-index: 2;
+    color: rgba(48, 31, 16, 0.866);
+    text-align: center;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    background-color: none;
+    color: var(--secondary-color);
+    text-align: center;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.63);
+    rotate: -3deg;
+}
+footer p {
+    background-image: url(../images/old_paper2-turned.jpg);
+    color: rgba(48, 31, 16, 0.866);
+    font-weight: bold;
 .projectname-placeholder {
   text-align: center;
 }
@@ -129,9 +229,9 @@ header h1 {
     flex-direction:column;
     height:100%;
     overflow-y:hidden;
-  position: relative;
-  background-color: var(--accent-color);
-  color: var(--ivory);
+    position: relative;
+    background-color: var(--accent-color);
+    color: var(--ivory);
 }
 .outline .content {
   display: flex;
@@ -147,19 +247,6 @@ header h1 {
 .project-item:hover,
 .chapter-item:hover {
   background-color: var(--tertiary-color);
-}
-
-.list-bar {
-  position: relative;
-  background-color: var(--tertiary-color);
-  color: var(--ivory);
-}
-
-footer {
-  background-color: var(--ivory);
-  color: var(--secondary-color);
-  padding: 10px;
-  text-align: center;
 }
 
 /*Pop Up Item Card*/
