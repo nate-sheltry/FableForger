@@ -67,17 +67,18 @@ header {
 }
 
 header h1 {
-    background-image: url('/images/old_paper2-turned.jpg');
-    rotate: 2deg;
-    background-position: left bottom;
-    background-size: 160% 170%;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
-    width: 250px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 2.5rem;
-    color: rgba(48, 31, 16, 0.866);
-    font-weight: bold;
+  padding: 0;
+  height: 65px;
+  background-image: url('/images/old_paper2-turned.jpg');
+  rotate: 2deg;
+  background-position: left bottom;
+  background-size: 160% 170%;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
+  width: 200px;
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+  color: rgba(48, 31, 16, 0.866);
+  font-weight: bold;
 }
 
 .main-editor {
@@ -90,6 +91,8 @@ header h1 {
 
 .ql-container.ql-snow {
   border: 1px solid var(--ivory);
+  background-image: url(../images/old-paper-turned.jpg);
+    background-size: 100% 100%;
 }
 
 .writing-area {
@@ -97,23 +100,38 @@ header h1 {
     height:100%;
     flex-direction: column;
     grid-column: 2 / span 1;
-
-    background-color: var(--secondary-color);
     margin-left: 20px;
     margin-right: 20px;
+    background-color: var(--secondary-color);
+    justify-content:end;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
 }
-
+#no-project-btn{
+  height: 60px;
+  width: 60px;
+  padding: 0;
+  border-radius: 50px;
+  border: none;
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+  color: rgba(198, 158, 58, 0.752);
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
 .editor {
-    background-image: url(../images/old-paper-turned.jpg);
+  rotate: -1deg;
+  background-image: url(../images/old-envelope.jpg);
     background-size: 100% 100%;
     padding-top: 70px;
     padding-bottom: 70px;
     padding-left: 35px;
     padding-right: 15px;
     overflow-y: hidden;
-    min-height: 67.82vmin;
-    max-height: 67.82vmin;
+    min-height: 67.7vmin;
+    max-height: 67.7vmin;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
 }
 
 /* width */
@@ -151,8 +169,25 @@ header h1 {
     text-align: center;
     padding:20px;
     color: rgba(198, 158, 58, 0.752);
+    padding: 20px;
+    font-size: 1.5rem;
 }
-
+.outline .content {
+display: flex;
+flex-direction: column;
+overflow-y: scroll;
+height: 100%;
+font-size: 1.2rem;
+font-weight: bold;
+cursor: pointer;
+}
+.subtitle {
+  color: rgba(198, 158, 58, 0.752);
+  text-decoration: underline;
+}
+.subtitle::after {
+  content: " :";
+}
 .list-bar {
     background-image: url(../images/old_paper2.jpg);
     background-size: 100% 100%;
@@ -174,7 +209,7 @@ footer {
     color: var(--secondary-color);
     text-align: center;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.63);
-    rotate: -3deg;
+    rotate: 3deg;
 }
 footer p {
     background-image: url(../images/old_paper2-turned.jpg);
@@ -185,12 +220,12 @@ footer p {
   text-align: center;
 }
 .right-corner-button {
-  right: 1em;
-  top: 0.5em;
+  right: 1.7em;
+  top: 2em;
 }
 .left-corner-button {
-  right: 3em;
-  top: 0.4em;
+  right: 3.5em;
+  top: 2em;
 }
 #left-panel-back {
   transform: scale(3, 1);
@@ -206,12 +241,13 @@ footer p {
   background: none;
   font-size: 1.25rem;
   font-weight: bold;
-  color: var(--ivory);
+  color: rgba(221, 178, 67, 0.963);
   transition: color 0.1s;
+  cursor: pointer;
 }
 .right-corner-button:hover,
 .left-corner-button:hover {
-  color: var(--tertiary-color);
+  color: rgb(192, 192, 192);
 }
 .writing-area .editor {
   height: 100%;
@@ -225,29 +261,15 @@ footer p {
     width: 100%;
     overflow-y:scroll;
 }
-.outline {
-    display:flex;
-    flex-direction:column;
-    height:100%;
-    overflow-y:hidden;
-    position: relative;
-    background-color: var(--accent-color);
-    color: var(--ivory);
-}
-.outline .content {
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  height: 100%;
-}
+
 .project-item,
 .chapter-item {
   padding: 0.5em 0em 0.5em 1em;
-  transition: background-color 0.1s;
+  transition: color 0.1s;
 }
 .project-item:hover,
 .chapter-item:hover {
-  background-color: var(--tertiary-color);
+  color: rgb(192, 192, 192);
 }
 
 /*Pop Up Item Card*/
