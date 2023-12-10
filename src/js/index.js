@@ -20,7 +20,7 @@ const IDB = () => {
   console.log("indexedDB supported:", indexedDBSupport());
 
   //? Make a request to open / create a database.
-  const DBOpenReq = indexedDB.open("FableForger", 2);
+  const DBOpenReq = indexedDB.open("FableForger", 6);
 
   DBOpenReq.addEventListener("error", (err) => {
     console.warn(err);
@@ -52,6 +52,19 @@ const IDB = () => {
         keyPath: "id",
       });
     }
+  
+    // Create "userProjects" object store if it doesn't exist
+    if (!db.objectStoreNames.contains("userProjects")) {
+      const userProjectsObjectStore = db.createObjectStore("userProjects", {
+        keyPath: "relationshipId",
+        autoIncrement: true,
+      });
+  
+      // Add indexes to facilitate querying
+      userProjectsObjectStore.createIndex("userId", "userId");
+      userProjectsObjectStore.createIndex("projectId", "projectId");
+    }
+    
 
     // db.createObjectStore("", {
     //     keyPath: "id"
@@ -60,6 +73,7 @@ const IDB = () => {
     //     db.deleteObjectStore("");
     // }
   });
+
   const leftBtn = document.getElementById("left-panel-btn");
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
