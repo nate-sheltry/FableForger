@@ -38,6 +38,9 @@ h1 h2  {
 h3 {
     color: var(--tertiary-color);
 }
+.list-bar h3{
+color: var(--ivory);
+}
 
 h1,
 h2,
