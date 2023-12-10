@@ -6,6 +6,6 @@
   content: attr("data-value");
 }
 
-.ql-toolbar .ql-snow{
+.ql-toolbar .ql-snow {
   border: 1px solid var(--ivory);
 }
