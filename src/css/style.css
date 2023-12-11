@@ -94,13 +94,18 @@ header h1 {
 
 .ql-container.ql-snow {
   border: 1px solid var(--ivory);
-  background-image: url(../images/old-paper-turned.jpg);
+
     background-size: 100% 100%;
+}
+.no-area{
+  background-image: url(../images/old-envelope.jpg);
+}
+.editor-area{
+  background-image: url(../images/old-paper-turned.jpg);
 }
 
 .writing-area {
   rotate: -1deg;
-  background-image: url(../images/old-envelope.jpg);
   background-size: 100% 100%;
   margin-top: 70px;
   margin-bottom: 70px;
@@ -164,14 +169,14 @@ header h1 {
     padding:20px;
     color: rgba(198, 158, 58, 0.752);
     padding: 20px;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 .outline .content {
 display: flex;
 flex-direction: column;
 overflow-y: scroll;
 height: 100%;
-font-size: 1.2rem;
+font-size: 1.9rem;
 font-weight: bold;
 cursor: pointer;
 }

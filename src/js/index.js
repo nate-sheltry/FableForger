@@ -80,7 +80,14 @@ const IDB = () => {
     getProjects();
     leftBtn.classList.toggle("new-chapter", false);
     leftBtn.classList.toggle("new-project", true);
+    const editor = document.querySelector(".writing-area")
+    editor.classList.toggle("no-area", !editor.classList.contains("no-area"))
+    editor.classList.toggle("editor-area", !editor.classList.contains("editor-area"))
     document.querySelector(".outline .subtitle").textContent = "Projects";
+    const noProjectBtn = document.getElementById('no-project-btn');
+    noProjectBtn.addEventListener("click", (e) => {
+        addProject(db, e);
+    });
   });
 
   // document.querySelector('#no-project-btn').addEventListener('pointerdown', (e)=>{
