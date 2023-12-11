@@ -1,6 +1,12 @@
 let db = null;
 let objectStore = null;
 import { guid } from "./uid.js";
+import {
+  addProject,
+  addChapter,
+  saveChapter,
+  accessProjects,
+} from "./databaseFunctions.js";
 // console.log("Generated unique ID:", guid());
 
 //? This function helps with making transactions to the DB
@@ -23,52 +29,42 @@ const IDB = () => {
   }
   console.log("indexedDB supported:", indexedDBSupport());
 
-  //? Make a request to open / create a database.
-  let DBOpenReq = indexedDB.open("projectsDB", 2);
+    //? Make a request to open / create a database.
+    let DBOpenReq = indexedDB.open("booksDB", 2);
 
   DBOpenReq.addEventListener("error", (err) => {
     console.warn(err);
   });
 
-  DBOpenReq.addEventListener("success", (ev) => {
-    // DB opened... after upgradeneeded.
-    db = ev.target.result;
-    console.log("Success", db);
-    // buildList();
-  });
+    DBOpenReq.addEventListener("success", (ev) => {
+        // DB opened... after upgradeneede.
+        db = ev.target.result;
+        console.log("Success", db);
+        // buildList();
+    })
 
-  DBOpenReq.addEventListener("upgradeneeded", (ev) => {
-    // Inside the upgradeneeded is the only place
-    // we can add, modify, and delete any data from the DB.
-    db = ev.target.result;
-    console.log("Upgrade", db);
-    let oldVersion = ev.oldVersion;
-    let newVersion = ev.newVersion || db.version;
-    console.log(
-      "DB updated from version",
-      oldVersion,
-      "to version",
-      newVersion
-    );
+    DBOpenReq.addEventListener("upgradeneeded", (ev) => {
+        // Inside the upgradeneeded is the only place 
+        // we can add, modify, and delete any data from the DB.
+        db = ev.target.result;
+        console.log("Upgrade", db);
+        let oldVersion = ev.oldVersion;
+        let newVersion = ev.newVersion || db.version;
+        console.log("DB updated from version", oldVersion, "to version", newVersion);
+        if(!db.objectStoreNames.contains("bookStore")) {
+            objectStore = db.createObjectStore("bookStore", {
+                keyPath: "id"
+            });
+        }
 
-    if (db.objectStoreNames.contains("bookStore")) {
-      objectStore = db.deleteObjectStore("bookStore");
-    }
-
-   
-
-    objectStore = db.createObjectStore("booksStore", {
-      keypath: "id",
-    });
-
-    objectStore.createIndex("nameIDX", "name", { unique: false });
-    objectStore.createIndex("authorIDX", "author", { unique: false });
-
-    // let store = transaction.objectStore("bookStore");
-    // let idx = store.index("nameIDX");
-    // let idxReq = idx.getAll();
-
-  });
+        // db.createObjectStore("", {
+        //     keyPath: "id"
+        // });
+        // if(db.objectStoreNames.contains("")){
+        //     db.deleteObjectStore("");
+        // }
+        
+    })
 
   // document.getElementById("btnAdd").addEventListener("click", (ev) => {
   //     ev.preventDefault();
@@ -78,14 +74,13 @@ const IDB = () => {
   //     let aboutBook = document.getElementById("aboutBook").value.trim();
   //     let owned = document.getElementById("isOwned").checked;
 
-  //     let book = {
-  //         id: guid(),
-  //         name: bookname,
-  //         author: author,
-  //         about: aboutBook,
-  //         isOwned: owned,
-  //         lastUpdate: Date.now(),
-  //     };
+    //     let book = {
+    //         id: guid(),
+    //         name: bookname,
+    //         author: author,
+    //         about: aboutBook,
+    //         isOwned: owned 
+    //     };
 
   //     let transaction = makeTransaction("bookStore", "readwrite");
   //     transaction.oncomplete = (ev) => {
@@ -113,16 +108,15 @@ const IDB = () => {
   //     let aboutBook = document.getElementById("aboutBook").value.trim();
   //     let owned = document.getElementById("isOwned").checked;
 
-  //     let key = document.bookForm.getAttribute("data-key");
-  //     if(key) {
-  //         let book = {
-  //             id: key,
-  //             name: bookname,
-  //             author: author,
-  //             about: aboutBook,
-  //             isOwned: owned,
-  //             lastUpdate: Date.now(),
-  //         };
+    //     let key = document.bookForm.getAttribute("data-key");
+    //     if(key) {
+    //         let book = {
+    //             id: key,
+    //             name: bookname,
+    //             author: author,
+    //             about: aboutBook,
+    //             isOwned: owned 
+    //         };
 
   //         let transaction = makeTransaction("bookStore", "readwrite");
   //         transaction.oncomplete = (ev) => {
@@ -225,7 +219,7 @@ const IDB = () => {
   //         console.warn("Error", err)
   //     }
 
-  // });
-};
+    // });
+}
 
 IDB();

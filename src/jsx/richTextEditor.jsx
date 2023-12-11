@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
+import { saveQuillData } from '../js/index.js'
+
+const QuillOb = {editor: {}}
+
 import 'react-quill/dist/quill.snow.css';
+
+let isTextChanged;
 
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -25,7 +31,6 @@ const toolbarOptions = [
 
 const options = {
     theme: 'snow',
-    debug: 'info',
     placeholder: 'Compose an epic...',
     readOnly: false,
     modules: {
@@ -39,18 +44,93 @@ const customEffect = (editor) =>{
     console.log('custom effect')
 }
 
+
+
 function makeEditor(selector){
     const start = performance.now();
+    const elem = document.querySelector(selector).parentElement;
     const Editor = new Quill(selector, options)
+    QuillOb.editor = Editor;
     const Toolbar = Editor.container.previousSibling;
-    const fontSizeOptions = Toolbar.querySelectorAll('.ql-font-size .ql-picker-options .ql-picker-item');
-    for(let i = 0; i < fontSizeOptions.length; i++){
-        fontSizeOptions[i].textContent = fontSizeOptions[i].getAttribute('data-value');
-        fontSizeOptions[i].addEventListener('click', ()=>{customEffect(Editor)})
-    }
     console.log(Toolbar.querySelectorAll('.ql-font-size .ql-picker-options .ql-picker-item'))
+    let TextChange = null;
+    Editor.on('text-change', ()=>{
+        isTextChanged = true;
+        const currentChapter = sessionStorage.getItem('chapterIndex')
+        //clearTimeout(saveTimeout)
+        clearTimeout(TextChange);
+        TextChange = setTimeout(()=>{
+            getEditorData(currentChapter)
+        }, 200)
+    })
     const end = performance.now();
     console.log(`Result: ${end-start}`)
+    return Editor;
 }
 
-export default makeEditor;
+function getEditorData(chapter){
+    if(chapter != sessionStorage.getItem('chapterIndex')){
+        return
+    }
+    console.log('running too much')
+    if(!isTextChanged) return null;
+    const contents = QuillOb.editor.getContents();
+    saveQuillData(contents);
+    isTextChanged = false;
+    return contents
+}
+
+function setEditorData(content){
+    console.log(content.ops)
+    QuillOb.editor.setText('');
+    for(let i = 0; i < content.ops.length; i++){
+        setTimeout(()=>{unpackData({ops: [content.ops[i]]})}, 0);
+    }
+    setTimeout(()=>{QuillOb.editor.history.clear()}, 200)
+}
+
+function unpackData(content){
+    QuillOb.editor.updateContents(content);
+}
+
+function closeEditor(){
+    if(QuillOb.editor instanceof Quill){
+        QuillOb.editor.off('text-change');
+        QuillOb.editor = null
+        document.querySelector('.writing-area').innerHTML =`
+        <div class="editor">
+          <button class="new-project" id="no-project-btn">Start A New Project</button>
+        </div>
+        `
+    }
+}
+
+function clearHistory(){
+    const history = QuillOb.editor.history
+    if(history) history.clear()
+}
+
+function getEditorDataSchedule(delay = 5000 ,func){
+    let timeoutId;
+    return function () {
+        console.log('run')
+        
+        if(!QuillOb.editor || !(QuillOb.editor instanceof Quill)){
+            clearTimeout(timeoutId);
+            return
+        }
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func();
+            getEditorDataSchedule(delay, func);
+        }, delay);
+    };
+}
+
+export {
+    makeEditor,
+    getEditorData,
+    setEditorData,
+    closeEditor,
+    clearHistory
+}
