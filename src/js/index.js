@@ -68,10 +68,12 @@ const IDB = () => {
       addChapter(db, e);
     }
   });
+
   const noProjectBtn = document.getElementById('no-project-btn');
   noProjectBtn.addEventListener("click", (e) => {
       addProject(db, e);
   });
+  
   const leftBackBtn = document.getElementById("left-panel-back");
   leftBackBtn.addEventListener("pointerdown", (e) => {
     if (leftBtn.classList.contains("new-project")) {

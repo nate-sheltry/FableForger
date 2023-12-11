@@ -170,8 +170,53 @@ function loadChapter(db) {
   };
 }
 
+function createList(db){
+  //Element creation.
+  const transaction = makeTransaction(db, "projects", "readwrite");
+  const store = transaction.objectStore("projects");
+  const projectId = document
+    .querySelector(".outline .subtitle")
+    .getAttribute("data-id");
+  const projectReq = store.get(projectId);
+
+  projectReq.onsuccess = (e) => {
+    const projectObj = JSON.parse(JSON.stringify(e.target.result));
+
+    listName = '';
+    //Object Manipulations Without Container
+    projectObj.data[listName] = {
+      item: {
+        title: "",
+        description: "",
+      }
+    }
+    //Object Manipulations With Container
+    projectObj.data.lists[listName] = {
+      item: {
+        title: "",
+        description: "",
+      }
+    }
+
+    const storeRequest = store.put(projectObj);
+
+    storeRequest.onsuccess = (ev) => {
+      console.log("Success in updating Chapter!", ev);
+    };
+    storeRequest.onerror = (err) => {
+      console.log("Error on request to add!", err);
+    };
+  };
+
+
+
+
+
+}
+
 function saveChapter(db, newContent) {
   const transaction = makeTransaction(db, "projects", "readwrite");
+
   transaction.oncomplete = (ev) => {
     console.log("Transaction Completed:", ev);
   };
