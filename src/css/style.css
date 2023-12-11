@@ -47,6 +47,9 @@ main {
 h3 {
   color: var(--tertiary-color);
 }
+.list-bar h3{
+color: var(--ivory);
+}
 
 h1,
 h2,
@@ -91,20 +94,26 @@ header h1 {
 
 .ql-container.ql-snow {
   border: 1px solid var(--ivory);
-  background-image: url(../images/old-paper-turned.jpg);
+
     background-size: 100% 100%;
+}
+.no-area{
+  background-image: url(../images/old-envelope.jpg);
+}
+.editor-area{
+  background-image: url(../images/old-paper-turned.jpg);
 }
 
 .writing-area {
-    display:flex;
-    height:100%;
-    flex-direction: column;
-    grid-column: 2 / span 1;
-    margin-left: 20px;
-    margin-right: 20px;
-    background-color: var(--secondary-color);
-    justify-content:end;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
+  rotate: -1deg;
+  background-size: 100% 100%;
+  margin-top: 70px;
+  margin-bottom: 70px;
+  margin-left: 35px;
+  margin-right: 15px;
+  overflow-y: hidden;
+  min-height: 67.7vmin;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
 }
 #no-project-btn{
   height: 60px;
@@ -121,17 +130,7 @@ header h1 {
   font-weight: bold;
 }
 .editor {
-  rotate: -1deg;
-  background-image: url(../images/old-envelope.jpg);
-    background-size: 100% 100%;
-    padding-top: 70px;
-    padding-bottom: 70px;
-    padding-left: 35px;
-    padding-right: 15px;
-    overflow-y: hidden;
-    min-height: 67.7vmin;
-    max-height: 67.7vmin;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
+  height:100%;
 }
 
 /* width */
@@ -170,14 +169,14 @@ header h1 {
     padding:20px;
     color: rgba(198, 158, 58, 0.752);
     padding: 20px;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 .outline .content {
 display: flex;
 flex-direction: column;
 overflow-y: scroll;
 height: 100%;
-font-size: 1.2rem;
+font-size: 1.9rem;
 font-weight: bold;
 cursor: pointer;
 }

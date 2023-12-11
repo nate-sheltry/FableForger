@@ -57,14 +57,40 @@ const IDB = () => {
             });
         }
 
-        // db.createObjectStore("", {
-        //     keyPath: "id"
-        // });
-        // if(db.objectStoreNames.contains("")){
-        //     db.deleteObjectStore("");
-        // }
-        
-    })
+    // db.createObjectStore("", {
+    //     keyPath: "id"
+    // });
+    // if(db.objectStoreNames.contains("")){
+    //     db.deleteObjectStore("");
+    // }
+  });
+  const leftBtn = document.getElementById("left-panel-btn");
+  leftBtn.addEventListener("click", (e) => {
+    if (e.target.classList.contains("new-project")) {
+      addProject(db, e);
+    } else if (e.target.classList.contains("new-chapter")) {
+      addChapter(db, e);
+    }
+  });
+  const leftBackBtn = document.getElementById("left-panel-back");
+  leftBackBtn.addEventListener("pointerdown", (e) => {
+    if (leftBtn.classList.contains("new-project")) {
+      return;
+    }
+    getProjects();
+    leftBtn.classList.toggle("new-chapter", false);
+    leftBtn.classList.toggle("new-project", true);
+    document.querySelector(".outline .subtitle").textContent = "Projects";
+  });
+
+  // document.querySelector('#no-project-btn').addEventListener('pointerdown', (e)=>{
+  //     if(e.target.classList.contains('new-project')){
+  //         addProject(db, e);
+  //     }
+  // })
+  function saveQuillData(contents) {
+    saveChapter(db, contents);
+  }
 
   // document.getElementById("btnAdd").addEventListener("click", (ev) => {
   //     ev.preventDefault();

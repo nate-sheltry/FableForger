@@ -35,6 +35,12 @@ function addProject(db, e) {
     id: guid(),
     name: projectName,
     data: {
+      characters: [
+
+      ],
+      locations: [
+
+      ],
       chapters: [
         {
           content: {
@@ -107,6 +113,9 @@ function createProjectElement(db, event, index, id, projectName) {
   projectItem.setAttribute("data-id", id);
   document.querySelector(".outline .content").append(projectItem);
   projectItem.addEventListener("pointerdown", (e) => {
+    const editor = document.querySelector(".writing-area")
+    editor.classList.toggle("no-area", !editor.classList.contains("no-area"))
+    editor.classList.toggle("editor-area", !editor.classList.contains("editor-area"))
     const subtitleElem = document.querySelector(".outline .subtitle");
     subtitleElem.textContent = projectName;
     subtitleElem.setAttribute("data-id", id);

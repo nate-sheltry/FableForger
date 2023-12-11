@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -31,7 +31,7 @@
         <h3 class="subtitle">Projects</h3>
         <div class="content"></div>
       </div>
-      <div class="writing-area">
+      <div class="writing-area no-area">
         <div class="editor">
           <button class="new-project" id="no-project-btn">
             Start A New Project
@@ -39,9 +39,21 @@
         </div>
       </div>
       <div class="list-bar">
-        <h2>List Bar</h2>
-        <button class="corner-button" id="right-panel-btn">+</button>
+      <h2>List Bar</h2>
+      <button class="corner-button" id="right-panel-btn">+</button>
+      <div class="characters">
+        <h3>Characters <button class="add-character-btn">+</button></h3>
+        <ul class="character-list"></ul>
       </div>
+      <div class="locations">
+        <h3>Locations <button class="add-location-btn">+</button></h3>
+        <ul class="location-list"></ul>
+      </div>
+      <div class="custom-lists">
+        <h3>Custom Lists<button class="add-custom-list-btn">+</button></h3>
+        <!-- Add dynamic custom lists here -->
+      </div>
+    </div>
     </main>
     <script src="../js/script.js" type="module" defer></script>
     <!-- <script src="../js/editor-btns.js" type="module"></script> -->
