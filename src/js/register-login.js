@@ -51,17 +51,15 @@ console.log("Existing object store names:", db.objectStoreNames);
   });
 }
 
-
-
-// // Function to hash a password
-// async function hashPassword(password) {
-//   const encoder = new TextEncoder();
-//   const data = encoder.encode(password);
-//   const buffer = await crypto.subtle.digest("SHA-256", data);
-//   const hashArray = Array.from(new Uint8Array(buffer));
-//   const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-//   return hashedPassword;
-// }
+// Function to hash a password
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const buffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(buffer));
+  const hashedPassword = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  return hashedPassword;
+}
 
 function flipRegistration() {
   const login = document.getElementById('login');
@@ -125,8 +123,22 @@ function showWelcomeMessage(element, message, duration = 1000) {
   requestAnimationFrame(appendNextCharacter);
 }
 
+// Function to handle form submission for login
+async function handleLoginFormSubmission(event) {
+  event.preventDefault();
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  openDatabase().then(async (db) => {
+    const hashedPassword = await hashPassword(password);
+    loginUser(db, username, hashedPassword);
+  });
+}
+
 // Function to register a user
-function registerUser(db, username, password) {
+async function registerUser(db, username, password) {
+  const hashedPassword = await hashPassword(password);
+
   const transaction = db.transaction(["users"], "readwrite");
   transaction.oncomplete = () => {
     console.log("Registration successful!");
@@ -148,9 +160,9 @@ function registerUser(db, username, password) {
     } else {
       // If username doesn't exist, proceed with registration
       const newUser = {
-        userId: guid(), // Use the guid function to generate a unique ID
+        userId: guid(),
         username: username,
-        password: password,
+        password: hashedPassword, // Use the hashed password
       };
 
       const addUserRequest = usersStore.add(newUser);
@@ -160,15 +172,14 @@ function registerUser(db, username, password) {
 
         // Display welcome message with the new username
         showWelcomeMessage(welcomeText, `${username}`);
-         // Wait for a couple of seconds
-         setTimeout(() => {
+        // Wait for a couple of seconds
+        setTimeout(() => {
           // set WelcomeText back
           showWelcomeMessage(welcomeText, ` registered `);
           // Add logic to clear the registration fields if needed
-
         }, 1000);
-         // Wait for a couple of seconds
-         setTimeout(() => {
+        // Wait for a couple of seconds
+        setTimeout(() => {
           // set WelcomeText back
           showWelcomeMessage(welcomeText, `successfully`);
           // Add logic to clear the registration fields if needed
@@ -192,6 +203,7 @@ function registerUser(db, username, password) {
   };
 }
 
+// Function to log in a user
 function loginUser(db, username, password) {
   const transaction = db.transaction(["users"], "readonly");
   transaction.oncomplete = () => {
@@ -209,7 +221,7 @@ function loginUser(db, username, password) {
   const usernameIndex = usersStore.index("username");
   const getUserRequest = usernameIndex.get(username);
 
-  getUserRequest.onsuccess = async (event) => {
+  getUserRequest.onsuccess = (event) => {
     const user = event.target.result;
 
     console.log("User retrieved from the database:", user);
@@ -252,17 +264,6 @@ function handleRegisterFormSubmission(event) {
 
   openDatabase().then((db) => {
     registerUser(db, username, password);
-  });
-}
-
-// Function to handle form submission for login
-function handleLoginFormSubmission(event) {
-  event.preventDefault();
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  openDatabase().then((db) => {
-    loginUser(db, username, password);
   });
 }
 
