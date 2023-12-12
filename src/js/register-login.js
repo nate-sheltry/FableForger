@@ -4,7 +4,7 @@ import { guid } from "./uid.js";
 // Function to open or create the database
 function openDatabase() {
   return new Promise((resolve, reject) => {
-    const DBOpenReq = indexedDB.open("FableForger", 6);
+    const DBOpenReq = indexedDB.open("FableForger", 2);
 
     DBOpenReq.addEventListener("error", (err) => {
       console.warn(err);
