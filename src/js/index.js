@@ -273,9 +273,9 @@ const IDB = () => {
   // });
   function getProjects() {
     accessProjects(db);
-
-    return [saveQuillData, getProjects];
   }
+
+  return [saveQuillData, getProjects];
 };
 
 const [saveQuillData, getProjects] = IDB();
