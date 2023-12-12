@@ -1,5 +1,5 @@
-const dbName = "booksDB";
-const dbVersion = 3;
+const dbName = "projects";
+const dbVersion = 5;
 
 //PROJECTS
 
@@ -393,7 +393,7 @@ function updateChapter(db, chapterId, updatedChapterData) {
     console.error("Error fetching chapter for update:", error);
   };
 }
-// Function to delete a chapter from a project
+//* Function to delete a chapter from a project
 function deleteChapterFromProject(db, projectId, chapterId) {
   const transaction = db.transaction("chapters", "readwrite");
   const store = transaction.objectStore("chapters");
@@ -409,7 +409,7 @@ function deleteChapterFromProject(db, projectId, chapterId) {
 }
 
     openReq.onerror = (event) => reject(event.target.error);
-    openReq.onupgradeneeded = (event) => {
+   /* openReq.onupgradeneeded = (event) => {
       console.log("Upgrade needed in the database:", event.target.result);
 
       const oldVersion = event.oldVersion;
@@ -417,7 +417,7 @@ function deleteChapterFromProject(db, projectId, chapterId) {
 
       console.log(`DB updated from version ${oldVersion} to version ${newVersion}`);
 
-      // Create object stores
+      /* Create object stores
       const objectStore = event.target.result.createObjectStore("bookStore", {
         keyPath: "id",
         autoIncrement: true
@@ -425,15 +425,15 @@ function deleteChapterFromProject(db, projectId, chapterId) {
       objectStore.createIndex("text", "text", { unique: false }); // Optional: Create index
 
       // Add additional object stores here (e.g., customListStore)
-    };
+    };*/
     openReq.onsuccess = (event) => resolve(event.target.result);
   });
 
   console.log("Success! Database opened:", db);
 
-  if (onOpenCallback) {
+  /*if (onOpenCallback) {
     await onOpenCallback(db);
-  }
+  }*/
 }
 
 // Function to generate a unique ID
@@ -527,7 +527,7 @@ export function createInputField(type) {
 
     return [input, addButton, cancelButton];
 }
-async function addItemToList(type, item) {
+/*async function addItemToList(type, item) {
     await openDB(async (db) => {
       const transaction = db.transaction([type], "readwrite");
       const store = transaction.objectStore(type);
@@ -544,9 +544,8 @@ async function addItemToList(type, item) {
         console.error(`Error adding item to ${type}:`, error);
       }
     });
-  }
-// Event listener to dynamically add a character to the list
-document.querySelector(".add-character-btn").addEventListener("click", () => {
+  } */
+/*document.querySelector(".add-character-btn").addEventListener("click", () => {
     const [characterInput, addCharacterButton, cancelCharacterButton] = createInputField("character-list");
     const characterList = document.querySelector(".characters");
 
@@ -583,44 +582,80 @@ document.querySelector(".add-location-btn").addEventListener("click", () => {
         }
     });
 });
+*/
+
+/*document.querySelectorAll('.custom-list').forEach(list => {
+  list.addEventListener('click', (event) => {
+    const clickedList = event.currentTarget;
+    const listId = clickedList.getAttribute('data-list-id');
+
+    // Fetch items associated with this listId from IndexedDB
+    // Display the items in the .list-items-area and hide the custom-lists
+
+    // Example:
+    const listName = clickedList.querySelector('h3').textContent;
+    const items = []; // Fetch items based on listId from IndexedDB
+
+    // Display list name and items in the list-items-area
+    document.querySelector('.list-items-area').style.display = 'block';
+    document.querySelector('.list-name').textContent = listName;
+
+    const itemsList = document.querySelector('.items-list');
+    itemsList.innerHTML = ''; // Clear previous items
+
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item.name; // Assuming 'name' is the property where the item name is stored
+      itemsList.appendChild(li);
+    });
+
+    // Hide the custom lists section
+    document.querySelector('.custom-lists').style.display = 'none';
+  });
+});
+document.querySelector('.back-btn').addEventListener('click', () => {
+  // Hide the items display area and show the custom lists area
+  document.querySelector('.list-items-area').style.display = 'none';
+  document.querySelector('.custom-lists').style.display = 'block';
+}); */
 
 // Event listener for custom list creation
-document.querySelector(".add-custom-list-btn").addEventListener("click", () => {
-    const listName = prompt("Enter custom list name:");
-    if (listName) {
-        // Assuming you have a container for custom lists with class 'custom-lists'
-        const customListContainer = document.querySelector('.custom-lists');
-        const newListDiv = document.createElement('div');
-        newListDiv.classList.add('custom-list');
+/*document.querySelector(".add-custom-list-btn").addEventListener("click", () => {
+  const listName = prompt("Enter custom list name:");
+  if (listName) {
+      const customListContainer = document.querySelector('.custom-lists');
+      const newListDiv = document.createElement('div');
+      newListDiv.classList.add('custom-list');
 
-        const heading = document.createElement('h3');
-        heading.textContent = listName;
+      const heading = document.createElement('h3');
+      heading.textContent = listName;
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'x';
-        deleteButton.addEventListener('click', () => {
-            newListDiv.remove();
-        });
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'x';
+      deleteButton.addEventListener('click', () => {
+          newListDiv.remove();
+      });
 
-        newListDiv.appendChild(heading);
-        newListDiv.appendChild(deleteButton);
+      newListDiv.appendChild(heading);
+      newListDiv.appendChild(deleteButton);
 
-        const list = document.createElement('ul');
-        list.classList.add(`custom-list-${listName.toLowerCase()}`);
+      const modifiedListName = listName.replace(/\s/g, '-'); // Replace spaces with hyphens
+      const list = document.createElement('ul');
+      list.classList.add(`custom-list-${modifiedListName.toLowerCase()}`); // Use modified name
 
-        newListDiv.appendChild(list);
-        customListContainer.appendChild(newListDiv);
+      newListDiv.appendChild(list);
+      customListContainer.appendChild(newListDiv);
 
-        // You can also call the addItemToList function for this new custom list if needed
-        addItemToList('custom', listName);
-        getAllItemsFromStoreAndDisplay('customListStore'); // Update displayed list for customListStore
-    }
-});
-
-  // Example function to update and display all items in the 'bookStore'
-async function getAllItemsAndDisplay() {
-    await updateDisplayedList("bookStore");
+      // You can also call the addItemToList function for this new custom list if needed
+     // addItemToList('custom', modifiedListName); // Pass the modified name
+      //getAllItemsFromStoreAndDisplay('customListStore'); // Update displayed list for customListStore
   }
+});
+*/
+  // Example function to update and display all items in the 'bookStore'
+  //async function getAllItemsAndDisplay() {
+   //await updateDisplayedList("bookStore");
+  //}
 // Function to add items to the respective list in the HTML page
 async function addItemsToPageList(type, items) {
     const listContainer = document.querySelector(`.${type}`);

@@ -199,7 +199,40 @@ header h1 {
   ::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
   }
-.outline {
+  .list-button{
+    border: none; 
+    background-color: transparent; 
+    font-family: 'Stalemate', sans-serif;
+    font-size:  1.9rem; 
+    padding-right: 20%; 
+    padding-left: 20%; 
+
+  }
+  #add-custom-list-btn{
+    border: none; 
+background-color: transparent;
+  
+    font-family: 'Stalemate', sans-serif;
+    font-size:  2.5rem; 
+    padding-right: 20%; 
+    padding-left: 20%; 
+    color: white;
+  }
+  .add-item-button, .back-button{
+ 
+    background-color:transparent;
+        font-family: 'Stalemate', sans-serif;
+    font-size:  1.9rem; 
+    margin-right: 10%; 
+    margin-left: 10%; 
+    padding: .5rem;
+    border: 1px, solid, black;
+    border-radius: 5px;
+  }
+  .custom-list{ 
+    display: block; 
+  }
+.outline, .list-bar {
     display:flex;
     flex-direction:column;
     background-image: url(../images/cover.jpg);
@@ -217,7 +250,7 @@ header h1 {
     padding: 20px;
     font-size: 1.5rem;
 }
-.outline .content {
+.outline .content{
 display: flex;
 flex-direction: column;
 overflow-y: scroll;

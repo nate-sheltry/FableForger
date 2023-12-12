@@ -6,6 +6,9 @@ import {
   addChapter,
   saveChapter,
   accessProjects,
+  createList, 
+  accessLists, 
+  addListItem,
 } from "./databaseFunctions.js";
 // console.log("Generated unique ID:", guid());
 
@@ -30,14 +33,14 @@ const IDB = () => {
   console.log("indexedDB supported:", indexedDBSupport());
 
   //? Make a request to open / create a database.
-  const DBOpenReq = indexedDB.open("FableForger", 6);
+  const DBOpenReq = indexedDB.open("FableForger", 5);
 
   DBOpenReq.addEventListener("error", (err) => {
     console.warn(err);
   });
 
     DBOpenReq.addEventListener("success", (ev) => {
-        // DB opened... after upgradeneede.
+        // DB opened... after upgradeneeded.
         db = ev.target.result;
         console.log("Success", db);
         // buildList();
@@ -56,22 +59,18 @@ const IDB = () => {
       "to version",
       newVersion
     );
+
     if (!db.objectStoreNames.contains("projects")) {
       objectStore = db.createObjectStore("projects", {
         keyPath: "id",
       });
     }
 
-    // Create "userProjects" object store if it doesn't exist
-    if (!db.objectStoreNames.contains("userProjects")) {
-      const userProjectsObjectStore = db.createObjectStore("userProjects", {
-        keyPath: "relationshipId",
-        autoIncrement: true,
+    if (!db.objectStoreNames.contains("lists")) {
+      // Add the missing lists object store
+      const listsStore = db.createObjectStore("lists", {
+        keyPath: "listId",
       });
-
-      // Add indexes to facilitate querying
-      userProjectsObjectStore.createIndex("userId", "userId");
-      userProjectsObjectStore.createIndex("projectId", "projectId");
     }
 
     // db.createObjectStore("", {
@@ -79,9 +78,8 @@ const IDB = () => {
     // });
     // if(db.objectStoreNames.contains("")){
     //     db.deleteObjectStore("");
-    // }
-  });
-
+    }
+  );
   const leftBtn = document.getElementById("left-panel-btn");
   const noProjectBtn = document.getElementById("no-project-btn");
 
@@ -93,12 +91,12 @@ const IDB = () => {
     }
   });
 
-  noProjectBtn.addEventListener("pointerdown", (e) => {
-    if (e.target.classList.contains("new-project")) {
+  const noProjectBtn = document.getElementById('no-project-btn');
+  noProjectBtn.addEventListener("click", (e) => {
       addProject(db, e);
     }
   });
-
+  
   const leftBackBtn = document.getElementById("left-panel-back");
   leftBackBtn.addEventListener("pointerdown", (e) => {
     if (leftBtn.classList.contains("new-project")) {
@@ -274,7 +272,14 @@ const IDB = () => {
   //         console.warn("Error", err)
   //     }
 
-    // });
-}
+  // });
+  function getProjects() {
+    accessProjects(db);
+  }
 
-IDB();
+  return [saveQuillData, getProjects];
+};
+
+const [saveQuillData, getProjects] = IDB();
+
+export { saveQuillData, getProjects, IDB, db};
