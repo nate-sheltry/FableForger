@@ -230,6 +230,13 @@ function accessProjects(db) {
     console.log("Transaction Completed:", ev);
   };
 
+   // Clear the content of the outline before loading projects
+   const outlineContent = document.querySelector(".outline .content");
+   outlineContent.innerHTML = "";
+ 
+   // Close the Quill editor
+   closeEditor();
+
   // Step 1: Iterate through userProjects store
   const cursorReq = userProjects.openCursor();
   const associatedProjects = [];

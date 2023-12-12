@@ -146,10 +146,9 @@ header h1 {
 #no-project-btn{
   height: 60px;
   width: 60px;
-  padding: 0;
+  padding: 1px;
   border-radius: 50px;
   border: none;
-  color: white;
   background-color: transparent;
   cursor: pointer;
   color: rgba(198, 158, 58, 0.752);

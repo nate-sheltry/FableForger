@@ -75,6 +75,8 @@ const IDB = () => {
   });
 
   const leftBtn = document.getElementById("left-panel-btn");
+  const noProjectBtn = document.getElementById("no-project-btn");
+
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
       addProject(db, e);
@@ -82,11 +84,19 @@ const IDB = () => {
       addChapter(db, e);
     }
   });
+
+  noProjectBtn.addEventListener('pointerdown', (e) => {
+    if (e.target.classList.contains('new-project')) {
+      addProject(db, e);
+    }
+  });
+
   const leftBackBtn = document.getElementById("left-panel-back");
   leftBackBtn.addEventListener("pointerdown", (e) => {
     if (leftBtn.classList.contains("new-project")) {
       return;
     }
+    
     getProjects();
     leftBtn.classList.toggle("new-chapter", false);
     leftBtn.classList.toggle("new-project", true);
