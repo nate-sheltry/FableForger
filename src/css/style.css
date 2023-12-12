@@ -32,9 +32,7 @@ h1 h2  {
   color: var(--ivory);
 
 }
-main {
-    height: 100%;
-}
+
 .bookname {
   text-decoration: none;
   color: var(--ivory);
@@ -84,6 +82,7 @@ header h1 {
   color: rgba(48, 31, 16, 0.866);
   font-weight: bold;
 }
+
 #userStatus{
   position: absolute;
   right: 10px;
@@ -126,7 +125,7 @@ header h1 {
   grid-template-columns: 1fr 2fr 1fr;
   height: calc(100vh - 132px);
   max-height: calc(100vh - 132px);
-  overflow-y:hidden;
+  /* overflow-y:hidden; */
 }
 
 .ql-container.ql-snow {
@@ -436,3 +435,35 @@ footer p {
   border-color: rgb(202, 36, 66);
 }
 
+
+/* MEDIA QUERIES */
+@media only screen and (max-width: 600px) {
+  .main-editor {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+  }
+
+  .subtitle {
+    font-size: 3rem;
+  }
+
+  #userStatus {
+    position: relative;
+    left: .1%;
+  }
+
+  #logoutBtn {
+    position: absolute;
+    left: 35%;
+    width: 25%;
+    font-size: 1.7rem;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-top: 1rem;
+  }
+}

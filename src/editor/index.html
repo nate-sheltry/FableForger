@@ -11,19 +11,19 @@
     <header>
       <h1>Fable Forger</h1>
       <div id="userStatus"></div>
-    <button id="logoutBtn">Logout</button>
+      <button type="submit" id="logoutBtn">Logout</button>
     </header>
     <main class="main-editor">
       <div class="outline">
         <h2>Outline</h2>
-        <button
+        <button type="submit"
           class="back left-corner-button"
           id="left-panel-back"
           title="Return to projects directory"
         >
           &#9001;
         </button>
-        <button
+        <button type="submit"
           class="new-project right-corner-button"
           id="left-panel-btn"
           title="Add item to list"
@@ -35,7 +35,7 @@
       </div>
       <div class="writing-area no-area">
         <div class="editor">
-          <button class="new-project" id="no-project-btn">
+          <button type="submit" class="new-project" id="no-project-btn">
             Start A New Project
           </button>
         </div>
@@ -60,17 +60,17 @@
         <div class="list-items-area" style="display: none;">
           <h2 class="list-name"></h2>
           <ul class="items-list">
-            <button class="back-btn">Back</button>
+            <button type="submit" class="back-btn">Back</button>
           </ul>
-          <button class="add-item-btn">+</button>
+          <button type="submit" class="add-item-btn">+</button>
         </div>
       </div>
       
     </div>
     </main>
+    <footer><p>Footer info © 2023</p></footer>
     <script src="../js/script.js" type="module" defer></script>
     <script src="../js/login-status.js" type="module" defer></script>
     <!-- <script src="../js/editor-btns.js" type="module"></script> -->
-    <footer><p>Footer info © 2023</p></footer>
   </body>
 </html>
