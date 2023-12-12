@@ -29,13 +29,8 @@ const IDB = () => {
   }
   console.log("indexedDB supported:", indexedDBSupport());
 
-<<<<<<< HEAD
-    //? Make a request to open / create a database.
-    let DBOpenReq = indexedDB.open("booksDB", 6);
-=======
   //? Make a request to open / create a database.
   const DBOpenReq = indexedDB.open("FableForger", 6);
->>>>>>> development
 
   DBOpenReq.addEventListener("error", (err) => {
     console.warn(err);
@@ -48,21 +43,6 @@ const IDB = () => {
         // buildList();
     })
 
-<<<<<<< HEAD
-    DBOpenReq.addEventListener("upgradeneeded", (ev) => {
-        // Inside the upgradeneeded is the only place 
-        // we can add, modify, and delete any data from the DB.
-        db = ev.target.result;
-        console.log("Upgrade", db);
-        let oldVersion = ev.oldVersion;
-        let newVersion = ev.newVersion || db.version;
-        console.log("DB updated from version", oldVersion, "to version", newVersion);
-        if(!db.objectStoreNames.contains("bookStore")) {
-            objectStore = db.createObjectStore("bookStore", {
-                keyPath: "id"
-            });
-        }
-=======
   DBOpenReq.addEventListener("upgradeneeded", (ev) => {
     // Inside the upgradeneeded is the only place
     // we can add, modify, and delete any data from the DB.
@@ -94,7 +74,6 @@ const IDB = () => {
       userProjectsObjectStore.createIndex("projectId", "projectId");
     }
     
->>>>>>> development
 
     // db.createObjectStore("", {
     //     keyPath: "id"
