@@ -39,20 +39,31 @@
         </div>
       </div>
       <div class="list-bar">
-      <h2>List Bar</h2>
-      <button class="corner-button" id="right-panel-btn">+</button>
-      <div class="characters">
-        <h3>Characters <button class="add-character-btn">+</button></h3>
-        <ul class="character-list"></ul>
+        <!-- ... Your existing elements ... -->
+        <div class="custom-lists">
+          <!-- Your dynamically created custom lists go here -->
+          <!-- Example of a custom list with items -->
+          <div class="custom-list" data-list-id="1">
+            <h3 class="list-header">Add a New List<button id="add-custom-list-btn">+</button></h3>
+            <!-- Example items in the list -->
+            <ul class="list-list">
+
+              <!-- ... -->
+            </ul>
+          </div>
+          <!-- ... Other custom lists ... -->
+        </div>
+        
+        <!-- Area to display items when a list is clicked -->
+        <div class="list-items-area" style="display: none;">
+          <h2 class="list-name"></h2>
+          <ul class="items-list">
+            <button class="back-btn">Back</button>
+          </ul>
+          <button class="add-item-btn">+</button>
+        </div>
       </div>
-      <div class="locations">
-        <h3>Locations <button class="add-location-btn">+</button></h3>
-        <ul class="location-list"></ul>
-      </div>
-      <div class="custom-lists">
-        <h3>Custom Lists<button class="add-custom-list-btn">+</button></h3>
-        <!-- Add dynamic custom lists here -->
-      </div>
+      
     </div>
     </main>
     <script src="../js/script.js" type="module" defer></script>
