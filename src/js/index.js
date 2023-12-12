@@ -54,26 +54,25 @@ const IDB = () => {
       "DB updated from version",
       oldVersion,
       "to version",
-      newVersion,
+      newVersion
     );
     if (!db.objectStoreNames.contains("projects")) {
       objectStore = db.createObjectStore("projects", {
         keyPath: "id",
       });
     }
-  
+
     // Create "userProjects" object store if it doesn't exist
     if (!db.objectStoreNames.contains("userProjects")) {
       const userProjectsObjectStore = db.createObjectStore("userProjects", {
         keyPath: "relationshipId",
         autoIncrement: true,
       });
-  
+
       // Add indexes to facilitate querying
       userProjectsObjectStore.createIndex("userId", "userId");
       userProjectsObjectStore.createIndex("projectId", "projectId");
     }
-    
 
     // db.createObjectStore("", {
     //     keyPath: "id"
@@ -94,8 +93,8 @@ const IDB = () => {
     }
   });
 
-  noProjectBtn.addEventListener('pointerdown', (e) => {
-    if (e.target.classList.contains('new-project')) {
+  noProjectBtn.addEventListener("pointerdown", (e) => {
+    if (e.target.classList.contains("new-project")) {
       addProject(db, e);
     }
   });
@@ -105,7 +104,7 @@ const IDB = () => {
     if (leftBtn.classList.contains("new-project")) {
       return;
     }
-    
+
     getProjects();
     leftBtn.classList.toggle("new-chapter", false);
     leftBtn.classList.toggle("new-project", true);
@@ -117,6 +116,7 @@ const IDB = () => {
   //         addProject(db, e);
   //     }
   // })
+  //? This function handles the saving of the quill data!
   function saveQuillData(contents) {
     saveChapter(db, contents);
   }
