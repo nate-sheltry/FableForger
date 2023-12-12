@@ -6,8 +6,8 @@ import {
   addChapter,
   saveChapter,
   accessProjects,
-  createList, 
-  accessLists, 
+  createList,
+  accessLists,
   addListItem,
 } from "./databaseFunctions.js";
 // console.log("Generated unique ID:", guid());
@@ -39,12 +39,12 @@ const IDB = () => {
     console.warn(err);
   });
 
-    DBOpenReq.addEventListener("success", (ev) => {
-        // DB opened... after upgradeneeded.
-        db = ev.target.result;
-        console.log("Success", db);
-        // buildList();
-    })
+  DBOpenReq.addEventListener("success", (ev) => {
+    // DB opened... after upgradeneeded.
+    db = ev.target.result;
+    console.log("Success", db);
+    // buildList();
+  });
 
   DBOpenReq.addEventListener("upgradeneeded", (ev) => {
     // Inside the upgradeneeded is the only place
@@ -78,10 +78,9 @@ const IDB = () => {
     // });
     // if(db.objectStoreNames.contains("")){
     //     db.deleteObjectStore("");
-    }
-  );
+  });
   const leftBtn = document.getElementById("left-panel-btn");
-  const noProjectBtn = document.getElementById("no-project-btn");
+  // const noProjectBtn = document.getElementById("no-project-btn");
 
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
@@ -91,12 +90,11 @@ const IDB = () => {
     }
   });
 
-  const noProjectBtn = document.getElementById('no-project-btn');
+  const noProjectBtn = document.getElementById("no-project-btn");
   noProjectBtn.addEventListener("click", (e) => {
-      addProject(db, e);
-    }
+    addProject(db, e);
   });
-  
+
   const leftBackBtn = document.getElementById("left-panel-back");
   leftBackBtn.addEventListener("pointerdown", (e) => {
     if (leftBtn.classList.contains("new-project")) {
@@ -127,13 +125,13 @@ const IDB = () => {
   //     let aboutBook = document.getElementById("aboutBook").value.trim();
   //     let owned = document.getElementById("isOwned").checked;
 
-    //     let book = {
-    //         id: guid(),
-    //         name: bookname,
-    //         author: author,
-    //         about: aboutBook,
-    //         isOwned: owned 
-    //     };
+  //     let book = {
+  //         id: guid(),
+  //         name: bookname,
+  //         author: author,
+  //         about: aboutBook,
+  //         isOwned: owned
+  //     };
 
   //     let transaction = makeTransaction("bookStore", "readwrite");
   //     transaction.oncomplete = (ev) => {
@@ -161,15 +159,15 @@ const IDB = () => {
   //     let aboutBook = document.getElementById("aboutBook").value.trim();
   //     let owned = document.getElementById("isOwned").checked;
 
-    //     let key = document.bookForm.getAttribute("data-key");
-    //     if(key) {
-    //         let book = {
-    //             id: key,
-    //             name: bookname,
-    //             author: author,
-    //             about: aboutBook,
-    //             isOwned: owned 
-    //         };
+  //     let key = document.bookForm.getAttribute("data-key");
+  //     if(key) {
+  //         let book = {
+  //             id: key,
+  //             name: bookname,
+  //             author: author,
+  //             about: aboutBook,
+  //             isOwned: owned
+  //         };
 
   //         let transaction = makeTransaction("bookStore", "readwrite");
   //         transaction.oncomplete = (ev) => {
@@ -275,11 +273,11 @@ const IDB = () => {
   // });
   function getProjects() {
     accessProjects(db);
-  }
 
-  return [saveQuillData, getProjects];
+    return [saveQuillData, getProjects];
+  }
 };
 
 const [saveQuillData, getProjects] = IDB();
 
-export { saveQuillData, getProjects, IDB, db};
+export { saveQuillData, getProjects, IDB, db };
