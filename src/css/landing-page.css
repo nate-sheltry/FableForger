@@ -240,30 +240,31 @@ p.small {
   font-size: 2.5rem;
 }
 @keyframes writeEffect {
-  from {
-    width: 0;
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
   }
-  to {
-    width: 100%;
+  
+  #welcomeText {
+    font-size: 5rem;
+    margin: 5px;
+    padding: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: writeEffect 4s cubic-bezier(0, 0, 0.58, 1) forwards;
+    color: rgba(48, 31, 16, 0.675);
   }
-}
-#welcomeText {
-  font-size: 5rem;
-  padding: 10px;
-  overflow: hidden;
-  white-space: nowrap;
-  animation: writeEffect 4s cubic-bezier(0, 0, 0.58, 1) forwards;
-  color: rgba(48, 31, 16, 0.675);
-}
-header {
-  background-image: url("/images/desk-top-feather-pen.jpg");
-  rotate: 11deg;
-  background-position: left bottom;
-  background-size: 160% 170%;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
-  margin-top: 1rem;
-}
-/* Styles for small screens */
+  header {
+    background-image: url('/images/desk-top-feather-pen.jpg');
+    rotate: 10deg;
+    background-position: left bottom;
+    background-size: 160% 170%;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
+  }
+  /* Styles for small screens */
 @media only screen and (max-width: 600px) {
   body {
     display: flex;

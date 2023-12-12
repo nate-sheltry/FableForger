@@ -29,8 +29,8 @@ const IDB = () => {
   }
   console.log("indexedDB supported:", indexedDBSupport());
 
-    //? Make a request to open / create a database.
-    let DBOpenReq = indexedDB.open("booksDB", 2);
+  //? Make a request to open / create a database.
+  const DBOpenReq = indexedDB.open("FableForger", 2);
 
   DBOpenReq.addEventListener("error", (err) => {
     console.warn(err);
@@ -43,19 +43,24 @@ const IDB = () => {
         // buildList();
     })
 
-    DBOpenReq.addEventListener("upgradeneeded", (ev) => {
-        // Inside the upgradeneeded is the only place 
-        // we can add, modify, and delete any data from the DB.
-        db = ev.target.result;
-        console.log("Upgrade", db);
-        let oldVersion = ev.oldVersion;
-        let newVersion = ev.newVersion || db.version;
-        console.log("DB updated from version", oldVersion, "to version", newVersion);
-        if(!db.objectStoreNames.contains("bookStore")) {
-            objectStore = db.createObjectStore("bookStore", {
-                keyPath: "id"
-            });
-        }
+  DBOpenReq.addEventListener("upgradeneeded", (ev) => {
+    // Inside the upgradeneeded is the only place
+    // we can add, modify, and delete any data from the DB.
+    db = ev.target.result;
+    console.log("Upgrade", db);
+    let oldVersion = ev.oldVersion;
+    let newVersion = ev.newVersion || db.version;
+    console.log(
+      "DB updated from version",
+      oldVersion,
+      "to version",
+      newVersion,
+    );
+    if (!db.objectStoreNames.contains("projects")) {
+      objectStore = db.createObjectStore("projects", {
+        keyPath: "id",
+      });
+    }
 
     // db.createObjectStore("", {
     //     keyPath: "id"
@@ -64,7 +69,10 @@ const IDB = () => {
     //     db.deleteObjectStore("");
     // }
   });
+
   const leftBtn = document.getElementById("left-panel-btn");
+  const noProjectBtn = document.getElementById("no-project-btn");
+
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
       addProject(db, e);
@@ -72,11 +80,19 @@ const IDB = () => {
       addChapter(db, e);
     }
   });
+
+  noProjectBtn.addEventListener('pointerdown', (e) => {
+    if (e.target.classList.contains('new-project')) {
+      addProject(db, e);
+    }
+  });
+
   const leftBackBtn = document.getElementById("left-panel-back");
   leftBackBtn.addEventListener("pointerdown", (e) => {
     if (leftBtn.classList.contains("new-project")) {
       return;
     }
+    
     getProjects();
     leftBtn.classList.toggle("new-chapter", false);
     leftBtn.classList.toggle("new-project", true);

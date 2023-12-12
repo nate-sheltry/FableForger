@@ -27,11 +27,15 @@ function addProject(db, e) {
     if (!!projectName == false) alert("please enter a valid name.");
   } while (!projectName);
 
-  const transaction = makeTransaction(db, "projects", "readwrite");
-  transaction.oncomplete = (ev) => {
+  // Create a transaction for the "projects"/* and "userProjects" object stores -jp
+  const projectTransaction = db.transaction(["projects", "userProjects"], "readwrite");
+  projectTransaction.oncomplete = (ev) => {
     console.log("Transaction Completed:", ev);
   };
-  let project = {
+
+  // Add the project to the "projects" store
+  const projectStore = projectTransaction.objectStore("projects");
+  const project = {
     id: guid(),
     name: projectName,
     data: {
@@ -53,14 +57,42 @@ function addProject(db, e) {
       ],
     },
   };
-  const store = transaction.objectStore("projects");
-  const storeRequest = store.add(project);
-  storeRequest.onsuccess = (ev) => {
-    console.log("Success in adding object!", ev);
-    createProjectElement(db, e, 0, project.id, project.name);
+  const projectRequest = projectStore.add(project);
+
+  projectRequest.onsuccess = (ev) => {
+    console.log("Success in adding project object!", ev);
+
+    // Get the ID of the newly added project
+    const projectId = ev.target.result;
+
+    // Create a transaction for the "userProjects" store
+    const userProjectsTransaction = db.transaction("userProjects", "readwrite");
+    userProjectsTransaction.oncomplete = (ev) => {
+      console.log("UserProjects Transaction Completed:", ev);
+    };
+
+    // Add a record to "userProjects" to associate the user with the project
+    const userProjectsStore = userProjectsTransaction.objectStore("userProjects");
+    const userProject = {
+      userId: sessionStorage.getItem("userId"),
+      projectId: projectId,
+    };
+    const userProjectRequest = userProjectsStore.add(userProject);
+
+    userProjectRequest.onsuccess = (ev) => {
+      console.log("Success in adding userProject object!", ev);
+
+      // Create the project element after both transactions are complete
+      createProjectElement(db, e, 0, projectId, projectName);
+    };
+
+    userProjectRequest.onerror = (err) => {
+      console.log("Error on request to add userProject!", err);
+    };
   };
-  storeRequest.onerror = (err) => {
-    console.log("Error on request to add!", err);
+
+  projectRequest.onerror = (err) => {
+    console.log("Error on request to add project!", err);
   };
 }
 
@@ -198,19 +230,56 @@ function saveChapter(db, newContent) {
 }
 
 function accessProjects(db) {
-  const transaction = db.transaction(["projects"], "readonly");
+  const loggedInUserId = sessionStorage.getItem("userId");
+  const transaction = db.transaction(["userProjects", "projects"], "readonly");
+  const userProjects = transaction.objectStore("userProjects");
+  const projects = transaction.objectStore("projects");
+
   transaction.oncomplete = (ev) => {
     console.log("Transaction Completed:", ev);
   };
-  const store = transaction.objectStore("projects");
-  const cursorReq = store.openCursor();
-  document.querySelector(".outline .content").innerHTML = ``;
-  closeEditor();
+
+   // Clear the content of the outline before loading projects
+   const outlineContent = document.querySelector(".outline .content");
+   outlineContent.innerHTML = "";
+ 
+   // Close the Quill editor
+   closeEditor();
+
+  // Step 1: Iterate through userProjects store
+  const cursorReq = userProjects.openCursor();
+  const associatedProjects = [];
+
   cursorReq.onsuccess = (e) => {
     const cursor = e.target.result;
+
     if (cursor) {
-      createProjectElement(db, e, 0, cursor.value.id, cursor.value.name);
+      const userProject = cursor.value;
+
+      // Step 2: Check if userId matches loggedInUserId
+      if (userProject.userId === loggedInUserId) {
+        associatedProjects.push(userProject.projectId);
+      }
+
       cursor.continue();
+    } else {
+      // Step 3: Iterate through projects store
+      const projectCursorReq = projects.openCursor();
+
+      projectCursorReq.onsuccess = (event) => {
+        const projectCursor = event.target.result;
+
+        if (projectCursor) {
+          const project = projectCursor.value;
+
+          // Step 4: Check if projectId is in associatedProjects array
+          if (associatedProjects.includes(project.id)) {
+            createProjectElement(db, event, 0, project.id, project.name);
+          }
+
+          projectCursor.continue();
+        }
+      };
     }
   };
 }
@@ -231,4 +300,4 @@ function accessChapters(db, id) {
   };
 }
 
-export { addProject, addChapter, saveChapter, accessProjects };
+export { addProject, addChapter, saveChapter, accessProjects};
