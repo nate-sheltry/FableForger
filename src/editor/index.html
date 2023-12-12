@@ -14,24 +14,27 @@
     <button id="logoutBtn">Logout</button>
     </header>
     <main class="main-editor">
-      <div class="outline">
-        <h2>Outline</h2>
-        <button
-          class="back left-corner-button"
-          id="left-panel-back"
-          title="Return to projects directory"
-        >
-          &#9001;
-        </button>
-        <button
-          class="new-project right-corner-button"
-          id="left-panel-btn"
-          title="Add item to list"
-        >
-          +
-        </button>
-        <h3 class="subtitle">Projects</h3>
-        <div class="content"></div>
+      <div class="toggleoutline">
+        <div class="outline">
+          <h2>Outline</h2>
+          <button
+            class="back left-corner-button"
+            id="left-panel-back"
+            title="Return to projects directory"
+          >
+            &#9001;
+          </button>
+          <button
+            class="new-project right-corner-button"
+            id="left-panel-btn"
+            title="Add item to list"
+          >
+            +
+          </button>
+          <h3 class="subtitle">Projects</h3>
+          <div class="content"></div>
+        </div>
+        <button id="toggleOutlineBtn">Outline</button>
       </div>
       <div class="writing-area">
         <div class="editor">
@@ -40,13 +43,17 @@
           </button>
         </div>
       </div>
-      <div class="list-bar">
-        <h2>List Bar</h2>
-        <button class="corner-button" id="right-panel-btn">+</button>
+      <div class="togglelist">
+        <button id="toggleListBtn">List Bar</button>
+        <div class="list-bar">
+          <h2>List Bar</h2>
+          <button class="corner-button" id="right-panel-btn">+</button>
+        </div>
       </div>
     </main>
     <script src="../js/script.js" type="module" defer></script>
     <script src="../js/login-status.js" type="module" defer></script>
+    <script src="../js/toggleOutlineList.js" type="module" defer></script>
     <!-- <script src="../js/editor-btns.js" type="module"></script> -->
     <footer><p>Footer info © 2023</p></footer>
   </body>

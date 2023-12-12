@@ -235,6 +235,7 @@ header h1 {
   z-index: 2;
   color: rgba(48, 31, 16, 0.866);
   text-align: center;
+  height: 100%;
 }
 
 footer {
@@ -393,3 +394,127 @@ footer p {
   border-color: rgb(202, 36, 66);
 }
 
+#toggleOutlineBtn,
+#toggleListBtn {
+  display: none;
+}
+.togglelist{
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+
+  html, body {
+    overflow: hidden;
+}
+  
+  body{
+    background-size: contain;
+    display: flex;
+    flex-direction: column;
+  }
+  main{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #toggleOutlineBtn,
+  #toggleListBtn {
+    position: relative;
+    display: block;
+    margin-bottom: 10px;
+    background-color: rgb(106, 10, 10);
+    color: rgba(221, 178, 67, 0.963);
+    padding: 2px;
+    font-family: inherit;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  #toggleListBtn {
+    rotate: -90deg;
+    margin-right: -10px;
+    width: 70px;
+    border: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  #toggleOutlineBtn {
+    rotate: 90deg;
+    margin-left: -10px;
+    width: 70px;
+    border: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  .toggleoutline {
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    left: 0;
+    top: 0;
+    transform: translateX(-95%);
+    transition: transform 0.5s ease, rotate 0.5s ease;
+    width: 80%;
+    height: 90%;
+    rotate: -5deg;
+    z-index: 1;
+  }
+  .outline {
+    width: 100%;
+    height: 75%;
+  }
+
+  .togglelist {
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    right: 0;
+    top: 0;
+    transform: translateX(95%);
+    transition: transform 0.5s ease, rotate 0.5s ease;
+    width: 80%;
+    height: 90%;
+    rotate: 5deg;
+  }
+  .list-bar {
+    width: 100%;
+    height: 75%;
+  }
+
+  .toggleoutline.show {
+    transform: translateX(0);
+    rotate: 0deg;
+  }
+
+  .togglelist.show {
+    transform: translateX(0);
+    rotate: 0deg;
+  }
+  .writing-area {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    margin: 0 auto;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+  }
+  header h1, .userStatus{
+    position: relative;
+  }
+  .ql-container.ql-snow{
+    height: 200px;
+  }
+  #userStatus{
+    margin-top: 80px;
+    rotate: -5deg;
+  }
+  #logoutBtn{
+    margin-top: 85px;
+  }
+}
