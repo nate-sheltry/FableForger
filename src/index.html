@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/landing-page.css" />
+    <title>Fable Forger | Home</title>
+  </head>
+  <body>
+    <header>
+      <h1 id="welcomeText"> W  e  l  c  o  m  e </h1>
+    </header>
+    <main>
+      <div class="candle">
+      </div>
+      <section id="book" class="book">
+        <div id="cover" class="cover">
+          <h1>Fable Forger</h1>
+          <p>Where your story</p>
+          <button id="begin" class="begin">begins</button>
+        </div>
+        <div id="login" class="login">
+          <h1>Login</h1>
+          <form id="loginForm" action="javascript:void(0)">
+              <label for="username">Username:</label>
+              <input type="text" id="username" name="username"  required>
+              
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" required>
+              
+              <button type="submit" id="loginButton">login</button>
+          </form>
+          <div class="goRegister">
+            <p class="small">Not registered yet?</p>
+            <button class="smallbutton">go to register page</button>
+          </div>
+          
+      </div>
+      
+      <div id="register" class="register">
+          <h1>Register</h1>
+          <form id="registerForm" action="javascript:void(0)">
+              <label for="newUsername">Username:</label>
+              <input type="text" id="newUsername" name="newUsername" required>
+              
+              <label for="newPassword">Password:</label>
+              <input type="password" id="newPassword" name="newPassword" required>
+    
+              <button id="registerButton" class="registerButton" type="submit">Register</button>
+          </form>
+          <div class="goRegister">
+            <p class="success"></p>
+            <button class="backbutton">back to login page</button>
+          </div>
+      </div>
+      </section>
+      <section class="paper">
+      </section>
+    </main>
+    <script type="module" src="js/landing-page.js"></script>
+    <script type="module" src="js/register-login.js"></script>
+  </body>
+</html>
