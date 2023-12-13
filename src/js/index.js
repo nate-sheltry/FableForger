@@ -6,10 +6,10 @@ import {
   addChapter,
   saveChapter,
   accessProjects,
-  createList, 
-  accessLists, 
+  createList,
+  accessLists,
   addListItem,
-  displayLists
+  displayLists,
 } from "./databaseFunctions.js";
 // console.log("Generated unique ID:", guid());
 
@@ -49,7 +49,7 @@ const IDB = () => {
       "DB updated from version",
       oldVersion,
       "to version",
-      newVersion
+      newVersion,
     );
 
     if (!db.objectStoreNames.contains("projects")) {
@@ -86,7 +86,6 @@ const IDB = () => {
   const rightBtn = document.getElementById("add-custom-list-btn");
   const noProjectBtn = document.getElementById("no-project-btn");
 
-
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
       addProject(db, e);
@@ -96,9 +95,9 @@ const IDB = () => {
   });
 
   noProjectBtn.addEventListener("click", (e) => {
-      addProject(db, e);
+    addProject(db, e);
   });
-  
+
   const leftBackBtn = document.getElementById("left-panel-back");
   leftBackBtn.addEventListener("pointerdown", (e) => {
     if (leftBtn.classList.contains("new-project")) {
@@ -108,54 +107,56 @@ const IDB = () => {
     getProjects();
     leftBtn.classList.toggle("new-chapter", false);
     leftBtn.classList.toggle("new-project", true);
-    const editor = document.querySelector(".writing-area")
-    editor.classList.toggle("no-area", !editor.classList.contains("no-area"))
-    editor.classList.toggle("editor-area", !editor.classList.contains("editor-area"))
+    const editor = document.querySelector(".writing-area");
+    editor.classList.toggle("no-area", !editor.classList.contains("no-area"));
+    editor.classList.toggle(
+      "editor-area",
+      !editor.classList.contains("editor-area"),
+    );
     document.querySelector(".outline .subtitle").textContent = "Projects";
-    const noProjectBtn = document.getElementById('no-project-btn');
+    const noProjectBtn = document.getElementById("no-project-btn");
     noProjectBtn.addEventListener("click", (e) => {
-        addProject(db, e);
+      addProject(db, e);
     });
-    rightBtn.setAttribute("data-id", null)
+    rightBtn.setAttribute("data-id", null);
 
     document.querySelector(".custom-lists").innerHTML = ``;
   });
 
   //Right Panel Stuff
- 
+
   rightBtn.addEventListener("pointerdown", (e) => {
-    const projectId = e.target.getAttribute("data-id")
-    if(projectId == "null") {
-      console.log("I'm stoopy")
+    const projectId = e.target.getAttribute("data-id");
+    if (projectId == "null") {
+      console.log("I'm stoopy");
       return;
-    }
-    else if(e.target.classList.contains("add-list-item")){
-      addListItem(db, projectId)
-      console.log("I'm not stoopy after all")
-    }
-    else if(!e.target.classList.contains("add-list-item")){
+    } else if (e.target.classList.contains("add-list-item")) {
+      addListItem(db, projectId);
+      console.log("I'm not stoopy after all");
+    } else if (!e.target.classList.contains("add-list-item")) {
       createList(db, projectId);
     }
-
-  })
+  });
 
   const rightBackBtn = document.getElementById("right-panel-back");
   rightBackBtn.addEventListener("pointerdown", (e) => {
-    if(!e.target.classList.contains("in-list")) return;
+    if (!e.target.classList.contains("in-list")) return;
     const projectId = rightBtn.getAttribute("data-id");
-    e.target.classList.toggle("in-list", !e.target.classList.contains("in-list"));
+    e.target.classList.toggle(
+      "in-list",
+      !e.target.classList.contains("in-list"),
+    );
     document.querySelector(".custom-lists").innerHTML = ``;
     const transaction = db.transaction("projects", "readwrite");
     const store = transaction.objectStore("projects");
-    const request = store.get(projectId)
-    request.onsuccess = (e) =>{
+    const request = store.get(projectId);
+    request.onsuccess = (e) => {
       const projectObj = e.target.result;
-      displayLists(db, projectObj.id, projectObj.data.lists)
+      displayLists(db, projectObj.id, projectObj.data.lists);
       rightBtn.classList.toggle("add-list-item", false);
       rightBtn.setAttribute("data-list-id", null);
-    }
-  })
-
+    };
+  });
 
   // document.querySelector('#no-project-btn').addEventListener('pointerdown', (e)=>{
   //     if(e.target.classList.contains('new-project')){
@@ -330,4 +331,4 @@ const IDB = () => {
 
 const [saveQuillData, getProjects] = IDB();
 
-export { saveQuillData, getProjects, IDB, db};
+export { saveQuillData, getProjects, IDB, db };

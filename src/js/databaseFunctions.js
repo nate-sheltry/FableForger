@@ -17,7 +17,7 @@ function makeTransaction(db, storeName, mode) {
   return transaction;
 }
 
-function askPrompt(query, error){
+function askPrompt(query, error) {
   let promptName = false;
   do {
     promptName = prompt(query);
@@ -31,13 +31,18 @@ function askPrompt(query, error){
   return promptName;
 }
 
-
 function addProject(db, e) {
-  let projectName = askPrompt("Enter new Project Name", "please enter a valid name.")
-  if(!projectName) return
+  let projectName = askPrompt(
+    "Enter new Project Name",
+    "please enter a valid name.",
+  );
+  if (!projectName) return;
 
   // Create a transaction for the "projects"/* and "userProjects" object stores -jp
-  const projectTransaction = db.transaction(["projects", "userProjects"], "readwrite");
+  const projectTransaction = db.transaction(
+    ["projects", "userProjects"],
+    "readwrite",
+  );
   projectTransaction.oncomplete = (ev) => {
     console.log("Transaction Completed:", ev);
   };
@@ -61,17 +66,17 @@ function addProject(db, e) {
         },
       ],
       lists: {
-        [characterListId]:{
-          id:characterListId,
+        [characterListId]: {
+          id: characterListId,
           title: "Characters",
-          items: []
+          items: [],
         },
-        [locationListId]:{
-          id:locationListId,
+        [locationListId]: {
+          id: locationListId,
           title: "Locations",
-          items: []
-        }
-      } // Adding an empty lists object to the project
+          items: [],
+        },
+      }, // Adding an empty lists object to the project
     },
   };
   const projectRequest = projectStore.add(project);
@@ -89,7 +94,8 @@ function addProject(db, e) {
     };
 
     // Add a record to "userProjects" to associate the user with the project
-    const userProjectsStore = userProjectsTransaction.objectStore("userProjects");
+    const userProjectsStore =
+      userProjectsTransaction.objectStore("userProjects");
     const userProject = {
       userId: sessionStorage.getItem("userId"),
       projectId: projectId,
@@ -112,7 +118,6 @@ function addProject(db, e) {
     console.log("Error on request to add project!", err);
   };
 }
-
 
 function addChapter(db, event) {
   const transaction = makeTransaction(db, "projects", "readwrite");
@@ -164,43 +169,57 @@ function createProjectElement(db, cursor, index, id, projectName) {
   document.querySelector(".outline .content").append(projectItem);
 
   projectItem.addEventListener("pointerdown", (e) => {
-    if(e.button == 2){
+    if (e.button == 2) {
       e.preventDefault();
-      if(!window.confirm("You are about to delete a project.\nWould you like to continue?")) return;
-      let confirmation = window.confirm("Do you want to delete the following project?\n"+
-      `${e.target.textContent}`)
-      if(!confirmation) return
-      else if(confirmation){
-        const userTransaction = makeTransaction(db, "userProjects", "readwrite");
+      if (
+        !window.confirm(
+          "You are about to delete a project.\nWould you like to continue?",
+        )
+      )
+        return;
+      let confirmation = window.confirm(
+        "Do you want to delete the following project?\n" +
+          `${e.target.textContent}`,
+      );
+      if (!confirmation) return;
+      else if (confirmation) {
+        const userTransaction = makeTransaction(
+          db,
+          "userProjects",
+          "readwrite",
+        );
         const storeUserProjects = userTransaction.objectStore("userProjects");
         const userProjectReq = storeUserProjects.openCursor();
-        const projectId = e.target.getAttribute('data-id')
+        const projectId = e.target.getAttribute("data-id");
         userProjectReq.onsuccess = (event) => {
           const cursor = event.target.result;
-          console.log(cursor)
-          if(!cursor){
-            console.log(event)
-            console.error("cursor failed")
-            return
+          console.log(cursor);
+          if (!cursor) {
+            console.log(event);
+            console.error("cursor failed");
+            return;
           }
-          if(cursor.value.projectId == projectId){
+          if (cursor.value.projectId == projectId) {
             const transaction = makeTransaction(db, "projects", "readwrite");
             const storeProjects = transaction.objectStore("projects");
-            const projectReq = storeProjects.delete(projectId)
+            const projectReq = storeProjects.delete(projectId);
             projectReq.onsuccess = (ev) => {
               e.target.remove();
-            }
+            };
             cursor.delete();
-            return
+            return;
           }
           cursor.continue();
-        }
-        return
+        };
+        return;
       }
     }
-    const editor = document.querySelector(".writing-area")
-    editor.classList.toggle("no-area", !editor.classList.contains("no-area"))
-    editor.classList.toggle("editor-area", !editor.classList.contains("editor-area"))
+    const editor = document.querySelector(".writing-area");
+    editor.classList.toggle("no-area", !editor.classList.contains("no-area"));
+    editor.classList.toggle(
+      "editor-area",
+      !editor.classList.contains("editor-area"),
+    );
     const subtitleElem = document.querySelector(".outline .subtitle");
     subtitleElem.textContent = projectName;
     subtitleElem.setAttribute("data-id", id);
@@ -216,7 +235,7 @@ function createProjectElement(db, cursor, index, id, projectName) {
     makeEditor(".editor");
     loadChapter(db);
     const addCustomListBtn = document.getElementById("add-custom-list-btn");
-    console.log(addCustomListBtn)
+    console.log(addCustomListBtn);
     addCustomListBtn.setAttribute("data-id", id);
     accessLists(db, id);
     //displayLists(db, cursor.data.lists); // Call this function to display lists when the DOM is loaded
@@ -235,18 +254,20 @@ function createChapterElement(db, event, index, projectName) {
   document.querySelector(".outline .content").append(chapterItem);
 
   chapterItem.addEventListener("pointerdown", (e) => {
-    if(e.button != 2){
+    if (e.button != 2) {
       sessionStorage.setItem(
         "chapterIndex",
         parseInt(e.target.getAttribute("data-index")),
       );
       loadChapter(db);
-      return
+      return;
     }
     e.preventDefault();
-    let confirmation = window.confirm("Do you want to delete the following chapter?")
-    if(!confirmation) return
-    else if(confirmation){
+    let confirmation = window.confirm(
+      "Do you want to delete the following chapter?",
+    );
+    if (!confirmation) return;
+    else if (confirmation) {
       const transaction = makeTransaction(db, "projects", "readwrite");
       const storeGet = transaction.objectStore("projects");
       const storePut = transaction.objectStore("projects");
@@ -254,37 +275,34 @@ function createChapterElement(db, event, index, projectName) {
       projectReq.onsuccess = (event) => {
         const Project = event.target.result;
         const index = parseInt(e.target.getAttribute("data-index"));
-        Project.data.chapters.splice(index, 1)
+        Project.data.chapters.splice(index, 1);
         storePut.put(Project);
         e.target.remove();
-        return
-      }
+        return;
+      };
     }
   });
 }
 
+function loadChapter(db) {
+  const transaction = makeTransaction(db, "projects", "readwrite");
+  transaction.oncomplete = (ev) => {
+    console.log("Transaction Completed:", ev);
+  };
+  const chapterIndex = parseInt(sessionStorage.getItem("chapterIndex"));
+  const store = transaction.objectStore("projects");
+  const projectId = document
+    .querySelector(".outline .subtitle")
+    .getAttribute("data-id");
+  const projectReq = store.get(projectId);
+  projectReq.onsuccess = (e) => {
+    clearHistory();
+    const projectObj = JSON.parse(JSON.stringify(e.target.result));
+    setEditorData(projectObj.data.chapters[chapterIndex].content);
+  };
+}
 
-
-  function loadChapter(db) {
-    const transaction = makeTransaction(db, "projects", "readwrite");
-    transaction.oncomplete = (ev) => {
-      console.log("Transaction Completed:", ev);
-    };
-    const chapterIndex = parseInt(sessionStorage.getItem("chapterIndex"));
-    const store = transaction.objectStore("projects");
-    const projectId = document
-      .querySelector(".outline .subtitle")
-      .getAttribute("data-id");
-    const projectReq = store.get(projectId);
-    projectReq.onsuccess = (e) => {
-      clearHistory();
-      const projectObj = JSON.parse(JSON.stringify(e.target.result));
-      setEditorData(projectObj.data.chapters[chapterIndex].content);
-    };
-  }
-
-  //LISTS
-
+//LISTS
 
 function createListElement(db, list) {
   const listContainer = document.querySelector(".custom-lists");
@@ -294,12 +312,14 @@ function createListElement(db, list) {
   listButton.setAttribute("data-list-id", list.id);
   listButton.textContent = list.title;
 
-  const projectId = document.getElementById("add-custom-list-btn").getAttribute("data-id")
+  const projectId = document
+    .getElementById("add-custom-list-btn")
+    .getAttribute("data-id");
 
   // Attach an event listener to each list button
   listButton.addEventListener("pointerdown", (e) => {
-    if(e.button != 2){
-      const plusBtn = document.getElementById("add-custom-list-btn")
+    if (e.button != 2) {
+      const plusBtn = document.getElementById("add-custom-list-btn");
       plusBtn.classList.toggle("add-list-item", true);
       plusBtn.setAttribute("data-list-id", list.id);
 
@@ -310,15 +330,18 @@ function createListElement(db, list) {
       return;
     }
     e.preventDefault();
-    if(list.items.length > 0){
-      let confirm = window.confirm("The List you have selected currently has items inside of it."+
-      "\nPlease double check before proceeding.")
-      if(!confirm) return;
+    if (list.items.length > 0) {
+      let confirm = window.confirm(
+        "The List you have selected currently has items inside of it." +
+          "\nPlease double check before proceeding.",
+      );
+      if (!confirm) return;
     }
-    const confirmation = window.confirm("Do you want to delete the following list?\n"+
-    `${e.target.textContent}`)
-    if(!confirmation) return
-    else if(confirmation){
+    const confirmation = window.confirm(
+      "Do you want to delete the following list?\n" + `${e.target.textContent}`,
+    );
+    if (!confirmation) return;
+    else if (confirmation) {
       const transaction = makeTransaction(db, "projects", "readwrite");
       const storeGet = transaction.objectStore("projects");
       const storePut = transaction.objectStore("projects");
@@ -326,156 +349,159 @@ function createListElement(db, list) {
       projectReq.onsuccess = (event) => {
         const Project = event.target.result;
         const listId = e.target.getAttribute("data-list-id");
-        delete Project.data.lists[listId]
+        delete Project.data.lists[listId];
         storePut.put(Project);
         e.target.remove();
-        return
-      }
+        return;
+      };
     }
-
   });
 
   listContainer.appendChild(listButton);
 }
 
-  function displayListItems(db, projectId , listId) {
-    console.log(`Display Items Function: ${db}`)
-    console.log(db)
-    const itemsContainer = document.querySelector(".custom-lists");
-    const backBtn = document.getElementById("right-panel-back");
-    backBtn.classList.toggle("in-list", true);
-    itemsContainer.innerHTML = ""; // Clear previous items
+function displayListItems(db, projectId, listId) {
+  console.log(`Display Items Function: ${db}`);
+  console.log(db);
+  const itemsContainer = document.querySelector(".custom-lists");
+  const backBtn = document.getElementById("right-panel-back");
+  backBtn.classList.toggle("in-list", true);
+  itemsContainer.innerHTML = ""; // Clear previous items
 
-    const transaction = makeTransaction(db, "projects", "readwrite");
-    const store = transaction.objectStore("projects");
-    const projectReq = store.get(projectId);
-    projectReq.onsuccess = (e) => {
-      const list = e.target.result.data.lists[listId]
-      if (list) {
-        const plusBtn = document.getElementById("add-custom-list-btn");
-        plusBtn.classList.toggle("add-list-item", true);
-        plusBtn.setAttribute("data-list-id", list.id);
-        for (const itemId in list.items) {
-          const item = list.items[itemId];
-          console.log(item)
-          console.log("List in Item Creaton:" + list)
+  const transaction = makeTransaction(db, "projects", "readwrite");
+  const store = transaction.objectStore("projects");
+  const projectReq = store.get(projectId);
+  projectReq.onsuccess = (e) => {
+    const list = e.target.result.data.lists[listId];
+    if (list) {
+      const plusBtn = document.getElementById("add-custom-list-btn");
+      plusBtn.classList.toggle("add-list-item", true);
+      plusBtn.setAttribute("data-list-id", list.id);
+      for (const itemId in list.items) {
+        const item = list.items[itemId];
+        console.log(item);
+        console.log("List in Item Creaton:" + list);
 
-          createListItemElement(db, list, item, itemsContainer)
-        }
+        createListItemElement(db, list, item, itemsContainer);
       }
     }
-  }
-  function createListItemElement(db, list, item, container){
-    const itemContainer = document.createElement("div");
-    itemContainer.classList.add("item-container");
-    itemContainer.setAttribute("data-index", item.index)
-    itemContainer.textContent = item.title;
-    const plusElement = document.getElementById("add-custom-list-btn")
-    itemContainer.addEventListener("pointerdown", (e)=>{
-      if(e.button != 2){
-        openItemPopUp(db, list, item);
-        return;
-      }
-      e.preventDefault();
-      let confirmation = window.confirm("Do you want to delete the following item?\n"+
-      `${itemContainer.textContent}`)
-      if(!confirmation) return
-      else if(confirmation){
-        const listId = plusElement.getAttribute("data-list-id")
-        const projectId = plusElement.getAttribute("data-id")
-        const transaction = makeTransaction(db, "projects", "readwrite");
-        const storeGet = transaction.objectStore("projects");
-        const storePut = transaction.objectStore("projects");
-        const projectReq = storeGet.get(projectId);
-        projectReq.onsuccess = (event) => {
-          const Project = event.target.result;
-          const index = parseInt(e.target.getAttribute("data-index"));
-          Project.data.lists[listId].items.splice(index, 1)
-          storePut.put(Project);
-          e.target.remove();
-          return
-        }
-      }
-      return
-
-    })
-    container.appendChild(itemContainer);
-  }
-
-  function createList(db, projectId) {
-    let listName = askPrompt("Enter the list name:", "Please enter a valid list name.");
-    if(!listName) return
-
-    const transaction = makeTransaction(db, "projects", "readwrite");
-    const store = transaction.objectStore("projects");
-    const projectReq = store.get(projectId);
-
-    projectReq.onsuccess = (e) => {
-      const projectObj = e.target.result;
-      if (!projectObj) return;
-      // Generate a unique list ID
-      const listId = `list_${crypto.randomUUID()}`;
-
-      // Create the new list object with data
-      const newList = {
-        id: listId,
-        title: listName,
-        items: [], // initialize the list with an empty array
-      };
-      if (!projectObj.data.lists) projectObj.data.lists = {};
-      // Add the new list to the project's lists data
-      projectObj.data.lists[listId] = newList;
-      const storeRequest = store.put(projectObj);
-
-      storeRequest.onsuccess = (ev) => {
-        console.log("Success in adding list!", ev);
-        // Add the list element to the UI
-        createListElement(db, newList);
-      };
-
-      storeRequest.onerror = (err) => {
-        console.log("Error on request to add list!", err);
-      };
-    };
-  }
-
-  function accessLists(db, projectId) {
-    const transaction = db.transaction(["projects"], "readonly");
-    const store = transaction.objectStore("projects");
-
-    const projectReq = store.get(projectId);
-
-    projectReq.onsuccess = (e) => {
-      const projectObj = e.target.result;
-
-      if (projectObj && projectObj.data && projectObj.data.lists) {
-        const lists = projectObj.data.lists;
-        console.log("Lists retrieved:", lists);
-        displayLists(db, projectId ,lists)
-      } else {
-        console.log("No lists found for the project ID:", projectId);
-      }
-    };
-
-    projectReq.onerror = (err) => {
-      console.error("Error accessing lists:", err);
-    };
   };
-
-  function displayLists(db, projectId ,lists) {
-    console.log('I exist!')
-    const listHeader = document.querySelector(".list-header");
-    listHeader.textContent = "Lists";
-    for(let list of Object.values(lists)){
-      console.log("I'm a list")
-      console.log(list)
-      createListElement(db, list)
-    }
-    if(!lists){
-      console.log("I don't exist afterall")
+}
+function createListItemElement(db, list, item, container) {
+  const itemContainer = document.createElement("div");
+  itemContainer.classList.add("item-container");
+  itemContainer.setAttribute("data-index", item.index);
+  itemContainer.textContent = item.title;
+  const plusElement = document.getElementById("add-custom-list-btn");
+  itemContainer.addEventListener("pointerdown", (e) => {
+    if (e.button != 2) {
+      openItemPopUp(db, list, item);
       return;
     }
+    e.preventDefault();
+    let confirmation = window.confirm(
+      "Do you want to delete the following item?\n" +
+        `${itemContainer.textContent}`,
+    );
+    if (!confirmation) return;
+    else if (confirmation) {
+      const listId = plusElement.getAttribute("data-list-id");
+      const projectId = plusElement.getAttribute("data-id");
+      const transaction = makeTransaction(db, "projects", "readwrite");
+      const storeGet = transaction.objectStore("projects");
+      const storePut = transaction.objectStore("projects");
+      const projectReq = storeGet.get(projectId);
+      projectReq.onsuccess = (event) => {
+        const Project = event.target.result;
+        const index = parseInt(e.target.getAttribute("data-index"));
+        Project.data.lists[listId].items.splice(index, 1);
+        storePut.put(Project);
+        e.target.remove();
+        return;
+      };
+    }
+    return;
+  });
+  container.appendChild(itemContainer);
+}
+
+function createList(db, projectId) {
+  let listName = askPrompt(
+    "Enter the list name:",
+    "Please enter a valid list name.",
+  );
+  if (!listName) return;
+
+  const transaction = makeTransaction(db, "projects", "readwrite");
+  const store = transaction.objectStore("projects");
+  const projectReq = store.get(projectId);
+
+  projectReq.onsuccess = (e) => {
+    const projectObj = e.target.result;
+    if (!projectObj) return;
+    // Generate a unique list ID
+    const listId = `list_${crypto.randomUUID()}`;
+
+    // Create the new list object with data
+    const newList = {
+      id: listId,
+      title: listName,
+      items: [], // initialize the list with an empty array
+    };
+    if (!projectObj.data.lists) projectObj.data.lists = {};
+    // Add the new list to the project's lists data
+    projectObj.data.lists[listId] = newList;
+    const storeRequest = store.put(projectObj);
+
+    storeRequest.onsuccess = (ev) => {
+      console.log("Success in adding list!", ev);
+      // Add the list element to the UI
+      createListElement(db, newList);
+    };
+
+    storeRequest.onerror = (err) => {
+      console.log("Error on request to add list!", err);
+    };
+  };
+}
+
+function accessLists(db, projectId) {
+  const transaction = db.transaction(["projects"], "readonly");
+  const store = transaction.objectStore("projects");
+
+  const projectReq = store.get(projectId);
+
+  projectReq.onsuccess = (e) => {
+    const projectObj = e.target.result;
+
+    if (projectObj && projectObj.data && projectObj.data.lists) {
+      const lists = projectObj.data.lists;
+      console.log("Lists retrieved:", lists);
+      displayLists(db, projectId, lists);
+    } else {
+      console.log("No lists found for the project ID:", projectId);
+    }
+  };
+
+  projectReq.onerror = (err) => {
+    console.error("Error accessing lists:", err);
+  };
+}
+
+function displayLists(db, projectId, lists) {
+  console.log("I exist!");
+  const listHeader = document.querySelector(".list-header");
+  listHeader.textContent = "Lists";
+  for (let list of Object.values(lists)) {
+    console.log("I'm a list");
+    console.log(list);
+    createListElement(db, list);
   }
+  if (!lists) {
+    console.log("I don't exist afterall");
+    return;
+  }
+}
 
 function accessProjects(db) {
   const loggedInUserId = sessionStorage.getItem("userId");
@@ -487,12 +513,12 @@ function accessProjects(db) {
     console.log("Transaction Completed:", ev);
   };
 
-   // Clear the content of the outline before loading projects
-   const outlineContent = document.querySelector(".outline .content");
-   outlineContent.innerHTML = "";
- 
-   // Close the Quill editor
-   closeEditor();
+  // Clear the content of the outline before loading projects
+  const outlineContent = document.querySelector(".outline .content");
+  outlineContent.innerHTML = "";
+
+  // Close the Quill editor
+  closeEditor();
 
   // Step 1: Iterate through userProjects store
   const cursorReq = userProjects.openCursor();
@@ -529,45 +555,42 @@ function accessProjects(db) {
         }
       };
     }
-
-    
-  }
+  };
 }
 
-  
-  // Function to open the item pop-up
-  function openItemPopUp(db, list, item) {
-    // Replace this with your logic to open the pop-up using your preferred method
-    // For instance, you might use window.open or a modal library to display the pop-up
-    // Here's an example using window.open to load the pop-up HTML
-    console.log(list)
-    console.log(db)
-    console.log(item)
-    console.log('OPEN')
-    const projectId = document.querySelector(".subtitle").getAttribute("data-id")
-    if(item == undefined){
-      const transaction = makeTransaction(db, "projects", "readwrite")
-      const store = transaction.objectStore("projects")
-      const request = store.get(projectId);
+// Function to open the item pop-up
+function openItemPopUp(db, list, item) {
+  // Replace this with your logic to open the pop-up using your preferred method
+  // For instance, you might use window.open or a modal library to display the pop-up
+  // Here's an example using window.open to load the pop-up HTML
+  console.log(list);
+  console.log(db);
+  console.log(item);
+  console.log("OPEN");
+  const projectId = document.querySelector(".subtitle").getAttribute("data-id");
+  if (item == undefined) {
+    const transaction = makeTransaction(db, "projects", "readwrite");
+    const store = transaction.objectStore("projects");
+    const request = store.get(projectId);
 
-      request.onsuccess = (e) => {
-        console.log(`list id`+ list.id)
-        const projectObj = JSON.parse(JSON.stringify(e.target.result));
-        const selectedList = projectObj.data.lists[list.id];
-        console.log(selectedList.items)
-        selectedList.items.push({
-          index: selectedList.items.length,
-          title:"New Item",
-          description: "Details here..."
-        });
-        item = selectedList.items[selectedList.items.length -1]
-        const storeRequest = store.put(projectObj);
-        
-        storeRequest.onsuccess = (ev) =>{
-          console.log(`list.id`+ list.id)
-          const container = document.createElement('div');
-          container.classList.toggle("item-card-container", true);
-          container.innerHTML = `
+    request.onsuccess = (e) => {
+      console.log(`list id` + list.id);
+      const projectObj = JSON.parse(JSON.stringify(e.target.result));
+      const selectedList = projectObj.data.lists[list.id];
+      console.log(selectedList.items);
+      selectedList.items.push({
+        index: selectedList.items.length,
+        title: "New Item",
+        description: "Details here...",
+      });
+      item = selectedList.items[selectedList.items.length - 1];
+      const storeRequest = store.put(projectObj);
+
+      storeRequest.onsuccess = (ev) => {
+        console.log(`list.id` + list.id);
+        const container = document.createElement("div");
+        container.classList.toggle("item-card-container", true);
+        container.innerHTML = `
           <div class="item-card" data-item-index="${item.index}" data-list-id="${list.id}">
           <button class="item-exit-btn">X</button>
           <p class="item-header" contenteditable>${item.title}</p>
@@ -575,19 +598,20 @@ function accessProjects(db) {
           <button class="item-save-btn">Save</button>
           <button class="item-delete-btn">Delete</button>
         </div>
-          `
-          const positioning = document.querySelector('.list-bar').getBoundingClientRect()
-          console.log(positioning)
-          document.querySelector('.main-editor').appendChild(container);
-          container.style.left = `${positioning.left - positioning.width}px`
-          setUpPopUp(db, projectId)
-        }
-      }
-    }
-    else {
-      const container = document.createElement('div');
-      container.classList.toggle("item-card-container", true);
-      container.innerHTML = `
+          `;
+        const positioning = document
+          .querySelector(".list-bar")
+          .getBoundingClientRect();
+        console.log(positioning);
+        document.querySelector(".main-editor").appendChild(container);
+        container.style.left = `${positioning.left - positioning.width}px`;
+        setUpPopUp(db, projectId);
+      };
+    };
+  } else {
+    const container = document.createElement("div");
+    container.classList.toggle("item-card-container", true);
+    container.innerHTML = `
       <div class="item-card" data-item-index="${item.index}" data-list-id="${list.id}">
       <button class="item-exit-btn">X</button>
       <p class="item-header" contenteditable>${item.title}</p>
@@ -595,100 +619,121 @@ function accessProjects(db) {
       <button class="item-save-btn">Save</button>
       <button class="item-delete-btn">Delete</button>
       </div>
-      `
-      const positioning = document.querySelector('.list-bar').getBoundingClientRect()
-      console.log(positioning)
-      document.querySelector('.main-editor').appendChild(container);
-      container.style.left = `${positioning.left - positioning.width}px`
-      setUpPopUp(db, projectId)
+      `;
+    const positioning = document
+      .querySelector(".list-bar")
+      .getBoundingClientRect();
+    console.log(positioning);
+    document.querySelector(".main-editor").appendChild(container);
+    container.style.left = `${positioning.left - positioning.width}px`;
+    setUpPopUp(db, projectId);
+  }
+}
+
+function addListItem(db, projectId) {
+  let itemName = askPrompt(
+    "Enter the item name:",
+    "Please enter a valid item name.",
+  );
+  if (!itemName) return;
+
+  const transaction = makeTransaction(db, "projects", "readwrite");
+  const store = transaction.objectStore("projects");
+  const projectReq = store.get(projectId);
+
+  const listId = document
+    .getElementById("add-custom-list-btn")
+    .getAttribute("data-list-id");
+
+  projectReq.onsuccess = (e) => {
+    const projectObj = e.target.result;
+    console.log(projectObj);
+
+    if (!projectObj.data.lists || !projectObj.data.lists[listId]) {
+      console.error("Invalid project or list.");
+      return;
     }
-  }
 
-  function addListItem(db, projectId) {
-    let itemName = askPrompt("Enter the item name:", "Please enter a valid item name.")
-    if(!itemName) return
-
-    const transaction = makeTransaction(db, "projects", "readwrite");
-    const store = transaction.objectStore("projects");
-    const projectReq = store.get(projectId);
-
-    const listId = document.getElementById("add-custom-list-btn").getAttribute("data-list-id")
-
-    projectReq.onsuccess = (e) => {
-      const projectObj = e.target.result;
-      console.log(projectObj)
-
-      if (!projectObj.data.lists || !projectObj.data.lists[listId]) {
-        console.error("Invalid project or list.");
-        return;
-      }
-
-      const newItem = {
-        index: projectObj.data.lists[listId].items.length,
-        title: itemName,
-        description: "", // initialize description with an empty string
-      };
-
-      projectObj.data.lists[listId].items.push(newItem);
-      const storeRequest = store.put(projectObj);
-
-      storeRequest.onsuccess = (ev) => {
-        console.log("Success in adding item!", ev);
-        // Update the displayed list with the new item
-        createListItemElement(db, projectObj.data.lists[listId], projectObj.data.lists[listId].items[newItem.index], document.querySelector(".custom-lists"))
-      };
-
-      storeRequest.onerror = (err) => {
-        console.log("Error on request to add item!", err);
-      };
+    const newItem = {
+      index: projectObj.data.lists[listId].items.length,
+      title: itemName,
+      description: "", // initialize description with an empty string
     };
-  }
 
-  function saveChapter(db, newContent) {
-    const transaction = makeTransaction(db, "projects", "readwrite");
+    projectObj.data.lists[listId].items.push(newItem);
+    const storeRequest = store.put(projectObj);
 
-    transaction.oncomplete = (ev) => {
-      console.log("Transaction Completed:", ev);
+    storeRequest.onsuccess = (ev) => {
+      console.log("Success in adding item!", ev);
+      // Update the displayed list with the new item
+      createListItemElement(
+        db,
+        projectObj.data.lists[listId],
+        projectObj.data.lists[listId].items[newItem.index],
+        document.querySelector(".custom-lists"),
+      );
     };
-    const store = transaction.objectStore("projects");
-    const projectId = document
-      .querySelector(".outline .subtitle")
-      .getAttribute("data-id");
 
-    const chapterIndex = parseInt(sessionStorage.getItem("chapterIndex"));
-
-    const projectReq = store.get(projectId);
-
-    projectReq.onsuccess = (e) => {
-      const projectObj = JSON.parse(JSON.stringify(e.target.result));
-      projectObj.data.chapters[chapterIndex]["content"] = newContent;
-      const storeRequest = store.put(projectObj);
-      storeRequest.onsuccess = (ev) => {
-        console.log("Success in updating Chapter!", ev);
-      };
-      storeRequest.onerror = (err) => {
-        console.log("Error on request to add!", err);
-      };
+    storeRequest.onerror = (err) => {
+      console.log("Error on request to add item!", err);
     };
-  }
+  };
+}
 
-  function accessChapters(db, id) {
-    const transaction = db.transaction(["projects"], "readonly");
-    transaction.oncomplete = (ev) => {
-      console.log("Transaction Completed:", ev);
+function saveChapter(db, newContent) {
+  const transaction = makeTransaction(db, "projects", "readwrite");
+
+  transaction.oncomplete = (ev) => {
+    console.log("Transaction Completed:", ev);
+  };
+  const store = transaction.objectStore("projects");
+  const projectId = document
+    .querySelector(".outline .subtitle")
+    .getAttribute("data-id");
+
+  const chapterIndex = parseInt(sessionStorage.getItem("chapterIndex"));
+
+  const projectReq = store.get(projectId);
+
+  projectReq.onsuccess = (e) => {
+    const projectObj = JSON.parse(JSON.stringify(e.target.result));
+    projectObj.data.chapters[chapterIndex]["content"] = newContent;
+    const storeRequest = store.put(projectObj);
+    storeRequest.onsuccess = (ev) => {
+      console.log("Success in updating Chapter!", ev);
     };
-    const store = transaction.objectStore("projects");
-    const projectReq = store.get(id);
-    projectReq.onsuccess = (e) => {
-      const projectObj = e.target.result;
-      for (let i = 0; i < projectObj.data.chapters.length; i++) {
-        projectObj.data.chapters[i];
-        createChapterElement(db, e, i, `Chapter ${i + 1}`);
-      }
+    storeRequest.onerror = (err) => {
+      console.log("Error on request to add!", err);
     };
-  }
-  const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
-  //export default projectId;
-  export {
-    addProject, addChapter, saveChapter, accessProjects, createList, accessLists, addListItem, displayLists
-  }
+  };
+}
+
+function accessChapters(db, id) {
+  const transaction = db.transaction(["projects"], "readonly");
+  transaction.oncomplete = (ev) => {
+    console.log("Transaction Completed:", ev);
+  };
+  const store = transaction.objectStore("projects");
+  const projectReq = store.get(id);
+  projectReq.onsuccess = (e) => {
+    const projectObj = e.target.result;
+    for (let i = 0; i < projectObj.data.chapters.length; i++) {
+      projectObj.data.chapters[i];
+      createChapterElement(db, e, i, `Chapter ${i + 1}`);
+    }
+  };
+}
+const projectId = document
+  .querySelector(".outline .subtitle")
+  .getAttribute("data-id");
+//export default projectId;
+export {
+  addProject,
+  addChapter,
+  saveChapter,
+  accessProjects,
+  createList,
+  accessLists,
+  addListItem,
+  displayLists,
+};
