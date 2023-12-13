@@ -278,6 +278,13 @@ function createChapterElement(db, event, index, projectName) {
         Project.data.chapters.splice(index, 1);
         storePut.put(Project);
         e.target.remove();
+        const items = document.querySelectorAll(".chapter-item");
+        for(let i = 0; i < items.length; i++){
+          console.log(i)
+          const text = items[i].textContent;
+          if(text.includes(`${i+2}`)) items[i].textContent = `- Chapter ${i+1}`
+          items[i].setAttribute("data-index", i)
+        }
         return;
       };
     }
@@ -382,47 +389,34 @@ function displayListItems(db, projectId, listId) {
         console.log(item);
         console.log("List in Item Creaton:" + list);
 
-        createListItemElement(db, list, item, itemsContainer);
+        createListItemElement(db, projectId,  list.id, itemId, itemsContainer);
       }
     }
   };
 }
-function createListItemElement(db, list, item, container) {
-  const itemContainer = document.createElement("div");
-  itemContainer.classList.add("item-container");
-  itemContainer.setAttribute("data-index", item.index);
-  itemContainer.textContent = item.title;
-  const plusElement = document.getElementById("add-custom-list-btn");
-  itemContainer.addEventListener("pointerdown", (e) => {
-    if (e.button != 2) {
-      openItemPopUp(db, list, item);
-      return;
-    }
-    e.preventDefault();
-    let confirmation = window.confirm(
-      "Do you want to delete the following item?\n" +
-        `${itemContainer.textContent}`,
-    );
-    if (!confirmation) return;
-    else if (confirmation) {
-      const listId = plusElement.getAttribute("data-list-id");
-      const projectId = plusElement.getAttribute("data-id");
-      const transaction = makeTransaction(db, "projects", "readwrite");
-      const storeGet = transaction.objectStore("projects");
-      const storePut = transaction.objectStore("projects");
-      const projectReq = storeGet.get(projectId);
-      projectReq.onsuccess = (event) => {
-        const Project = event.target.result;
-        const index = parseInt(e.target.getAttribute("data-index"));
-        Project.data.lists[listId].items.splice(index, 1);
-        storePut.put(Project);
-        e.target.remove();
+function createListItemElement(db, projectId, listId, itemIndex, container) {
+
+  const transaction = makeTransaction(db, "projects", "readwrite");
+  const store = transaction.objectStore("projects");
+  const projectReq = store.get(projectId);
+  projectReq.onsuccess = (e) =>{
+    const projectObj = e.target.result
+    const list = projectObj.data.lists[listId]
+    const item = list.items[itemIndex]
+
+    const itemContainer = document.createElement("div");
+    itemContainer.classList.add("item-container");
+    itemContainer.setAttribute("data-index", itemIndex);
+    itemContainer.textContent = item.title;
+    const plusElement = document.getElementById("add-custom-list-btn");
+    itemContainer.addEventListener("pointerdown", (e) => {
+      if (e.button != 2) {
+        openItemPopUp(db, e, listId);
         return;
-      };
-    }
-    return;
-  });
-  container.appendChild(itemContainer);
+      }
+    });
+    container.appendChild(itemContainer);
+  }
 }
 
 function createList(db, projectId) {
@@ -559,60 +553,28 @@ function accessProjects(db) {
 }
 
 // Function to open the item pop-up
-function openItemPopUp(db, list, item) {
+function openItemPopUp(db, e, listId) {
   // Replace this with your logic to open the pop-up using your preferred method
   // For instance, you might use window.open or a modal library to display the pop-up
   // Here's an example using window.open to load the pop-up HTML
-  console.log(list);
+  console.log(listId);
   console.log(db);
-  console.log(item);
   console.log("OPEN");
+  const itemIndex = parseInt(e.target.getAttribute('data-index'));
+  
   const projectId = document.querySelector(".subtitle").getAttribute("data-id");
-  if (item == undefined) {
-    const transaction = makeTransaction(db, "projects", "readwrite");
-    const store = transaction.objectStore("projects");
-    const request = store.get(projectId);
-
-    request.onsuccess = (e) => {
-      console.log(`list id` + list.id);
-      const projectObj = JSON.parse(JSON.stringify(e.target.result));
-      const selectedList = projectObj.data.lists[list.id];
-      console.log(selectedList.items);
-      selectedList.items.push({
-        index: selectedList.items.length,
-        title: "New Item",
-        description: "Details here...",
-      });
-      item = selectedList.items[selectedList.items.length - 1];
-      const storeRequest = store.put(projectObj);
-
-      storeRequest.onsuccess = (ev) => {
-        console.log(`list.id` + list.id);
-        const container = document.createElement("div");
-        container.classList.toggle("item-card-container", true);
-        container.innerHTML = `
-          <div class="item-card" data-item-index="${item.index}" data-list-id="${list.id}">
-          <button class="item-exit-btn">X</button>
-          <p class="item-header" contenteditable>${item.title}</p>
-          <p class="item-description" contenteditable>${item.description}</p>
-          <button class="item-save-btn">Save</button>
-          <button class="item-delete-btn">Delete</button>
-        </div>
-          `;
-        const positioning = document
-          .querySelector(".list-bar")
-          .getBoundingClientRect();
-        console.log(positioning);
-        document.querySelector(".main-editor").appendChild(container);
-        container.style.left = `${positioning.left - positioning.width}px`;
-        setUpPopUp(db, projectId);
-      };
-    };
-  } else {
+  const transaction = makeTransaction(db, "projects", "readwrite");
+  const store = transaction.objectStore("projects");
+  const request = store.get(projectId);
+  request.onsuccess = (e) => {
+    const projectObj = e.target.result
+    const item = projectObj.data.lists[listId].items[itemIndex];
     const container = document.createElement("div");
+    const allOpenItems = document.querySelectorAll(".item-card-container");
+    if(allOpenItems) allOpenItems.forEach(item => (item.remove()));
     container.classList.toggle("item-card-container", true);
     container.innerHTML = `
-      <div class="item-card" data-item-index="${item.index}" data-list-id="${list.id}">
+      <div class="item-card" data-item-index="${itemIndex}" data-list-id="${listId}">
       <button class="item-exit-btn">X</button>
       <p class="item-header" contenteditable>${item.title}</p>
       <p class="item-description" contenteditable>${item.description}</p>
@@ -666,12 +628,7 @@ function addListItem(db, projectId) {
     storeRequest.onsuccess = (ev) => {
       console.log("Success in adding item!", ev);
       // Update the displayed list with the new item
-      createListItemElement(
-        db,
-        projectObj.data.lists[listId],
-        projectObj.data.lists[listId].items[newItem.index],
-        document.querySelector(".custom-lists"),
-      );
+      createListItemElement(db, projectId,  listId, newItem.index, document.querySelector(".custom-lists"));
     };
 
     storeRequest.onerror = (err) => {
