@@ -1,3 +1,4 @@
+
 function setUpPopUp() {
   const elements = document.querySelectorAll(".item-card");
   elements.forEach((element) => {
@@ -18,8 +19,13 @@ function saveData(element, itemId) {
     console.log('Save button clicked'); // Log to confirm button click
 
     const [title, description] = getData(e.target.parentElement);
-
-    const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
+    const subtitleElement = document.querySelector(".outline .subtitle");
+    if (subtitleElement) {
+      const projectId = subtitleElement.getAttribute("data-id");
+      // Rest of your code that depends on projectId...
+    } else {
+      console.error(".outline .subtitle element not found.");
+    }
 
     // Ensure both IDs are retrieved correctly
     if (!projectId || !itemId) {
@@ -98,22 +104,24 @@ function closeElement(element) {
 }
 
 function deleteConfirmation(element) {
-  element.addEventListener("pointerdown", (e) => {
-    //If we implement user preferences, wrap the confirmation inside the if statement.
-    // if(userConfirmDelete == true){}
+  if (element) {
+    element.addEventListener("pointerdown", (e) => {
+      const itemHeader = e.target.parentElement.querySelector(".item-header");
+      if (itemHeader) {
+        const confirmation = confirm(`Are you sure you would like to delete the ${itemHeader.textContent} item?`);
+        if (!confirmation) return;
 
-    const confirmation = confirm(
-      `Are you sure you would like to delete the ${
-        e.target.parentElement.querySelector(".item-header").textContent
-      } item?`,
-    );
-    if (!confirmation) return;
+        // Delete Item From DB Code Here
 
-    //Delete Item From DB Code Here
-
-    //Remove Element from Document.
-    e.target.parentElement.remove();
-  });
+        // Remove Element from Document.
+        e.target.parentElement.remove();
+      } else {
+        console.error("Item header not found.");
+      }
+    });
+  } else {
+    console.error("Delete button element not found.");
+  }
 }
 
 setUpPopUp();

@@ -406,7 +406,7 @@ function createChapterElement(db, event, index, projectName) {
     // Replace this with your logic to open the pop-up using your preferred method
     // For instance, you might use window.open or a modal library to display the pop-up
     // Here's an example using window.open to load the pop-up HTML
-    window.open(`../public/partials/popup-item.html?itemId=${itemId}`, "_blank", "width=400,height=400");
+    window.open(`../partials/popup-item.html?itemId=${itemId}`, "_blank", "width=400,height=400");
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -534,5 +534,6 @@ function createChapterElement(db, event, index, projectName) {
       }
     };
   }
-
+  const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
+  //export default projectId;
   export { addProject, addChapter, saveChapter, accessProjects, createList, accessLists, addListItem }
