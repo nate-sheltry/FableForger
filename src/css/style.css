@@ -306,6 +306,11 @@ footer p {
 }
 
 /*Pop Up Item Card*/
+.item-card-container {
+  position:absolute;
+  z-index: 100;
+  top:calc(50% - 15em);
+}
 .item-card {
   position: relative;
   outline: 2px solid var(--secondary-color);

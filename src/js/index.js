@@ -23,7 +23,7 @@ const IDB = () => {
   console.log("indexedDB supported:", indexedDBSupport());
 
   //? Make a request to open / create a database.
-  const DBOpenReq = indexedDB.open("FableForger", 5);
+  const DBOpenReq = indexedDB.open("FableForger", 2);
 
   DBOpenReq.addEventListener("error", (err) => {
     console.warn(err);

@@ -7,6 +7,7 @@ import {
   clearHistory,
 } from "../jsx/richTextEditor.jsx";
 import { IDB, getProjects, db } from "./index.js";
+import { setUpPopUp } from "./popup-item.js";
 
 function makeTransaction(db, storeName, mode) {
   let transaction = db.transaction(storeName, mode);
@@ -137,6 +138,14 @@ function createProjectElement(db, event, index, id, projectName) {
     makeEditor(".editor");
     loadChapter(db);
     accessLists(db, id);
+    const addCustomListBtns = document.getElementById("add-custom-list-btn");
+    addCustomListBtns.addEventListener('click', () => {
+      const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
+      createList(db, projectId);
+    });
+
+
+    displayLists(db); // Call this function to display lists when the DOM is loaded
   });
 }
 
@@ -204,6 +213,8 @@ function createChapterElement(db, event, index, projectName) {
     listContainer.appendChild(listButton);
   }
   function displayItems(db, list) {
+    console.log(`Display Items Function: ${db}`)
+    console.log(db)
     const itemsContainer = document.querySelector(".list-list");
     itemsContainer.innerHTML = ""; // Clear previous items
   
@@ -222,8 +233,8 @@ function createChapterElement(db, event, index, projectName) {
         addItemButton.classList.add("add-item-button");
   
         // Attach an event listener to each + button for items
-        addItemButton.addEventListener("click", () => {
-          openItemPopUp(item.id);
+        addItemButton.addEventListener("click", (e) => {
+          openItemPopUp(db, list, item);
         });
   
         itemContainer.appendChild(itemText);
@@ -353,7 +364,7 @@ function createChapterElement(db, event, index, projectName) {
     
       // Attach an event listener to open the pop-up when the "+" button is clicked
       popupButton.addEventListener("click", () => {
-        openItemPopUp(list.id); // Call your function to open the pop-up here
+        openItemPopUp(db, list); // Call your function to open the pop-up here
       });
     
       listContainer.appendChild(popupButton); // Append the "+" button
@@ -402,23 +413,78 @@ function createChapterElement(db, event, index, projectName) {
 
   
   // Function to open the item pop-up
-  function openItemPopUp(itemId) {
+  function openItemPopUp(db, list, item) {
     // Replace this with your logic to open the pop-up using your preferred method
     // For instance, you might use window.open or a modal library to display the pop-up
     // Here's an example using window.open to load the pop-up HTML
-    window.open(`../partials/popup-item.html?itemId=${itemId}`, "_blank", "width=400,height=400");
+    console.log(list)
+    console.log(db)
+    console.log(item)
+    const projectId = document.querySelector(".subtitle").getAttribute("data-id")
+    if(item == undefined){
+      const transaction = makeTransaction(db, "projects", "readwrite")
+      const store = transaction.objectStore("projects")
+      const request = store.get(projectId);
+
+      request.onsuccess = (e) => {
+        const projectObj = JSON.parse(JSON.stringify(e.target.result));
+        const selectedList = projectObj.data.lists[list.id];
+        console.log(selectedList.items)
+        selectedList.items.push({
+          index: selectedList.items.length,
+          title:"Your Item Name",
+          description: "Lorem Ipsum"
+        });
+        item = selectedList.items[selectedList.items.length -1]
+
+        const storeRequest = store.put(projectObj);
+
+        storeRequest.onsuccess = (ev) =>{
+          const container = document.createElement('div');
+          container.classList.toggle("item-card-container", true);
+          container.innerHTML = `
+          <div class="item-card" data-item-index="${item.index}">
+          <button class="item-exit-btn">X</button>
+          <p class="item-header" contenteditable>${item.title}</p>
+          <p class="item-description" contenteditable>
+          ${item.description}
+          </p>
+          <button class="item-save-btn">Save</button>
+          <button class="item-delete-btn">Delete</button>
+        </div>
+          `
+          const positioning = document.querySelector('.list-bar').getBoundingClientRect()
+          console.log(positioning)
+          document.querySelector('.main-editor').appendChild(container);
+          container.style.left = `${positioning.left - positioning.width}px`
+          setUpPopUp(db)
+        }
+      }
+    }
+    else {
+      const container = document.createElement('div');
+      container.classList.toggle("item-card-container", true);
+      container.innerHTML = `
+      <div class="item-card" data-item-index="${item.index}">
+      <button class="item-exit-btn">X</button>
+      <p class="item-header" contenteditable>${item.title}</p>
+      <p class="item-description" contenteditable>
+      ${item.description}
+      </p>
+      <button class="item-save-btn">Save</button>
+      <button class="item-delete-btn">Delete</button>
+    </div>
+      `
+      const positioning = document.querySelector('.list-bar').getBoundingClientRect()
+      console.log(positioning)
+      document.querySelector('.main-editor').appendChild(container);
+      container.style.left = `${positioning.left - positioning.width}px`
+      setUpPopUp(db)
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     // If using querySelectorAll, iterate through the collection to attach click event listeners
-    const addCustomListBtns = document.getElementById("add-custom-list-btn");
-    addCustomListBtns.addEventListener('click', () => {
-      const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
-      createList(db, projectId);
-    });
-
-
-    displayLists(db); // Call this function to display lists when the DOM is loaded
   });
 
   function addListItem(db, projectId) {

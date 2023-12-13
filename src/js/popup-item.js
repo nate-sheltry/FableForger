@@ -1,10 +1,10 @@
 
-function setUpPopUp() {
+function setUpPopUp(db) {
   const elements = document.querySelectorAll(".item-card");
   elements.forEach((element) => {
-    deleteConfirmation(element.querySelector(".item-delete-btn"));
-    closeElement(element.querySelector(".item-exit-btn"));
-    saveData(element.querySelector(".item-save-btn"));
+    deleteConfirmation(element.querySelector(".item-delete-btn"), db);
+    closeElement(element.querySelector(".item-exit-btn"), db);
+    saveData(element.querySelector(".item-save-btn"), db);
   });
 }
 
@@ -14,23 +14,17 @@ function getData(element) {
   return [title, description];
 }
 
-function saveData(element, itemId) {
+function saveData(element, db) {
   element.addEventListener("click", (e) => {
     console.log('Save button clicked'); // Log to confirm button click
 
     const [title, description] = getData(e.target.parentElement);
     const subtitleElement = document.querySelector(".outline .subtitle");
-    if (subtitleElement) {
-      const projectId = subtitleElement.getAttribute("data-id");
-      // Rest of your code that depends on projectId...
-    } else {
-      console.error(".outline .subtitle element not found.");
-    }
-
-    // Ensure both IDs are retrieved correctly
+    const projectId = subtitleElement.getAttribute("data-id");
+    const itemId = element.getAttribute("data-item-id");
     if (!projectId || !itemId) {
       console.error("Project ID or Item ID is missing.");
-      return;
+      return
     }
 
     // Open a transaction to the projects store in read/write mode
@@ -88,11 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function closeElement(element) {
+function closeElement(element, db) {
   element.addEventListener("pointerdown", (e) => {
     const [title, description] = getData(e.target.parentElement);
-
-     dbItem = item in database
+     //dbItem = item in database
 
      if(title != dbItem.title || description != dbItem.description){
         const confirmation = confirm(`Changes made to the ${e.target.parentElement.querySelector('.item-header').textContent} item will not be saved, are you sure?`);
@@ -103,7 +96,7 @@ function closeElement(element) {
   });
 }
 
-function deleteConfirmation(element) {
+function deleteConfirmation(element, db) {
   if (element) {
     element.addEventListener("pointerdown", (e) => {
       const itemHeader = e.target.parentElement.querySelector(".item-header");
@@ -124,4 +117,6 @@ function deleteConfirmation(element) {
   }
 }
 
-setUpPopUp();
+export {
+  setUpPopUp
+}
