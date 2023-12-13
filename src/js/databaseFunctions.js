@@ -17,17 +17,24 @@ function makeTransaction(db, storeName, mode) {
   return transaction;
 }
 
-function addProject(db, e) {
-  let projectName = false;
+function askPrompt(query, error){
+  let promptName = false;
   do {
-    projectName = prompt("Enter new Project Name");
+    promptName = prompt(query);
     try {
-      projectName = projectName.trim();
+      promptName = promptName.trim();
     } catch (err) {
       return;
     }
-    if (!!projectName == false) alert("please enter a valid name.");
-  } while (!projectName);
+    if (!!promptName == false) alert(error);
+  } while (!promptName);
+  return promptName;
+}
+
+
+function addProject(db, e) {
+  let projectName = askPrompt("Enter new Project Name", "please enter a valid name.")
+  if(!projectName) return
 
   const transaction = makeTransaction(db, "projects", "readwrite");
   transaction.oncomplete = (ev) => {
@@ -163,12 +170,7 @@ function createChapterElement(db, event, index, projectName) {
     loadChapter(db);
   });
 }
-  // Show the "Add Custom List" button when chapters are displayed
-  /*document.addEventListener('DOMContentLoaded', () => {
-    const addCustomListBtns = document.getElementById("add-custom-list-btn");
-    addCustomListBtns.style.display = 'inline-block'; // Show the button
-    });
-  };*/
+
 
 
   function loadChapter(db) {
@@ -252,16 +254,8 @@ function createListElement(db, list) {
   }
 
   function createList(db, projectId) {
-    let listName = false;
-    do {
-      listName = prompt("Enter the list name:");
-      try {
-        listName = listName.trim();
-      } catch (err) {
-        return;
-      }
-      if (!!listName == false) alert("Please enter a valid list name.");
-    } while (!listName);
+    let listName = askPrompt("Enter the list name:", "Please enter a valid list name.");
+    if(!listName) return
 
     const transaction = makeTransaction(db, "projects", "readwrite");
     const store = transaction.objectStore("projects");
@@ -308,10 +302,7 @@ function createListElement(db, list) {
       if (projectObj && projectObj.data && projectObj.data.lists) {
         const lists = projectObj.data.lists;
         console.log("Lists retrieved:", lists);
-          // const list = lists[listId];
-          // console.log("List ID:", listId, "List Data:", list);
-          // // Process the retrieved list data as needed
-          displayLists(db, projectId ,lists)
+        displayLists(db, projectId ,lists)
       } else {
         console.log("No lists found for the project ID:", projectId);
       }
@@ -347,88 +338,6 @@ function createListElement(db, list) {
       });
       listContainer.appendChild(listButton);
     }
-
-  
-    // if (list && list.id && list.title && list.items) {
-    // const listButton = document.createElement("button"); // Create a button element
-    // listButton.classList.add("list-button"); // Add a class for styling
-    // listButton.setAttribute("data-list-id", list.id);
-    // listButton.textContent = list.title; // Set button text to the list title
-
-    // // Attach an event listener to each list button
-    // listButton.addEventListener("click", () => {
-    //   const listHeader = document.querySelector(".list-header");
-    //   const listList = document.querySelector(".list-list");
-    //   const allListButtons = document.querySelectorAll(".list-button");
-    
-    //   // Hide list-header, list-list, and other list buttons
-    //   listHeader.style.display = "none";
-    //   listList.style.display = "none";
-    //   allListButtons.forEach(button => {
-        
-    //       button.style.display = "none";
-        
-    //   });
-    
-    //   // Convert the clicked button into an h3 element
-    //   const listH3 = document.createElement("h3");
-    //   listH3.textContent = list.title;
-    //   listH3.classList.add("list-h3");
-    //   listContainer.appendChild(listH3);
-    
-    //   // Create a "+" button for the pop-up
-    //   const popupButton = document.createElement("button");
-    //   popupButton.textContent = "Add an Item";
-    //   popupButton.classList.add("add-item-button");
-    
-    //   // Attach an event listener to open the pop-up when the "+" button is clicked
-    //   popupButton.addEventListener("click", () => {
-    //     openItemPopUp(db, list); // Call your function to open the pop-up here
-    //   });
-    
-    //   listContainer.appendChild(popupButton); // Append the "+" button
-    //   // Display the list items associated with the clicked button
-    //   displayListItems(db, list);// Create a "Back" button to go back to list-list
-    //   const backButton = document.createElement("button");
-    //   backButton.textContent = "Back";
-    //   backButton.classList.add("back-button");
-      
-    //   // Attach an event listener to the back button
-    //   backButton.addEventListener("click", () => {
-    //     const listHeader = document.querySelector(".list-header");
-    //     const listList = document.querySelector(".list-list");
-    //     const allListButtons = document.querySelectorAll(".list-button");
-        
-    //     // Show list-header, list-list, and other list buttons
-    //     listHeader.style.display = "block";
-    //     listList.style.display = "block";
-    //     allListButtons.forEach(button => {
-    //       button.style.display = "inline-block"; // Show all list buttons
-    //     });
-  
-    //     // Remove the added elements when going back
-    //     const listH3 = document.querySelector(".list-h3");
-    //     const addItemButton = document.querySelector(".add-item-button");
-  
-    //     if (listH3) {
-    //       listH3.remove(); // Remove the added h3 element
-    //     }
-  
-    //     if (addItemButton) {
-    //       addItemButton.remove(); // Remove the "Add an Item" button
-    //     }
-    //     backButton.remove(); // Remove the back button itself after clicking it
-
-    //   });
-  
-    //   listContainer.appendChild(backButton); // Append the back button
-    //   listContainer.appendChild(listButton); // Append the list button to the container
-    // })
-  
-    
-
-    // listContainer.appendChild(listButton); // Append the button to the container
-    // };
   }
 
   
@@ -502,16 +411,8 @@ function createListElement(db, list) {
   }
 
   function addListItem(db, projectId) {
-    let itemName = false;
-    do {
-      itemName = prompt("Enter the item name:");
-      try {
-        itemName = itemName.trim();
-      } catch (err) {
-        return;
-      }
-      if (!!itemName == false) alert("Please enter a valid item name.");
-    } while (!itemName);
+    let itemName = askPrompt("Enter the item name:", "Please enter a valid item name.")
+    if(!itemName) return
 
     const transaction = makeTransaction(db, "projects", "readwrite");
     const store = transaction.objectStore("projects");
