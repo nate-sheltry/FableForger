@@ -6,6 +6,10 @@ import {
   addChapter,
   saveChapter,
   accessProjects,
+  createList, 
+  accessLists, 
+  addListItem,
+  displayLists
 } from "./databaseFunctions.js";
 // console.log("Generated unique ID:", guid());
 
@@ -27,7 +31,7 @@ const IDB = () => {
   });
 
   DBOpenReq.addEventListener("success", (ev) => {
-    // DB opened... after upgradeneede.
+    // DB opened... after upgradeneeded.
     db = ev.target.result;
     getProjects();
     console.log("Success", db);
@@ -47,12 +51,18 @@ const IDB = () => {
       "to version",
       newVersion
     );
+
     if (!db.objectStoreNames.contains("projects")) {
       objectStore = db.createObjectStore("projects", {
         keyPath: "id",
       });
     }
 
+    if (!db.objectStoreNames.contains("lists")) {
+      // Add the missing lists object store
+      const listsStore = db.createObjectStore("lists", {
+        keyPath: "listId",
+      });
     // Create "userProjects" object store if it doesn't exist
     if (!db.objectStoreNames.contains("userProjects")) {
       const userProjectsObjectStore = db.createObjectStore("userProjects", {
@@ -70,11 +80,12 @@ const IDB = () => {
     // });
     // if(db.objectStoreNames.contains("")){
     //     db.deleteObjectStore("");
-    // }
-  });
-
+    }
+  );
   const leftBtn = document.getElementById("left-panel-btn");
+  const rightBtn = document.getElementById("add-custom-list-btn");
   const noProjectBtn = document.getElementById("no-project-btn");
+
 
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
@@ -84,12 +95,10 @@ const IDB = () => {
     }
   });
 
-  noProjectBtn.addEventListener("pointerdown", (e) => {
-    if (e.target.classList.contains("new-project")) {
+  noProjectBtn.addEventListener("click", (e) => {
       addProject(db, e);
-    }
   });
-
+  
   const leftBackBtn = document.getElementById("left-panel-back");
   leftBackBtn.addEventListener("pointerdown", (e) => {
     if (leftBtn.classList.contains("new-project")) {
@@ -99,8 +108,55 @@ const IDB = () => {
     getProjects();
     leftBtn.classList.toggle("new-chapter", false);
     leftBtn.classList.toggle("new-project", true);
+    const editor = document.querySelector(".writing-area")
+    editor.classList.toggle("no-area", !editor.classList.contains("no-area"))
+    editor.classList.toggle("editor-area", !editor.classList.contains("editor-area"))
     document.querySelector(".outline .subtitle").textContent = "Projects";
+    const noProjectBtn = document.getElementById('no-project-btn');
+    noProjectBtn.addEventListener("click", (e) => {
+        addProject(db, e);
+    });
+    rightBtn.setAttribute("data-id", null)
+
+    document.querySelector(".custom-lists").innerHTML = ``;
   });
+
+  //Right Panel Stuff
+ 
+  rightBtn.addEventListener("pointerdown", (e) => {
+    const projectId = e.target.getAttribute("data-id")
+    if(projectId == "null") {
+      console.log("I'm stoopy")
+      return;
+    }
+    else if(e.target.classList.contains("add-list-item")){
+      addListItem(db, projectId)
+      console.log("I'm not stoopy after all")
+    }
+    else if(!e.target.classList.contains("add-list-item")){
+      createList(db, projectId);
+    }
+
+  })
+
+  const rightBackBtn = document.getElementById("right-panel-back");
+  rightBackBtn.addEventListener("pointerdown", (e) => {
+    if(!e.target.classList.contains("in-list")) return;
+
+    const projectId = rightBtn.getAttribute("data-id");
+    e.target.classList.toggle("in-list", !e.target.classList.contains("in-list"));
+    document.querySelector(".custom-lists").innerHTML = ``;
+    const transaction = db.transaction("projects", "readwrite");
+    const store = transaction.objectStore("projects");
+    const request = store.get(projectId)
+    request.onsuccess = (e) =>{
+      const projectObj = e.target.result;
+      displayLists(db, projectObj.id, projectObj.data.lists)
+      rightBtn.classList.toggle("add-list-item", false);
+      rightBtn.setAttribute("data-list-id", null);
+    }
+  })
+
 
   // document.querySelector('#no-project-btn').addEventListener('pointerdown', (e)=>{
   //     if(e.target.classList.contains('new-project')){
@@ -275,4 +331,4 @@ const IDB = () => {
 
 const [saveQuillData, getProjects] = IDB();
 
-export { saveQuillData, getProjects };
+export { saveQuillData, getProjects, IDB, db};

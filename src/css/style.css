@@ -47,6 +47,9 @@ main {
 h3 {
   color: var(--tertiary-color);
 }
+.list-bar h3{
+color: var(--ivory);
+}
 
 h1,
 h2,
@@ -128,19 +131,30 @@ header h1 {
 
 .ql-container.ql-snow {
   border: 1px solid var(--ivory);
-  background-image: url(../images/old-paper-turned.jpg);
   background-size: 100% 100%;
+
+}
+.no-area{
+  background-image: url(../images/old-envelope.jpg);
+}
+.editor-area{
+  background-image: url(../images/old-paper-turned.jpg);
 }
 
 .writing-area {
+  rotate: -1deg;
+  background-size: 100% 100%;
+  margin-top: 35px;
+  padding-bottom: 70px;
+  margin-right: 15px;
+  overflow-y: hidden;
+  min-height: 67.7vmin;
   display:flex;
   height:100%;
   flex-direction: column;
   grid-column: 2 / span 1;
   margin-left: 20px;
   margin-right: 20px;
-  background-color: var(--secondary-color);
-  justify-content:top;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
 }
 #no-project-btn{
@@ -161,16 +175,7 @@ header h1 {
   margin-bottom: -25px;
 }
 .editor {
-  background-image: url(../images/old-envelope.jpg);
-  background-size: 100% 100%;
-  padding-top: 70px;
-  padding-bottom: 70px;
-  padding-left: 35px;
-  padding-right: 15px;
-  overflow-y: hidden;
-  min-height: 67.7vmin;
-  max-height: 67.7vmin;
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
+  height:100%;
 }
 
 /* width */
@@ -283,7 +288,7 @@ footer p {
   right: 3.5em;
   top: 2em;
 }
-#left-panel-back {
+#left-panel-back, #right-panel-back {
   transform: scale(3, 1);
   font-weight: normal;
 }
@@ -311,7 +316,7 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow:hidden;
+  overflow:auto;
 }
 .writing-area .editor .ql-editor {
     width: 100%;
@@ -329,6 +334,11 @@ footer p {
 }
 
 /*Pop Up Item Card*/
+.item-card-container {
+  position:absolute;
+  z-index: 100;
+  top:calc(50% - 15em);
+}
 .item-card {
   position: relative;
   outline: 2px solid var(--secondary-color);
