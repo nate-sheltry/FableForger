@@ -63,6 +63,7 @@ const IDB = () => {
       const listsStore = db.createObjectStore("lists", {
         keyPath: "listId",
       });
+    }
     // Create "userProjects" object store if it doesn't exist
     if (!db.objectStoreNames.contains("userProjects")) {
       const userProjectsObjectStore = db.createObjectStore("userProjects", {
@@ -80,8 +81,7 @@ const IDB = () => {
     // });
     // if(db.objectStoreNames.contains("")){
     //     db.deleteObjectStore("");
-    }
-  );
+  });
   const leftBtn = document.getElementById("left-panel-btn");
   const rightBtn = document.getElementById("add-custom-list-btn");
   const noProjectBtn = document.getElementById("no-project-btn");

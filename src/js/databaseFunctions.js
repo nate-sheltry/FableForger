@@ -419,6 +419,7 @@ function accessProjects(db) {
       listContainer.appendChild(listButton);
     }
   }
+}
 
   
   // Function to open the item pop-up
@@ -593,4 +594,6 @@ function accessProjects(db) {
   }
   const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
   //export default projectId;
-  export { addProject, addChapter, saveChapter, accessProjects, createList, accessLists, addListItem, displayLists }
+  export {
+    addProject, addChapter, saveChapter, accessProjects, createList, accessLists, addListItem, displayLists
+  }
