@@ -201,6 +201,7 @@ main{
     color: rgba(48, 31, 16, 0.675);
   }
   header {
+    width: 300px;
     background-image: url('/images/desk-top-feather-pen.jpg');
     rotate: 10deg;
     background-position: left bottom;

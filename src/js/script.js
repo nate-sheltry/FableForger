@@ -13,22 +13,6 @@ import {
   getAllProjects,
   updateProject,
   deleteProject,
-  addListToProject,
-  getAllListsForProject,
-  updateList,
-  deleteListFromProject,
-  addCharacterToProject,
-  getAllCharactersForProject,
-  updateCharacter,
-  deleteCharacterFromProject,
-  addLocationToProject,
-  getAllLocationsForProject,
-  updateLocation,
-  deleteLocationFromProject,
-  addChapterToProject,
-  getAllChaptersForProject,
-  updateChapter,
-  deleteChapterFromProject,
 } from "./indexManager.js";
 
 //getProjects();
