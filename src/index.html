@@ -21,14 +21,14 @@
         </div>
         <div id="login" class="login">
           <h1>Login</h1>
-          <form id="loginForm">
+          <form id="loginForm" action="javascript:void(0)">
               <label for="username">Username:</label>
-              <input type="text" id="username" name="username" required>
+              <input type="text" id="username" name="username"  required>
               
               <label for="password">Password:</label>
               <input type="password" id="password" name="password" required>
               
-              <button type="submit">login</button>
+              <button type="submit" id="loginButton">login</button>
           </form>
           <div class="goRegister">
             <p class="small">Not registered yet?</p>
@@ -39,7 +39,7 @@
       
       <div id="register" class="register">
           <h1>Register</h1>
-          <form id="registerForm">
+          <form id="registerForm" action="javascript:void(0)">
               <label for="newUsername">Username:</label>
               <input type="text" id="newUsername" name="newUsername" required>
               
@@ -58,5 +58,6 @@
       </section>
     </main>
     <script type="module" src="js/landing-page.js"></script>
+    <script type="module" src="js/register-login.js"></script>
   </body>
 </html>

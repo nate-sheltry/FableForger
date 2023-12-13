@@ -97,7 +97,7 @@ function closeEditor(){
         QuillOb.editor = null
         document.querySelector('.writing-area').innerHTML =`
         <div class="editor">
-          <button class="new-project" id="no-project-btn">Start A New Project</button>
+          <button class="new-project" id="no-project-btn">New Project</button>
         </div>
         `
     }

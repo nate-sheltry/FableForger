@@ -49,7 +49,7 @@ const IDB = () => {
       "DB updated from version",
       oldVersion,
       "to version",
-      newVersion,
+      newVersion
     );
 
     if (!db.objectStoreNames.contains("projects")) {
@@ -63,6 +63,16 @@ const IDB = () => {
       const listsStore = db.createObjectStore("lists", {
         keyPath: "listId",
       });
+    // Create "userProjects" object store if it doesn't exist
+    if (!db.objectStoreNames.contains("userProjects")) {
+      const userProjectsObjectStore = db.createObjectStore("userProjects", {
+        keyPath: "relationshipId",
+        autoIncrement: true,
+      });
+
+      // Add indexes to facilitate querying
+      userProjectsObjectStore.createIndex("userId", "userId");
+      userProjectsObjectStore.createIndex("projectId", "projectId");
     }
 
     // db.createObjectStore("", {
@@ -74,6 +84,8 @@ const IDB = () => {
   );
   const leftBtn = document.getElementById("left-panel-btn");
   const rightBtn = document.getElementById("add-custom-list-btn");
+  const noProjectBtn = document.getElementById("no-project-btn");
+
 
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
@@ -83,7 +95,6 @@ const IDB = () => {
     }
   });
 
-  const noProjectBtn = document.getElementById('no-project-btn');
   noProjectBtn.addEventListener("click", (e) => {
       addProject(db, e);
   });
@@ -93,6 +104,7 @@ const IDB = () => {
     if (leftBtn.classList.contains("new-project")) {
       return;
     }
+
     getProjects();
     leftBtn.classList.toggle("new-chapter", false);
     leftBtn.classList.toggle("new-project", true);
@@ -151,6 +163,7 @@ const IDB = () => {
   //         addProject(db, e);
   //     }
   // })
+  //? This function handles the saving of the quill data!
   function saveQuillData(contents) {
     saveChapter(db, contents);
   }
