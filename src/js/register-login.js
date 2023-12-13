@@ -1,4 +1,3 @@
-
 import { guid } from "./uid.js";
 
 // Function to open or create the database
@@ -15,8 +14,8 @@ function openDatabase() {
       const db = ev.target.result;
       console.log("Database opened:", db);
 
-// Log object store names
-console.log("Object store names:", db.objectStoreNames);
+      // Log object store names
+      console.log("Object store names:", db.objectStoreNames);
 
       resolve(db);
     });
@@ -25,26 +24,33 @@ console.log("Object store names:", db.objectStoreNames);
       const db = ev.target.result;
       console.log("Database upgrade needed:", db);
 
-// Log existing object store names
-console.log("Existing object store names:", db.objectStoreNames);
-    
+      // Log existing object store names
+      console.log("Existing object store names:", db.objectStoreNames);
+
       // Handle database upgrade if necessary
       if (!db.objectStoreNames.contains("users")) {
         console.log("Creating users object store");
-        const objectStore = db.createObjectStore("users", { keyPath: "userId" });
+        const objectStore = db.createObjectStore("users", {
+          keyPath: "userId",
+        });
         objectStore.createIndex("username", "username", { unique: true });
       }
       // Create "projects" object store if it doesn't exist
       if (!db.objectStoreNames.contains("projects")) {
         console.log("Creating projects object store");
-        const projectsObjectStore = db.createObjectStore("projects", { keyPath: "id" });
+        const projectsObjectStore = db.createObjectStore("projects", {
+          keyPath: "id",
+        });
         // Add any additional configuration for the "projects" object store
       }
 
       // Create "userProjects" object store if it doesn't exist
       if (!db.objectStoreNames.contains("userProjects")) {
         console.log("Creating userProjects object store");
-        const userProjectsObjectStore = db.createObjectStore("userProjects", { keyPath: "relationshipId", autoIncrement: true });
+        const userProjectsObjectStore = db.createObjectStore("userProjects", {
+          keyPath: "relationshipId",
+          autoIncrement: true,
+        });
         // Add any additional configuration for the "userProjects" object store
       }
     });
@@ -57,49 +63,55 @@ async function hashPassword(password) {
   const data = encoder.encode(password);
   const buffer = await crypto.subtle.digest("SHA-256", data);
   const hashArray = Array.from(new Uint8Array(buffer));
-  const hashedPassword = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  const hashedPassword = hashArray
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
   return hashedPassword;
 }
 
 function flipRegistration() {
-  const login = document.getElementById('login');
-  const goRegister = document.querySelector('.goRegister');
+  const login = document.getElementById("login");
+  const goRegister = document.querySelector(".goRegister");
 
   if (login) {
-      // Reverse the rotation of the login element
-      login.style.transform = login.style.transform === 'rotateY(-180deg)' ? 'rotateY(0deg)' : 'rotateY(-180deg)';
-      // Reverse the z-index change with an additional delay
-      setTimeout(() => {
-          login.style.zIndex = login.style.zIndex === '3' ? '1' : '3';
-      }, 600);
+    // Reverse the rotation of the login element
+    login.style.transform =
+      login.style.transform === "rotateY(-180deg)"
+        ? "rotateY(0deg)"
+        : "rotateY(-180deg)";
+    // Reverse the z-index change with an additional delay
+    setTimeout(() => {
+      login.style.zIndex = login.style.zIndex === "3" ? "1" : "3";
+    }, 600);
   }
 
   // Set a timeout to show children after 600 milliseconds (0.6 seconds)
   setTimeout(() => {
-      // Get all children elements of login
-      const children = login.children;
+    // Get all children elements of login
+    const children = login.children;
 
-      // Loop through children and toggle their display property
-      for (let i = 0; i < children.length; i++) {
-          children[i].style.display = children[i].style.display === 'none' ? 'block' : 'none';
-      }
+    // Loop through children and toggle their display property
+    for (let i = 0; i < children.length; i++) {
+      children[i].style.display =
+        children[i].style.display === "none" ? "block" : "none";
+    }
 
-      // Switch back the goRegister class
-      if (goRegister) {
-          goRegister.style.display = 'flex';
-          goRegister.style.flexDirection = 'row';
-      }
+    // Switch back the goRegister class
+    if (goRegister) {
+      goRegister.style.display = "flex";
+      goRegister.style.flexDirection = "row";
+    }
   }, 600);
 }
 
 // Function to show welcome message with slow writing effect
 function showWelcomeMessage(element, message, duration = 1000) {
-  element.textContent = '';
+  element.textContent = "";
 
   let index = 0;
 
   function appendNextCharacter() {
-    const span = document.createElement('span');
+    const span = document.createElement("span");
     span.textContent = message[index];
     span.style.transition = `opacity ${duration / 2}ms ease-in-out`;
     span.style.opacity = 1;
@@ -245,13 +257,20 @@ function loginUser(db, username, password) {
           console.log("session storage username is:", userByKey.username);
 
           window.location.href = "./editor/index.html";
-
         } else {
           console.error("Invalid username or password.");
         }
       };
     } else {
-      console.error("User not found for the provided username.");
+      let userNotFound = document.createElement("p");
+      userNotFound.textContent =
+        "Please check your username and password, and then try again!";
+      let paper = document.querySelector(".paper");
+      userNotFound.className = "userNotFound";
+      paper.append(userNotFound);
+      console.warn(
+        "User not found for the provided username. Please register or check your username and password and then try again!"
+      );
     }
   };
 }
@@ -268,5 +287,9 @@ function handleRegisterFormSubmission(event) {
 }
 
 // Event listeners for form submissions
-document.getElementById("registerForm").addEventListener("submit", handleRegisterFormSubmission);
-document.getElementById("loginForm").addEventListener("submit", handleLoginFormSubmission);
+document
+  .getElementById("registerForm")
+  .addEventListener("submit", handleRegisterFormSubmission);
+document
+  .getElementById("loginForm")
+  .addEventListener("submit", handleLoginFormSubmission);
