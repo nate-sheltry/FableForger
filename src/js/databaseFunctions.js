@@ -443,7 +443,7 @@ function createChapterElement(db, event, index, projectName) {
           const container = document.createElement('div');
           container.classList.toggle("item-card-container", true);
           container.innerHTML = `
-          <div class="item-card" data-item-index="${item.index}">
+          <div class="item-card" data-item-index="${item.index}" data-list-id="${list.id}">
           <button class="item-exit-btn">X</button>
           <p class="item-header" contenteditable>${item.title}</p>
           <p class="item-description" contenteditable>
@@ -457,7 +457,7 @@ function createChapterElement(db, event, index, projectName) {
           console.log(positioning)
           document.querySelector('.main-editor').appendChild(container);
           container.style.left = `${positioning.left - positioning.width}px`
-          setUpPopUp(db)
+          setUpPopUp(db, projectId)
         }
       }
     }
@@ -479,7 +479,7 @@ function createChapterElement(db, event, index, projectName) {
       console.log(positioning)
       document.querySelector('.main-editor').appendChild(container);
       container.style.left = `${positioning.left - positioning.width}px`
-      setUpPopUp(db)
+      setUpPopUp(db, projectId)
     }
   }
 
