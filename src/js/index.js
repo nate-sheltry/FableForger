@@ -142,7 +142,6 @@ const IDB = () => {
   const rightBackBtn = document.getElementById("right-panel-back");
   rightBackBtn.addEventListener("pointerdown", (e) => {
     if(!e.target.classList.contains("in-list")) return;
-
     const projectId = rightBtn.getAttribute("data-id");
     e.target.classList.toggle("in-list", !e.target.classList.contains("in-list"));
     document.querySelector(".custom-lists").innerHTML = ``;

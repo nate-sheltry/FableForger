@@ -44,6 +44,8 @@ function addProject(db, e) {
 
   // Add the project to the "projects" store
   const projectStore = projectTransaction.objectStore("projects");
+  const characterListId = `list_${crypto.randomUUID()}`;
+  const locationListId = `list_${crypto.randomUUID()}`;
   const project = {
     id: guid(),
     name: projectName,
@@ -59,7 +61,16 @@ function addProject(db, e) {
         },
       ],
       lists: {
-
+        [characterListId]:{
+          id:characterListId,
+          title: "Characters",
+          items: []
+        },
+        [locationListId]:{
+          id:locationListId,
+          title: "Locations",
+          items: []
+        }
       } // Adding an empty lists object to the project
     },
   };
@@ -153,6 +164,40 @@ function createProjectElement(db, cursor, index, id, projectName) {
   document.querySelector(".outline .content").append(projectItem);
 
   projectItem.addEventListener("pointerdown", (e) => {
+    if(e.button == 2){
+      e.preventDefault();
+      if(!window.confirm("You are about to delete a project.\nWould you like to continue?")) return;
+      let confirmation = window.confirm("Do you want to delete the following project?\n"+
+      `${e.target.textContent}`)
+      if(!confirmation) return
+      else if(confirmation){
+        const userTransaction = makeTransaction(db, "userProjects", "readwrite");
+        const storeUserProjects = userTransaction.objectStore("userProjects");
+        const userProjectReq = storeUserProjects.openCursor();
+        const projectId = e.target.getAttribute('data-id')
+        userProjectReq.onsuccess = (event) => {
+          const cursor = event.target.result;
+          console.log(cursor)
+          if(!cursor){
+            console.log(event)
+            console.error("cursor failed")
+            return
+          }
+          if(cursor.value.projectId == projectId){
+            const transaction = makeTransaction(db, "projects", "readwrite");
+            const storeProjects = transaction.objectStore("projects");
+            const projectReq = storeProjects.delete(projectId)
+            projectReq.onsuccess = (ev) => {
+              e.target.remove();
+            }
+            cursor.delete();
+            return
+          }
+          cursor.continue();
+        }
+        return
+      }
+    }
     const editor = document.querySelector(".writing-area")
     editor.classList.toggle("no-area", !editor.classList.contains("no-area"))
     editor.classList.toggle("editor-area", !editor.classList.contains("editor-area"))
@@ -188,12 +233,33 @@ function createChapterElement(db, event, index, projectName) {
     .getAttribute("data-id");
   chapterItem.setAttribute("project-id", projectId);
   document.querySelector(".outline .content").append(chapterItem);
+
   chapterItem.addEventListener("pointerdown", (e) => {
-    sessionStorage.setItem(
-      "chapterIndex",
-      parseInt(e.target.getAttribute("data-index")),
-    );
-    loadChapter(db);
+    if(e.button != 2){
+      sessionStorage.setItem(
+        "chapterIndex",
+        parseInt(e.target.getAttribute("data-index")),
+      );
+      loadChapter(db);
+      return
+    }
+    e.preventDefault();
+    let confirmation = window.confirm("Do you want to delete the following chapter?")
+    if(!confirmation) return
+    else if(confirmation){
+      const transaction = makeTransaction(db, "projects", "readwrite");
+      const storeGet = transaction.objectStore("projects");
+      const storePut = transaction.objectStore("projects");
+      const projectReq = storeGet.get(projectId);
+      projectReq.onsuccess = (event) => {
+        const Project = event.target.result;
+        const index = parseInt(e.target.getAttribute("data-index"));
+        Project.data.chapters.splice(index, 1)
+        storePut.put(Project);
+        e.target.remove();
+        return
+      }
+    }
   });
 }
 
@@ -223,7 +289,7 @@ function createChapterElement(db, event, index, projectName) {
 function createListElement(db, list) {
   const listContainer = document.querySelector(".custom-lists");
 
-  const listButton = document.createElement("button"); // Change this to create a button
+  const listButton = document.createElement("button");
   listButton.classList.add("list-button"); // Add a class for styling
   listButton.setAttribute("data-list-id", list.id);
   listButton.textContent = list.title;
@@ -231,9 +297,42 @@ function createListElement(db, list) {
   const projectId = document.getElementById("add-custom-list-btn").getAttribute("data-id")
 
   // Attach an event listener to each list button
-  listButton.addEventListener("click", () => {
-    // Display items associated with this list
-    displayListItems(db, projectId, list.id);
+  listButton.addEventListener("pointerdown", (e) => {
+    if(e.button != 2){
+      const plusBtn = document.getElementById("add-custom-list-btn")
+      plusBtn.classList.toggle("add-list-item", true);
+      plusBtn.setAttribute("data-list-id", list.id);
+
+      const listHeader = document.querySelector(".list-header");
+      listHeader.textContent = list.title;
+
+      displayListItems(db, projectId, list.id);
+      return;
+    }
+    e.preventDefault();
+    if(list.items.length > 0){
+      let confirm = window.confirm("The List you have selected currently has items inside of it."+
+      "\nPlease double check before proceeding.")
+      if(!confirm) return;
+    }
+    const confirmation = window.confirm("Do you want to delete the following list?\n"+
+    `${e.target.textContent}`)
+    if(!confirmation) return
+    else if(confirmation){
+      const transaction = makeTransaction(db, "projects", "readwrite");
+      const storeGet = transaction.objectStore("projects");
+      const storePut = transaction.objectStore("projects");
+      const projectReq = storeGet.get(projectId);
+      projectReq.onsuccess = (event) => {
+        const Project = event.target.result;
+        const listId = e.target.getAttribute("data-list-id");
+        delete Project.data.lists[listId]
+        storePut.put(Project);
+        e.target.remove();
+        return
+      }
+    }
+
   });
 
   listContainer.appendChild(listButton);
@@ -270,11 +369,35 @@ function createListElement(db, list) {
     const itemContainer = document.createElement("div");
     itemContainer.classList.add("item-container");
     itemContainer.setAttribute("data-index", item.index)
-    const itemText = document.createElement("span");
-    itemText.textContent = item.title;
-    itemContainer.appendChild(itemText);
+    itemContainer.textContent = item.title;
+    const plusElement = document.getElementById("add-custom-list-btn")
     itemContainer.addEventListener("pointerdown", (e)=>{
-      openItemPopUp(db, list, item);
+      if(e.button != 2){
+        openItemPopUp(db, list, item);
+        return;
+      }
+      e.preventDefault();
+      let confirmation = window.confirm("Do you want to delete the following item?\n"+
+      `${itemContainer.textContent}`)
+      if(!confirmation) return
+      else if(confirmation){
+        const listId = plusElement.getAttribute("data-list-id")
+        const projectId = plusElement.getAttribute("data-id")
+        const transaction = makeTransaction(db, "projects", "readwrite");
+        const storeGet = transaction.objectStore("projects");
+        const storePut = transaction.objectStore("projects");
+        const projectReq = storeGet.get(projectId);
+        projectReq.onsuccess = (event) => {
+          const Project = event.target.result;
+          const index = parseInt(e.target.getAttribute("data-index"));
+          Project.data.lists[listId].items.splice(index, 1)
+          storePut.put(Project);
+          e.target.remove();
+          return
+        }
+      }
+      return
+
     })
     container.appendChild(itemContainer);
   }
@@ -341,23 +464,12 @@ function createListElement(db, list) {
 
   function displayLists(db, projectId ,lists) {
     console.log('I exist!')
-    const listContainer = document.querySelector(".custom-lists");
+    const listHeader = document.querySelector(".list-header");
+    listHeader.textContent = "Lists";
     for(let list of Object.values(lists)){
       console.log("I'm a list")
       console.log(list)
-      const listButton = document.createElement("button"); // Create a button element
-      listButton.classList.add("list-button"); // Add a class for styling
-      listButton.setAttribute("data-list-id", list.id);
-      listButton.textContent = list.title; // Set button text to the list title
-
-      listButton.addEventListener("pointerdown", () => {
-        console.log("you click me!" + listButton)
-        const plusBtn = document.getElementById("add-custom-list-btn")
-        plusBtn.classList.toggle("add-list-item", true);
-        plusBtn.setAttribute("data-list-id", list.id);
-        displayListItems(db, projectId, list.id);
-      });
-      listContainer.appendChild(listButton);
+      createListElement(db, list)
     }
     if(!lists){
       console.log("I don't exist afterall")

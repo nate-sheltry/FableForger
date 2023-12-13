@@ -45,7 +45,7 @@ function saveData(element, db, dbObj) {
 
     updateRequest.onsuccess = (event) => {
       const itemElement = document.querySelector(`.item-container[data-index="${itemIndex}"]`)
-      itemElement.children[0].textContent = item.title;
+      itemElement.textContent = item.title;
       // Create a message element indicating successful save
       const messageElement = document.createElement('div');
       messageElement.textContent = 'Item saved';
