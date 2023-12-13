@@ -342,6 +342,23 @@ function createListElement(db, list) {
   function displayLists(db, projectId ,lists) {
     console.log('I exist!')
     const listContainer = document.querySelector(".custom-lists");
+    for(let list of Object.values(lists)){
+      console.log("I'm a list")
+      console.log(list)
+      const listButton = document.createElement("button"); // Create a button element
+      listButton.classList.add("list-button"); // Add a class for styling
+      listButton.setAttribute("data-list-id", list.id);
+      listButton.textContent = list.title; // Set button text to the list title
+
+      listButton.addEventListener("pointerdown", () => {
+        console.log("you click me!" + listButton)
+        const plusBtn = document.getElementById("add-custom-list-btn")
+        plusBtn.classList.toggle("add-list-item", true);
+        plusBtn.setAttribute("data-list-id", list.id);
+        displayListItems(db, projectId, list.id);
+      });
+      listContainer.appendChild(listButton);
+    }
     if(!lists){
       console.log("I don't exist afterall")
       return;
@@ -401,23 +418,7 @@ function accessProjects(db) {
       };
     }
 
-    for(let list of Object.values(lists)){
-      console.log("I'm a list")
-      console.log(list)
-      const listButton = document.createElement("button"); // Create a button element
-      listButton.classList.add("list-button"); // Add a class for styling
-      listButton.setAttribute("data-list-id", list.id);
-      listButton.textContent = list.title; // Set button text to the list title
-
-      listButton.addEventListener("pointerdown", () => {
-        console.log("you click me!" + listButton)
-        const plusBtn = document.getElementById("add-custom-list-btn")
-        plusBtn.classList.toggle("add-list-item", true);
-        plusBtn.setAttribute("data-list-id", list.id);
-        displayListItems(db, projectId, list.id);
-      });
-      listContainer.appendChild(listButton);
-    }
+    
   }
 }
 
@@ -556,24 +557,6 @@ function accessProjects(db) {
       storeRequest.onerror = (err) => {
         console.log("Error on request to add!", err);
       };
-    };
-  }
-
-  function accessProjects(db) {
-    const transaction = db.transaction(["projects"], "readonly");
-    transaction.oncomplete = (ev) => {
-      console.log("Transaction Completed:", ev);
-    };
-    const store = transaction.objectStore("projects");
-    const cursorReq = store.openCursor();
-    document.querySelector(".outline .content").innerHTML = ``;
-    closeEditor();
-    cursorReq.onsuccess = (e) => {
-      const cursor = e.target.result;
-      if (cursor) {
-        createProjectElement(db, cursor.value, 0, cursor.value.id, cursor.value.name);
-        cursor.continue();
-      }
     };
   }
 
