@@ -144,9 +144,11 @@ header h1 {
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
 }
 #no-project-btn{
-  height: 60px;
-  width: 60px;
-  padding: 1px;
+  height: 120px;
+  width: 120px;
+  background-image: url(../images/wax-stamp.png);
+  background-size: cover;
+  padding: 15px;
   border-radius: 50px;
   border: none;
   background-color: transparent;
@@ -155,6 +157,8 @@ header h1 {
   font: inherit;
   font-size: 1.2rem;
   font-weight: bold;
+  margin-left: -25px;
+  margin-bottom: -25px;
 }
 .editor {
   background-image: url(../images/old-envelope.jpg);
@@ -189,6 +193,19 @@ header h1 {
   ::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
   }
+  .toggleoutline {
+    display: flex;
+  position: fixed;
+  height: 78.5%;
+  width: 25%;
+  }
+  .togglelist{
+    right: 0;
+    display: flex;
+  position: fixed;
+  height: 78.5%;
+  width: 25%;
+  }
 .outline {
   display:flex;
   flex-direction:column;
@@ -198,6 +215,7 @@ header h1 {
   color: var(--ivory);
   position: relative;
   height: 100%;
+  width: 100%;
   overflow-y: hidden;
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.749);
   z-index: 2;
@@ -236,6 +254,7 @@ header h1 {
   color: rgba(48, 31, 16, 0.866);
   text-align: center;
   height: 100%;
+  width: 100%;
 }
 
 footer {
@@ -398,9 +417,7 @@ footer p {
 #toggleListBtn {
   display: none;
 }
-.togglelist{
-  height: 100%;
-}
+
 
 @media (max-width: 768px) {
 
@@ -448,7 +465,7 @@ footer p {
     border-top-right-radius: 15px;
   }
   .toggleoutline {
-    position: absolute;
+    position: fixed;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
@@ -467,7 +484,7 @@ footer p {
   }
 
   .togglelist {
-    position: absolute;
+    position: fixed;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
@@ -494,8 +511,9 @@ footer p {
     rotate: 0deg;
   }
   .writing-area {
-    position: absolute;
+    position: fixed;
     width: 90%;
+    height: 70%;
     left: 5%;
     margin: 0 auto;
   }
@@ -516,5 +534,8 @@ footer p {
   }
   #logoutBtn{
     margin-top: 85px;
+  }
+  .main-editor{
+    height: 200px;
   }
 }
