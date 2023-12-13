@@ -120,6 +120,11 @@ function deleteConfirmation(element, db, dbObj) {
         setTimeout(() => {
           messageElement.remove();
         }, 3000);
+        const items = document.querySelectorAll(".item-container");
+        for(let i = 0; i < items.length; i++){
+          console.log(i)
+          items[i].setAttribute("data-index", i)
+        }
       };
       updateRequest.onerror = (event) => {
         console.error("Error updating item:", event.target.error);
