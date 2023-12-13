@@ -9,6 +9,7 @@ import {
   createList, 
   accessLists, 
   addListItem,
+  displayLists
 } from "./databaseFunctions.js";
 // console.log("Generated unique ID:", guid());
 
@@ -72,6 +73,8 @@ const IDB = () => {
     }
   );
   const leftBtn = document.getElementById("left-panel-btn");
+  const rightBtn = document.getElementById("add-custom-list-btn");
+
   leftBtn.addEventListener("click", (e) => {
     if (e.target.classList.contains("new-project")) {
       addProject(db, e);
@@ -101,7 +104,47 @@ const IDB = () => {
     noProjectBtn.addEventListener("click", (e) => {
         addProject(db, e);
     });
+    rightBtn.setAttribute("data-id", null)
+
+    document.querySelector(".custom-lists").innerHTML = ``;
   });
+
+  //Right Panel Stuff
+ 
+  rightBtn.addEventListener("pointerdown", (e) => {
+    const projectId = e.target.getAttribute("data-id")
+    if(projectId == "null") {
+      console.log("I'm stoopy")
+      return;
+    }
+    else if(e.target.classList.contains("add-list-item")){
+      addListItem(db, projectId)
+      console.log("I'm not stoopy after all")
+    }
+    else if(!e.target.classList.contains("add-list-item")){
+      createList(db, projectId);
+    }
+
+  })
+
+  const rightBackBtn = document.getElementById("right-panel-back");
+  rightBackBtn.addEventListener("pointerdown", (e) => {
+    if(!e.target.classList.contains("in-list")) return;
+
+    const projectId = rightBtn.getAttribute("data-id");
+    e.target.classList.toggle("in-list", !e.target.classList.contains("in-list"));
+    document.querySelector(".custom-lists").innerHTML = ``;
+    const transaction = db.transaction("projects", "readwrite");
+    const store = transaction.objectStore("projects");
+    const request = store.get(projectId)
+    request.onsuccess = (e) =>{
+      const projectObj = e.target.result;
+      displayLists(db, projectObj.id, projectObj.data.lists)
+      rightBtn.classList.toggle("add-list-item", false);
+      rightBtn.setAttribute("data-list-id", null);
+    }
+  })
+
 
   // document.querySelector('#no-project-btn').addEventListener('pointerdown', (e)=>{
   //     if(e.target.classList.contains('new-project')){

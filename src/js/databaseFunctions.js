@@ -39,8 +39,6 @@ function addProject(db, e) {
     id: guid(),
     name: projectName,
     data: {
-      characters: [],
-      locations: [],
       chapters: [
         {
           content: {
@@ -51,7 +49,9 @@ function addProject(db, e) {
           },
         },
       ],
-      lists: {} // Adding an empty lists object to the project
+      lists: {
+
+      } // Adding an empty lists object to the project
     },
   };
 
@@ -62,7 +62,6 @@ function addProject(db, e) {
 
     // Creating a default list when a project is added
     const listName = "Default List";
-    createList(db, listName); // Function call to create a list
     createProjectElement(db, e, 0, project.id, project.name);
   };
   storeRequest.onerror = (err) => {
@@ -113,12 +112,13 @@ function addChapter(db, event) {
   };
 }
 
-function createProjectElement(db, event, index, id, projectName) {
+function createProjectElement(db, cursor, index, id, projectName) {
   const projectItem = document.createElement("a");
   projectItem.textContent = `- ${projectName}`;
   projectItem.classList.toggle("project-item", true);
   projectItem.setAttribute("data-id", id);
   document.querySelector(".outline .content").append(projectItem);
+
   projectItem.addEventListener("pointerdown", (e) => {
     const editor = document.querySelector(".writing-area")
     editor.classList.toggle("no-area", !editor.classList.contains("no-area"))
@@ -137,15 +137,11 @@ function createProjectElement(db, event, index, id, projectName) {
     accessChapters(db, id);
     makeEditor(".editor");
     loadChapter(db);
+    const addCustomListBtn = document.getElementById("add-custom-list-btn");
+    console.log(addCustomListBtn)
+    addCustomListBtn.setAttribute("data-id", id);
     accessLists(db, id);
-    const addCustomListBtns = document.getElementById("add-custom-list-btn");
-    addCustomListBtns.addEventListener('click', () => {
-      const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
-      createList(db, projectId);
-    });
-
-
-    displayLists(db); // Call this function to display lists when the DOM is loaded
+    //displayLists(db, cursor.data.lists); // Call this function to display lists when the DOM is loaded
   });
 }
 
@@ -196,78 +192,84 @@ function createChapterElement(db, event, index, projectName) {
   //LISTS
 
 
-  function createListElement(db, list) {
-    const listContainer = document.querySelector(".custom-list");
-  
-    const listButton = document.createElement("button"); // Change this to create a button
-    listButton.classList.add("list-button"); // Add a class for styling
-    listButton.setAttribute("data-list-id", list.id);
-    listButton.textContent = list.title;
-  
-    // Attach an event listener to each list button
-    listButton.addEventListener("click", () => {
-      // Display items associated with this list
-      displayItems(db, list);
-    });
-  
-    listContainer.appendChild(listButton);
-  }
-  function displayItems(db, list) {
+function createListElement(db, list) {
+  const listContainer = document.querySelector(".custom-lists");
+
+  const listButton = document.createElement("button"); // Change this to create a button
+  listButton.classList.add("list-button"); // Add a class for styling
+  listButton.setAttribute("data-list-id", list.id);
+  listButton.textContent = list.title;
+
+  const projectId = document.getElementById("add-custom-list-btn").getAttribute("data-id")
+
+  // Attach an event listener to each list button
+  listButton.addEventListener("click", () => {
+    // Display items associated with this list
+    displayListItems(db, projectId, list.id);
+  });
+
+  listContainer.appendChild(listButton);
+}
+
+  function displayListItems(db, projectId , listId) {
     console.log(`Display Items Function: ${db}`)
     console.log(db)
-    const itemsContainer = document.querySelector(".list-list");
+    const itemsContainer = document.querySelector(".custom-lists");
+    const backBtn = document.getElementById("right-panel-back");
+    backBtn.classList.toggle("in-list", true);
     itemsContainer.innerHTML = ""; // Clear previous items
-  
-    if (list && list.items) {
-      for (const itemId in list.items) {
-        const item = list.items[itemId];
-  
-        const itemContainer = document.createElement("div");
-        itemContainer.classList.add("item-container");
-  
-        const itemText = document.createElement("span");
-        itemText.textContent = item.title;
-  
-        const addItemButton = document.createElement("button");
-        addItemButton.textContent = "+";
-        addItemButton.classList.add("add-item-button");
-  
-        // Attach an event listener to each + button for items
-        addItemButton.addEventListener("click", (e) => {
-          openItemPopUp(db, list, item);
-        });
-  
-        itemContainer.appendChild(itemText);
-        itemContainer.appendChild(addItemButton);
-        itemsContainer.appendChild(itemContainer);
+
+    const transaction = makeTransaction(db, "projects", "readwrite");
+    const store = transaction.objectStore("projects");
+    const projectReq = store.get(projectId);
+    projectReq.onsuccess = (e) => {
+      const list = e.target.result.data.lists[listId]
+      if (list) {
+        const plusBtn = document.getElementById("add-custom-list-btn");
+        plusBtn.classList.toggle("add-list-item", true);
+        plusBtn.setAttribute("data-list-id", list.id);
+        for (const itemId in list.items) {
+          const item = list.items[itemId];
+          console.log(item)
+          console.log("List in Item Creaton:" + list)
+
+          createListItemElement(db, list, item, itemsContainer)
+        }
       }
     }
   }
+  function createListItemElement(db, list, item, container){
+    const itemContainer = document.createElement("div");
+    itemContainer.classList.add("item-container");
+    itemContainer.setAttribute("data-index", item.index)
+    const itemText = document.createElement("span");
+    itemText.textContent = item.title;
+    itemContainer.appendChild(itemText);
+    itemContainer.addEventListener("pointerdown", (e)=>{
+      openItemPopUp(db, list, item);
+    })
+    container.appendChild(itemContainer);
+  }
 
   function createList(db, projectId) {
-    let listName = prompt("Enter the list name:");
-    if (!listName) {
-      alert("Please enter a valid list name.");
-      return;
-    }
+    let listName = false;
+    do {
+      listName = prompt("Enter the list name:");
+      try {
+        listName = listName.trim();
+      } catch (err) {
+        return;
+      }
+      if (!!listName == false) alert("Please enter a valid list name.");
+    } while (!listName);
 
     const transaction = makeTransaction(db, "projects", "readwrite");
-    transaction.oncomplete = (ev) => {
-      console.log("Transaction Completed:", ev);
-    };
-
     const store = transaction.objectStore("projects");
-
     const projectReq = store.get(projectId);
 
     projectReq.onsuccess = (e) => {
       const projectObj = e.target.result;
-
-      if (!projectObj) {
-        // Handle if the project object doesn't exist
-        return;
-      }
-
+      if (!projectObj) return;
       // Generate a unique list ID
       const listId = `list_${crypto.randomUUID()}`;
 
@@ -277,19 +279,13 @@ function createChapterElement(db, event, index, projectName) {
         title: listName,
         items: [], // initialize the list with an empty array
       };
-
-      if (!projectObj.data.lists) {
-        projectObj.data.lists = {};
-      }
-
+      if (!projectObj.data.lists) projectObj.data.lists = {};
       // Add the new list to the project's lists data
       projectObj.data.lists[listId] = newList;
-
       const storeRequest = store.put(projectObj);
 
       storeRequest.onsuccess = (ev) => {
         console.log("Success in adding list!", ev);
-
         // Add the list element to the UI
         createListElement(db, newList);
       };
@@ -299,6 +295,7 @@ function createChapterElement(db, event, index, projectName) {
       };
     };
   }
+
   function accessLists(db, projectId) {
     const transaction = db.transaction(["projects"], "readonly");
     const store = transaction.objectStore("projects");
@@ -311,13 +308,10 @@ function createChapterElement(db, event, index, projectName) {
       if (projectObj && projectObj.data && projectObj.data.lists) {
         const lists = projectObj.data.lists;
         console.log("Lists retrieved:", lists);
-
-        for (const listId in lists) {
-          const list = lists[listId];
-          console.log("List ID:", listId, "List Data:", list);
-          // Process the retrieved list data as needed
-          displayLists(db, list)
-        }
+          // const list = lists[listId];
+          // console.log("List ID:", listId, "List Data:", list);
+          // // Process the retrieved list data as needed
+          displayLists(db, projectId ,lists)
       } else {
         console.log("No lists found for the project ID:", projectId);
       }
@@ -327,89 +321,115 @@ function createChapterElement(db, event, index, projectName) {
       console.error("Error accessing lists:", err);
     };
   };
-  function displayLists(db, list) {
+
+  function displayLists(db, projectId ,lists) {
+    console.log('I exist!')
     const listContainer = document.querySelector(".custom-lists");
-  
-    if (list && list.id && list.title && list.items) {
-    const listButton = document.createElement("button"); // Create a button element
-    listButton.classList.add("list-button"); // Add a class for styling
-    listButton.setAttribute("data-list-id", list.id);
-    listButton.textContent = list.title; // Set button text to the list title
+    if(!lists){
+      console.log("I don't exist afterall")
+      return;
+    }
 
-    // Attach an event listener to each list button
-    listButton.addEventListener("click", () => {
-      const listHeader = document.querySelector(".list-header");
-      const listList = document.querySelector(".list-list");
-      const allListButtons = document.querySelectorAll(".list-button");
-    
-      // Hide list-header, list-list, and other list buttons
-      listHeader.style.display = "none";
-      listList.style.display = "none";
-      allListButtons.forEach(button => {
-        
-          button.style.display = "none";
-        
+    for(let list of Object.values(lists)){
+      console.log("I'm a list")
+      console.log(list)
+      const listButton = document.createElement("button"); // Create a button element
+      listButton.classList.add("list-button"); // Add a class for styling
+      listButton.setAttribute("data-list-id", list.id);
+      listButton.textContent = list.title; // Set button text to the list title
+
+      listButton.addEventListener("pointerdown", () => {
+        console.log("you click me!" + listButton)
+        const plusBtn = document.getElementById("add-custom-list-btn")
+        plusBtn.classList.toggle("add-list-item", true);
+        plusBtn.setAttribute("data-list-id", list.id);
+        displayListItems(db, projectId, list.id);
       });
+      listContainer.appendChild(listButton);
+    }
+
+  
+    // if (list && list.id && list.title && list.items) {
+    // const listButton = document.createElement("button"); // Create a button element
+    // listButton.classList.add("list-button"); // Add a class for styling
+    // listButton.setAttribute("data-list-id", list.id);
+    // listButton.textContent = list.title; // Set button text to the list title
+
+    // // Attach an event listener to each list button
+    // listButton.addEventListener("click", () => {
+    //   const listHeader = document.querySelector(".list-header");
+    //   const listList = document.querySelector(".list-list");
+    //   const allListButtons = document.querySelectorAll(".list-button");
     
-      // Convert the clicked button into an h3 element
-      const listH3 = document.createElement("h3");
-      listH3.textContent = list.title;
-      listH3.classList.add("list-h3");
-      listContainer.appendChild(listH3);
+    //   // Hide list-header, list-list, and other list buttons
+    //   listHeader.style.display = "none";
+    //   listList.style.display = "none";
+    //   allListButtons.forEach(button => {
+        
+    //       button.style.display = "none";
+        
+    //   });
     
-      // Create a "+" button for the pop-up
-      const popupButton = document.createElement("button");
-      popupButton.textContent = "Add an Item";
-      popupButton.classList.add("add-item-button");
+    //   // Convert the clicked button into an h3 element
+    //   const listH3 = document.createElement("h3");
+    //   listH3.textContent = list.title;
+    //   listH3.classList.add("list-h3");
+    //   listContainer.appendChild(listH3);
     
-      // Attach an event listener to open the pop-up when the "+" button is clicked
-      popupButton.addEventListener("click", () => {
-        openItemPopUp(db, list); // Call your function to open the pop-up here
-      });
+    //   // Create a "+" button for the pop-up
+    //   const popupButton = document.createElement("button");
+    //   popupButton.textContent = "Add an Item";
+    //   popupButton.classList.add("add-item-button");
     
-      listContainer.appendChild(popupButton); // Append the "+" button
-      // Display the list items associated with the clicked button
-      displayItems(db, list);// Create a "Back" button to go back to list-list
-      const backButton = document.createElement("button");
-      backButton.textContent = "Back";
-      backButton.classList.add("back-button");
+    //   // Attach an event listener to open the pop-up when the "+" button is clicked
+    //   popupButton.addEventListener("click", () => {
+    //     openItemPopUp(db, list); // Call your function to open the pop-up here
+    //   });
+    
+    //   listContainer.appendChild(popupButton); // Append the "+" button
+    //   // Display the list items associated with the clicked button
+    //   displayListItems(db, list);// Create a "Back" button to go back to list-list
+    //   const backButton = document.createElement("button");
+    //   backButton.textContent = "Back";
+    //   backButton.classList.add("back-button");
       
-      // Attach an event listener to the back button
-      backButton.addEventListener("click", () => {
-        const listHeader = document.querySelector(".list-header");
-        const listList = document.querySelector(".list-list");
-        const allListButtons = document.querySelectorAll(".list-button");
+    //   // Attach an event listener to the back button
+    //   backButton.addEventListener("click", () => {
+    //     const listHeader = document.querySelector(".list-header");
+    //     const listList = document.querySelector(".list-list");
+    //     const allListButtons = document.querySelectorAll(".list-button");
         
-        // Show list-header, list-list, and other list buttons
-        listHeader.style.display = "block";
-        listList.style.display = "block";
-        allListButtons.forEach(button => {
-          button.style.display = "inline-block"; // Show all list buttons
-        });
+    //     // Show list-header, list-list, and other list buttons
+    //     listHeader.style.display = "block";
+    //     listList.style.display = "block";
+    //     allListButtons.forEach(button => {
+    //       button.style.display = "inline-block"; // Show all list buttons
+    //     });
   
-        // Remove the added elements when going back
-        const listH3 = document.querySelector(".list-h3");
-        const addItemButton = document.querySelector(".add-item-button");
+    //     // Remove the added elements when going back
+    //     const listH3 = document.querySelector(".list-h3");
+    //     const addItemButton = document.querySelector(".add-item-button");
   
-        if (listH3) {
-          listH3.remove(); // Remove the added h3 element
-        }
+    //     if (listH3) {
+    //       listH3.remove(); // Remove the added h3 element
+    //     }
   
-        if (addItemButton) {
-          addItemButton.remove(); // Remove the "Add an Item" button
-        }
-        backButton.remove(); // Remove the back button itself after clicking it
+    //     if (addItemButton) {
+    //       addItemButton.remove(); // Remove the "Add an Item" button
+    //     }
+    //     backButton.remove(); // Remove the back button itself after clicking it
 
-      });
+    //   });
   
-      listContainer.appendChild(backButton); // Append the back button
-      listContainer.appendChild(listButton); // Append the list button to the container
-    })
+    //   listContainer.appendChild(backButton); // Append the back button
+    //   listContainer.appendChild(listButton); // Append the list button to the container
+    // })
   
     
 
-    listContainer.appendChild(listButton); // Append the button to the container
-    };}
+    // listContainer.appendChild(listButton); // Append the button to the container
+    // };
+  }
 
   
   // Function to open the item pop-up
@@ -420,6 +440,7 @@ function createChapterElement(db, event, index, projectName) {
     console.log(list)
     console.log(db)
     console.log(item)
+    console.log('OPEN')
     const projectId = document.querySelector(".subtitle").getAttribute("data-id")
     if(item == undefined){
       const transaction = makeTransaction(db, "projects", "readwrite")
@@ -427,28 +448,27 @@ function createChapterElement(db, event, index, projectName) {
       const request = store.get(projectId);
 
       request.onsuccess = (e) => {
+        console.log(`list id`+ list.id)
         const projectObj = JSON.parse(JSON.stringify(e.target.result));
         const selectedList = projectObj.data.lists[list.id];
         console.log(selectedList.items)
         selectedList.items.push({
           index: selectedList.items.length,
-          title:"Your Item Name",
-          description: "Lorem Ipsum"
+          title:"New Item",
+          description: "Details here..."
         });
         item = selectedList.items[selectedList.items.length -1]
-
         const storeRequest = store.put(projectObj);
 
         storeRequest.onsuccess = (ev) =>{
+          console.log(`list.id`+ list.id)
           const container = document.createElement('div');
           container.classList.toggle("item-card-container", true);
           container.innerHTML = `
           <div class="item-card" data-item-index="${item.index}" data-list-id="${list.id}">
           <button class="item-exit-btn">X</button>
           <p class="item-header" contenteditable>${item.title}</p>
-          <p class="item-description" contenteditable>
-          ${item.description}
-          </p>
+          <p class="item-description" contenteditable>${item.description}</p>
           <button class="item-save-btn">Save</button>
           <button class="item-delete-btn">Delete</button>
         </div>
@@ -465,15 +485,13 @@ function createChapterElement(db, event, index, projectName) {
       const container = document.createElement('div');
       container.classList.toggle("item-card-container", true);
       container.innerHTML = `
-      <div class="item-card" data-item-index="${item.index}">
+      <div class="item-card" data-item-index="${item.index}" data-list-id="${list.id}">
       <button class="item-exit-btn">X</button>
       <p class="item-header" contenteditable>${item.title}</p>
-      <p class="item-description" contenteditable>
-      ${item.description}
-      </p>
+      <p class="item-description" contenteditable>${item.description}</p>
       <button class="item-save-btn">Save</button>
       <button class="item-delete-btn">Delete</button>
-    </div>
+      </div>
       `
       const positioning = document.querySelector('.list-bar').getBoundingClientRect()
       console.log(positioning)
@@ -483,54 +501,46 @@ function createChapterElement(db, event, index, projectName) {
     }
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    // If using querySelectorAll, iterate through the collection to attach click event listeners
-  });
-
   function addListItem(db, projectId) {
-    let itemName = prompt("Enter the item name:");
-    if (!itemName) {
-      alert("Please enter a valid item name.");
-      return;
-    }
+    let itemName = false;
+    do {
+      itemName = prompt("Enter the item name:");
+      try {
+        itemName = itemName.trim();
+      } catch (err) {
+        return;
+      }
+      if (!!itemName == false) alert("Please enter a valid item name.");
+    } while (!itemName);
 
     const transaction = makeTransaction(db, "projects", "readwrite");
-    transaction.oncomplete = (ev) => {
-      console.log("Transaction Completed:", ev);
-    };
-
     const store = transaction.objectStore("projects");
-
     const projectReq = store.get(projectId);
+
+    const listId = document.getElementById("add-custom-list-btn").getAttribute("data-list-id")
 
     projectReq.onsuccess = (e) => {
       const projectObj = e.target.result;
+      console.log(projectObj)
 
-      if (!projectObj || !projectObj.data || !projectObj.data.lists || !projectObj.data.lists[projectId]) {
+      if (!projectObj.data.lists || !projectObj.data.lists[listId]) {
         console.error("Invalid project or list.");
         return;
       }
 
-      const list = projectObj.data.lists[projectId];
-
-      // Generate a unique item ID
-      const itemId = `item_${crypto.randomUUID()}`;
-
-      // Create a new item object with data
       const newItem = {
-        id: itemId,
+        index: projectObj.data.lists[listId].items.length,
         title: itemName,
         description: "", // initialize description with an empty string
       };
 
-      list.items[itemId] = newItem;
-
+      projectObj.data.lists[listId].items.push(newItem);
       const storeRequest = store.put(projectObj);
 
       storeRequest.onsuccess = (ev) => {
         console.log("Success in adding item!", ev);
         // Update the displayed list with the new item
-        displayLists(db, list);
+        createListItemElement(db, projectObj.data.lists[listId], projectObj.data.lists[listId].items[newItem.index], document.querySelector(".custom-lists"))
       };
 
       storeRequest.onerror = (err) => {
@@ -579,7 +589,7 @@ function createChapterElement(db, event, index, projectName) {
     cursorReq.onsuccess = (e) => {
       const cursor = e.target.result;
       if (cursor) {
-        createProjectElement(db, e, 0, cursor.value.id, cursor.value.name);
+        createProjectElement(db, cursor.value, 0, cursor.value.id, cursor.value.name);
         cursor.continue();
       }
     };
@@ -602,4 +612,4 @@ function createChapterElement(db, event, index, projectName) {
   }
   const projectId = document.querySelector(".outline .subtitle").getAttribute("data-id");
   //export default projectId;
-  export { addProject, addChapter, saveChapter, accessProjects, createList, accessLists, addListItem }
+  export { addProject, addChapter, saveChapter, accessProjects, createList, accessLists, addListItem, displayLists }

@@ -44,6 +44,8 @@ function saveData(element, db, dbObj) {
     const updateRequest = store.put(dbObj);
 
     updateRequest.onsuccess = (event) => {
+      const itemElement = document.querySelector(`.item-container[data-index="${itemIndex}"]`)
+      itemElement.children[0].textContent = item.title;
       // Create a message element indicating successful save
       const messageElement = document.createElement('div');
       messageElement.textContent = 'Item saved';
@@ -62,27 +64,15 @@ function saveData(element, db, dbObj) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Get the item ID from the URL query parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const itemId = urlParams.get('itemId');
-
-  // Select the save button element and call saveData function passing the itemId
-  const saveButton = document.querySelector(".item-save-btn");
-  if (saveButton) {
-    saveData(saveButton, itemId);
-  }
-});
-
-function closeElement(element, store, dbObj) {
+function closeElement(element, db, dbObj) {
   element.addEventListener("pointerdown", (e) => {
     const [title, description, listId, itemIndex] = getData(e.target.parentElement);
-    console.log(dbObj)
     const dbItem = dbObj.data.lists[listId].items[itemIndex];
     console.log(dbItem)
+    console.log({title: title, description: description})
 
     if(title != dbItem.title || description != dbItem.description){
-        const confirmation = confirm(`Changes made to the ${e.target.parentElement.querySelector('.item-header').textContent} item will not be saved, are you sure?`);
+        const confirmation = confirm(`Changes made to the ${dbItem.title} item will not be saved, are you sure?`);
         if(!confirmation) return
     }
 
@@ -90,21 +80,39 @@ function closeElement(element, store, dbObj) {
   });
 }
 
-function deleteConfirmation(element, store, dbObj) {
+function deleteConfirmation(element, db, dbObj) {
   if (element) {
     element.addEventListener("pointerdown", (e) => {
-      const itemHeader = e.target.parentElement.querySelector(".item-header");
-      if (itemHeader) {
-        const confirmation = confirm(`Are you sure you would like to delete the ${itemHeader.textContent} item?`);
-        if (!confirmation) return;
-
-        // Delete Item From DB Code Here
-
-        // Remove Element from Document.
-        e.target.parentElement.remove();
-      } else {
-        console.error("Item header not found.");
+      const [title, description, listId, itemIndex] = getData(e.target.parentElement);
+      if (!dbObj || isNaN(itemIndex)) {
+        console.error("Project Object or Item ID is missing.");
+        return
       }
+
+      dbObj.data.lists[listId].items.splice(itemIndex, 1);
+
+      const transaction = db.transaction("projects", "readwrite");
+      const store = transaction.objectStore("projects")
+      const updateRequest = store.put(dbObj);
+
+      updateRequest.onsuccess = (event) => {
+        // Create a message element indicating successful save
+        const itemElement = document.querySelector(`.item-container[data-index="${itemIndex}"]`)
+        itemElement.remove();
+        const messageElement = document.createElement('div');
+        messageElement.textContent = 'Item deleted';
+        messageElement.classList.add('saved-message');
+        // Insert the message into the UI (in this example, it's added after the save button)
+        document.querySelector(".main-editor").appendChild(messageElement);
+        e.target.parentElement.remove();
+        // Remove the message after a certain duration (here, removing after 3 seconds)
+        setTimeout(() => {
+          messageElement.remove();
+        }, 3000);
+      };
+      updateRequest.onerror = (event) => {
+        console.error("Error updating item:", event.target.error);
+      };
     });
   } else {
     console.error("Delete button element not found.");

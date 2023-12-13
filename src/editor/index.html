@@ -14,20 +14,8 @@
     <main class="main-editor">
       <div class="outline">
         <h2>Outline</h2>
-        <button
-          class="back left-corner-button"
-          id="left-panel-back"
-          title="Return to projects directory"
-        >
-          &#9001;
-        </button>
-        <button
-          class="new-project right-corner-button"
-          id="left-panel-btn"
-          title="Add item to list"
-        >
-          +
-        </button>
+        <button class="back left-corner-button" id="left-panel-back" title="Return to projects directory">&#9001;</button>
+        <button class="new-project right-corner-button" id="left-panel-btn" title="Add item to list">+</button>
         <h3 class="subtitle">Projects</h3>
         <div class="content"></div>
       </div>
@@ -39,18 +27,20 @@
         </div>
       </div>
       <div class="list-bar">
+        <button class="back left-corner-button" id="right-panel-back" title="Return to lists! directory">&#9001;</button>
+        <button class="right-corner-button" id="add-custom-list-btn" title="Add item to list" data-id="null">+</button>
+        <div class="custom-list" data-list-id="1">
+          <h3 class="list-header">Add a New List</h3>
+          <!-- Example items in the list -->
+          <ul class="list-list">
+
+            <!-- ... -->
+          </ul>
+        </div>
         <!-- ... Your existing elements ... -->
         <div class="custom-lists">
           <!-- Your dynamically created custom lists go here -->
           <!-- Example of a custom list with items -->
-          <div class="custom-list" data-list-id="1">
-            <h3 class="list-header">Add a New List<button id="add-custom-list-btn">+</button></h3>
-            <!-- Example items in the list -->
-            <ul class="list-list">
-
-              <!-- ... -->
-            </ul>
-          </div>
           <!-- ... Other custom lists ... -->
         </div>
         
