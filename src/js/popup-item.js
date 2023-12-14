@@ -84,6 +84,9 @@ function closeElement(element, db, dbObj) {
     }
 
     e.target.parentElement.remove();
+        // Dispatch an event to signal closing the popup and hiding the item card container
+        const closeEvent = new CustomEvent('popupClosed');
+        document.dispatchEvent(closeEvent);
   });
 }
 
@@ -135,4 +138,4 @@ function deleteConfirmation(element, db, dbObj) {
   }
 }
 
-export { setUpPopUp };
+export { setUpPopUp, closeElement };

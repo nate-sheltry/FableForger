@@ -580,7 +580,6 @@ function openItemPopUp(db, e, listId) {
       `;
     const positioning = document
       .querySelector(".list-bar")
-      .getBoundingClientRect();
     console.log(positioning);
     document.querySelector(".main-editor").appendChild(container);
     container.style.left = `${positioning.left - positioning.width}px`;
@@ -676,6 +675,17 @@ function accessChapters(db, id) {
     }
   };
 }
+function handlePopupClosed() {
+  const itemCardContainer = document.querySelector('.item-card-container');
+  if (itemCardContainer) {
+    // Hide or remove the item card container here
+    itemCardContainer.style.display = 'none'; // or itemCardContainer.remove();
+  }
+}
+
+// Listen for the 'popupClosed' event
+document.addEventListener('popupClosed', handlePopupClosed);
+
 const projectId = document
   .querySelector(".outline .subtitle")
   .getAttribute("data-id");
