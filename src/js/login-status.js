@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Add logout functionality
-  logoutBtn.addEventListener("click", function () {
+  logoutBtn.addEventListener("pointerdown", function () {
     // Clear session storage
     sessionStorage.removeItem("loggedIn");
     sessionStorage.removeItem("userId");
