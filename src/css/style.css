@@ -245,6 +245,19 @@ header h1 {
   height: 100%;
   width: 100%;
 }
+.list-button{
+  background: transparent; 
+  font-family: "Stalemate", sans-serif;
+  font-size: 2rem; 
+  border: none; 
+}
+.custom-lists{
+  display: inline-grid; 
+}
+.custom-lists .item-container, .custom-list h3{
+  font-size: 2rem; 
+}
+
 footer {
   position: absolute;
   bottom: 0;

@@ -238,7 +238,6 @@ function createProjectElement(db, cursor, index, id, projectName) {
     console.log(addCustomListBtn);
     addCustomListBtn.setAttribute("data-id", id);
     accessLists(db, id);
-    //displayLists(db, cursor.data.lists); // Call this function to display lists when the DOM is loaded
   });
 }
 
@@ -315,7 +314,7 @@ function createListElement(db, list) {
   const listContainer = document.querySelector(".custom-lists");
 
   const listButton = document.createElement("button");
-  listButton.classList.add("list-button"); // Add a class for styling
+  listButton.classList.add("list-button"); 
   listButton.setAttribute("data-list-id", list.id);
   listButton.textContent = list.title;
 
@@ -554,9 +553,6 @@ function accessProjects(db) {
 
 // Function to open the item pop-up
 function openItemPopUp(db, e, listId) {
-  // Replace this with your logic to open the pop-up using your preferred method
-  // For instance, you might use window.open or a modal library to display the pop-up
-  // Here's an example using window.open to load the pop-up HTML
   console.log(listId);
   console.log(db);
   console.log("OPEN");
