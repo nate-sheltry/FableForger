@@ -2,6 +2,7 @@
   text-align: center;
 }
 
+<<<<<<< HEAD
 .ql-toolbar .ql-formats .ql-font-size .ql-picker-options .ql-picker-item {
   content: attr("data-value");
 }
@@ -10,10 +11,17 @@
   background-color:rgba(255,255,255,.25);
   color:white;
   font-weight:bold;
+=======
+.ql-toolbar {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: white;
+  font-weight: bold;
+>>>>>>> a739ac0 (update main with development.)
   border: 1px solid var(--ivory);
 }
 
 .ql-toolbar * {
+<<<<<<< HEAD
   font-weight:bold;
 }
 
@@ -21,3 +29,26 @@
   border-radius:16px;
   background-color:rgba(255,255,255,.15);
 }
+=======
+  font-weight: bold;
+}
+
+.ql-clipboard{
+  display:none;
+  visibility:hidden;
+  height:0px;
+}
+
+.ql-editor{
+  height:100%;
+  font-size:1rem;
+}
+.ql-editor * {
+  color:black;
+}
+
+.ql-toolbar * * {
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+>>>>>>> a739ac0 (update main with development.)

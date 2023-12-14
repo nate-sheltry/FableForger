@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Abel&family=Playfair+Display&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Stalemate');
-
-
+@import url("https://fonts.googleapis.com/css2?family=Abel&family=Playfair+Display&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Stalemate");
 :root {
   --primary-color: #ced9dd;
   --secondary-color: #a0b9bd;
@@ -10,45 +8,59 @@
   --ivory: #f0e8e3;
   --header: "Playfair Display", serif;
 }
-
 * {
   box-sizing: border-box;
 }
-
 body {
-    margin: auto;
-    padding: 0;
-    background-image: url(../images/wooden-table.png);
-    background-size: 100% 100%;
-    color: var(--tertiary-color);
-    height: 100%;
-    overflow: hidden;
-    font-family: 'Stalemate', sans-serif;
+  margin: auto;
+  padding: 0;
+  background-image: url(/images/wooden-table.png);
+  background-size: 100% 100%;
+  color: var(--tertiary-color);
+  height: 100%;
+  overflow: hidden;
+  font-family: "Stalemate", sans-serif;
 }
-
 body,
+<<<<<<< HEAD
 h1 h2  {
   font-family: 'Stalemate', sans-serif;
   color: var(--ivory);
 
 }
 
+=======
+h1 h2 {
+  font-family: "Stalemate", sans-serif;
+  color: var(--ivory);
+}
+main {
+  height: 100%;
+}
+>>>>>>> a739ac0 (update main with development.)
 .bookname {
   text-decoration: none;
   color: var(--ivory);
 }
-
 .bookname:hover {
   color: var(--secondary-color);
 }
-
 h3 {
   color: var(--tertiary-color);
 }
+<<<<<<< HEAD
 .list-bar h3{
 color: var(--ivory);
 }
 
+=======
+.list-bar h3 {
+  color: var(--ivory);
+}
+.list-bar{
+  padding:20px;
+}
+>>>>>>> a739ac0 (update main with development.)
 h1,
 h2,
 h3,
@@ -56,22 +68,27 @@ p {
   padding: 0.5em;
   margin: 0;
 }
-
 p {
   font-family: "Abel", sans-serif;
   color: var(--tertiary-color);
 }
-
 header {
+<<<<<<< HEAD
   background-color: none;
+=======
+  background-color:transparent;
+>>>>>>> a739ac0 (update main with development.)
   text-align: center;
 }
-
 header h1 {
   padding: 0;
   height: 65px; /* Set a fixed height */
   overflow: hidden; /* Hide overflowing content */
+<<<<<<< HEAD
   background-image: url('/images/old_paper2-turned.jpg');
+=======
+  background-image: url("/images/old_paper2-turned.jpg");
+>>>>>>> a739ac0 (update main with development.)
   rotate: 2deg;
   background-position: left bottom;
   background-size: 160% 170%;
@@ -82,14 +99,22 @@ header h1 {
   color: rgba(48, 31, 16, 0.866);
   font-weight: bold;
 }
+<<<<<<< HEAD
 
 #userStatus{
+=======
+#userStatus {
+>>>>>>> a739ac0 (update main with development.)
   position: absolute;
   right: 10px;
   top: 5px;
   padding: 5px;
   height: 65px;
+<<<<<<< HEAD
   background-image: url('/images/old_paper2-turned.jpg');
+=======
+  background-image: url("/images/old_paper2-turned.jpg");
+>>>>>>> a739ac0 (update main with development.)
   rotate: -1deg;
   background-position: left bottom;
   background-size: 160% 170%;
@@ -108,7 +133,11 @@ header h1 {
   height: 60px;
   border: none;
   background-color: transparent;
+<<<<<<< HEAD
   background-image: url('/images/wax-stamp.png');
+=======
+  background-image: url("/images/wax-stamp.png");
+>>>>>>> a739ac0 (update main with development.)
   background-position: center;
   background-size: cover;
   margin-bottom: 10px;
@@ -119,20 +148,32 @@ header h1 {
   font-family: inherit;
   cursor: pointer;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a739ac0 (update main with development.)
 .main-editor {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   height: calc(100vh - 132px);
   max-height: calc(100vh - 132px);
+<<<<<<< HEAD
   /* overflow-y:hidden; */
+=======
+  overflow-y: hidden;
+>>>>>>> a739ac0 (update main with development.)
 }
-
 .ql-container.ql-snow {
   border: 1px solid var(--ivory);
-  background-image: url(../images/old-paper-turned.jpg);
-    background-size: 100% 100%;
+  background-size: 100% 100%;
 }
+.no-area {
+  background-image: url(/images/old-envelope.jpg);
+}
+.editor-area {
+  background-image: url(/images/old-paper-turned.jpg);
+}
+<<<<<<< HEAD
 .no-area{
   background-image: url(../images/old-envelope.jpg);
 }
@@ -140,21 +181,37 @@ header h1 {
   background-image: url(../images/old-paper-turned.jpg);
 }
 
+=======
+>>>>>>> a739ac0 (update main with development.)
 .writing-area {
-    display:flex;
-    height:100%;
-    flex-direction: column;
-    grid-column: 2 / span 1;
-    margin-left: 20px;
-    margin-right: 20px;
-    background-color: var(--secondary-color);
-    justify-content:end;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
+  background-size: 100% 100%;
+  margin-top: 35px;
+  padding-bottom:32px;
+  margin-bottom: 35px;
+  margin-right: 15px;
+  overflow-y: hidden;
+  min-height: 67.7vmin;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  grid-column: 2 / span 1;
+  margin-left: 20px;
+  margin-right: 20px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
 }
+<<<<<<< HEAD
 #no-project-btn{
   height: 60px;
   width: 60px;
   padding: 1px;
+=======
+#no-project-btn {
+  height: 120px;
+  width: 120px;
+  background-image: url(/images/wax-stamp.png);
+  background-size: cover;
+  padding: 15px;
+>>>>>>> a739ac0 (update main with development.)
   border-radius: 50px;
   border: none;
   background-color: transparent;
@@ -163,24 +220,20 @@ header h1 {
   font: inherit;
   font-size: 1.2rem;
   font-weight: bold;
+  margin-left: -25px;
+  margin-bottom: -25px;
 }
 .editor {
-  rotate: -1deg;
-  background-image: url(../images/old-envelope.jpg);
-    background-size: 100% 100%;
-    padding-top: 70px;
-    padding-bottom: 70px;
-    padding-left: 35px;
-    padding-right: 15px;
-    overflow-y: hidden;
-    min-height: 67.7vmin;
-    max-height: 67.7vmin;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.718);
+  height: 100%;
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 40px;
 }
-
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
+<<<<<<< HEAD
   }
   
   /* Track */
@@ -257,6 +310,66 @@ height: 100%;
 font-size: 1.2rem;
 font-weight: bold;
 cursor: pointer;
+=======
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to right,
+    rgba(198, 140, 58, 0.793),
+    rgba(0, 0, 0, 0.804)
+  );
+  border-radius: 5px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+}
+.toggleoutline {
+  display: flex;
+  position: fixed;
+  height: 78.5%;
+  width: 25%;
+}
+.togglelist {
+  right: 0;
+  display: flex;
+  position: fixed;
+  height: 78.5%;
+  width: 25%;
+}
+.outline {
+  display: flex;
+  flex-direction: column;
+  background-image: url(/images/cover.jpg);
+  background-size: 100% 100%;
+  background-repeat: repeat-y;
+  color: var(--ivory);
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.749);
+  z-index: 2;
+  text-align: center;
+  padding: 20px;
+  color: rgba(198, 158, 58, 0.752);
+  padding: 20px;
+  font-size: 1.5rem;
+}
+.outline .content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+>>>>>>> a739ac0 (update main with development.)
 }
 .subtitle {
   font-size: 2rem;
@@ -267,7 +380,11 @@ cursor: pointer;
   content: " :";
 }
 .list-bar {
+<<<<<<< HEAD
   background-image: url(../images/old_paper2.jpg);
+=======
+  background-image: url(/images/old_paper2.jpg);
+>>>>>>> a739ac0 (update main with development.)
   background-size: 100% 100%;
   background-repeat: repeat-y;
   background-color: var(--tertiary-color);
@@ -277,20 +394,44 @@ cursor: pointer;
   z-index: 2;
   color: rgba(48, 31, 16, 0.866);
   text-align: center;
+<<<<<<< HEAD
+=======
+  height: 100%;
+  width: 100%;
 }
-
+.list-button{
+  background-color: transparent;
+  font-family: "Stalemate", sans-serif;
+  border: none; 
+  font-size: 2rem;
+}
+.custom-lists{
+  display: inline-grid;
+}
+.custom-list h3, .custom-lists .item-container{
+  font-size: 2rem;
+>>>>>>> a739ac0 (update main with development.)
+}
 footer {
   position: absolute;
   bottom: 0;
   left: 50%;
+<<<<<<< HEAD
   background-color: none;
+=======
+  background-color: transparent;
+>>>>>>> a739ac0 (update main with development.)
   color: var(--secondary-color);
   text-align: center;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.63);
   rotate: 3deg;
 }
 footer p {
+<<<<<<< HEAD
   background-image: url(../images/old_paper2-turned.jpg);
+=======
+  background-image: url(/images/old_paper2-turned.jpg);
+>>>>>>> a739ac0 (update main with development.)
   color: rgba(48, 31, 16, 0.866);
   font-weight: bold;
 }
@@ -298,16 +439,23 @@ footer p {
   text-align: center;
 }
 .right-corner-button {
-  right: 1.7em;
-  top: 2em;
+  right: 25px;
+  top: .5em;
+  filter:drop-shadow(1px 0px 2px black);
+  text-shadow:-1px 0px 2px black;
 }
 .left-corner-button {
-  right: 3.5em;
-  top: 2em;
+  right: 2.5em;
+  top: .5em;
+  filter:drop-shadow(1px 0px 2px black);
+  text-shadow:-1px 0px 2px black;
 }
-#left-panel-back {
-  transform: scale(3, 1);
+#left-panel-back,
+#right-panel-back {
+  transform: scale(1.5, .8);
   font-weight: normal;
+  margin:0;
+  padding:0;
 }
 .right-corner-button,
 .left-corner-button {
@@ -317,7 +465,7 @@ footer p {
   position: absolute;
   border: none;
   background: none;
-  font-size: 1.25rem;
+  font-size: 1.9rem;
   font-weight: bold;
   color: rgba(221, 178, 67, 0.963);
   transition: color 0.1s;
@@ -333,33 +481,47 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow:hidden;
+  overflow: auto;
 }
 .writing-area .editor .ql-editor {
-    width: 100%;
-    overflow-y:scroll;
+  width: 100%;
+  overflow-y: scroll;
 }
 .project-item,
 .chapter-item {
   padding: 0.5em 0em 0.5em 1em;
   transition: color 0.1s;
   font-size: 1.8rem;
+<<<<<<< HEAD
+=======
+  text-align:left;
+}
+.chapter-item::before, .project-item::before{
+  content:" - ";
+>>>>>>> a739ac0 (update main with development.)
 }
 .project-item:hover,
 .chapter-item:hover {
   color: rgb(192, 192, 192);
 }
-
 /*Pop Up Item Card*/
+.item-card-container {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+left: 0;
+}
 .item-card {
-  position: relative;
-  outline: 2px solid var(--secondary-color);
-  border: 2px solid var(--primary-color);
+  position:relative;
   border-radius: 20px;
-  width: 16em;
-  height: 30em;
-  padding: 1em;
-  background-color: var(--ivory);
+  width: 50vw;
+  height: 60vh;
+  padding-top: 1em;
+  background-image: url(/images/old-paper-texture.png);
+  background-position: right top;
+  background-size: 160% 170%;
   margin: 1em auto;
 }
 .item-card [contenteditable]:focus {
@@ -369,29 +531,33 @@ footer p {
 .item-card .item-description,
 .item-card .item-header {
   margin-top: 1em;
-  background-color: white;
+  background-color: rgba(244, 240, 236, 0.4);
   border-radius: 10px;
   text-overflow: ellipsis;
   overflow-y: scroll;
   overflow-x: hidden;
   color: black;
-  border: 2px solid var(--primary-color);
+  border: 2px solid rgba(77, 37, 6, 0.4);
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: auto; 
+  margin-right: auto;
 }
 .item-card .item-header {
-  width: 228.8px;
-  height: 3em;
-  font-size: 1.2rem;
-  font-family: var(--header);
+  width: 70%;
+  font-size: 1rem;
+  padding: .5rem;
+  margin-top: 3rem;
 }
 .item-card .item-description {
-  width: 232px;
-  height: 18rem;
+  width: 70%;
+  height: 65%;
   padding: 0.5em;
+
 }
 .item-card .item-exit-btn {
   position: absolute;
-  top: 2px;
-  right: 10px;
+  top: 2rem;
+  right: 2rem;
   width: 2rem;
   height: 2rem;
   background: none;
@@ -399,7 +565,7 @@ footer p {
   border: none;
   font-weight: 600;
   font-size: 1.25rem;
-  color: var(--tertiary-color);
+  color: rgb(202, 36, 66);
   border-radius: 10px;
   opacity: 0.7;
 }
@@ -419,20 +585,218 @@ footer p {
 }
 .item-card .item-save-btn {
   width: 6em;
-  height: 2.2em;
+  height: 1.8em;
   right: 1.5em;
   font-size: 1.1rem;
   color: white;
-  background-color: rgb(60, 179, 90);
+  background-color: rgba(60, 179, 90, 0.6);
   border-color: rgb(60, 179, 90);
+  font-family: "Stalemate", sans-serif;
 }
 .item-card .item-delete-btn {
   width: 4em;
   left: 2em;
   height: 1.8em;
   font-size: 1rem;
-  background-color: rgb(202, 36, 66);
+  background-color: rgba(202, 36, 66, 0.6);
   border-color: rgb(202, 36, 66);
+  font-family: "Stalemate", sans-serif;
+}
+#toggleOutlineBtn,
+#toggleListBtn {
+  display: none;
+}
+.list-bar .list-header{
+  font-size:2rem;
+}
+.list-bar{
+  font-size:2rem;
+  text-shadow:.5px 0px .5px;
+}
+.custom-lists{
+  display:flex;
+  flex-direction:column;
+}
+.list-button{
+  border:none;
+  outline:none;
+  background:none;
+  font-family:Stalemate, sans-serif;
+  font-size:2rem;
+  text-shadow:.5px 0px .5px;
+  transition: color .15s;
+  text-align:left;
+  padding-left:.5em;
+}
+.list-button::before, .item-container::before{
+  content:" - "
+}
+.list-button:hover{
+  color:var(--ivory)
+}
+.item-container{
+  text-align:left;
+  transition:color .15s;
+}
+.item-container:hover{
+  color:var(--ivory);
+}
+@media only screen and (max-width: 768px) {
+  html,
+  body {
+    overflow: hidden;
+  }
+
+  .listBtns, .listBtns-left {
+    position: relative;
+    bottom: 20%;
+    margin: 1rem;
+  }
+
+  body {
+    background-size: contain;
+    display: flex;
+    flex-direction: column;
+  }
+  main {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #toggleOutlineBtn,
+  #toggleListBtn {
+    position: relative;
+    display: block;
+    margin-bottom: 10px;
+    background-color: rgb(106, 10, 10);
+    color: rgba(221, 178, 67, 0.963);
+    padding: 2px;
+    font-family: inherit;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  #toggleListBtn {
+    position: absolute;
+    left: -5%;
+    rotate: -90deg;
+    width: 70px;
+    border: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  #toggleOutlineBtn {
+    rotate: 90deg;
+    margin-left: -10px;
+    width: 70px;
+    border: none;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  .toggleoutline {
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    left: 7%;
+    top: 0;
+    transform: translateX(-95%);
+    transition:
+      transform 0.5s ease,
+      rotate 0.5s ease;
+    width: 80%;
+    height: 90%;
+    rotate: -5deg;
+    z-index: 1;
+  }
+  .outline {
+    margin-left: -30px;
+    width: 100%;
+    height: 75%;
+  }
+
+  .togglelist {
+    position: fixed;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    right: 0;
+    top: 0;
+    transform: translateX(95%);
+    transition:
+      transform 0.5s ease,
+      rotate 0.5s ease;
+    width: 80%;
+    height: 90%;
+    rotate: 5deg;
+  }
+  .list-bar {
+    width: 100%;
+    height: 75%;
+  }
+
+  .toggleoutline.show {
+    transform: translateX(0);
+    rotate: 0deg;
+  }
+
+  .togglelist.show {
+    transform: translateX(0);
+    rotate: 0deg;
+  }
+  .writing-area {
+    position: fixed;
+    width: 90%;
+    height: 70%;
+    left: 5%;
+    margin: 0 auto;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+  }
+  header h1,
+  .userStatus {
+    position: relative;
+  }
+  .ql-container.ql-snow {
+    height:100%;
+  }
+  #userStatus {
+    margin-top: 80px;
+    rotate: -5deg;
+  }
+  #logoutBtn {
+    margin-top: 85px;
+  }
+  .main-editor {
+    height: 200px;
+  }
+  .project-item, .chapter-item{
+    padding-left:2.5em;
+  }
+}
+@media only screen and (max-width: 425px) {
+  #toggleListBtn {
+    left: -14%;
+  }
+
+  .item-card {
+ 
+    width: 70vw;
+    }
+
+  .project-item, .chapter-item{
+    padding-left:1em;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .project-item, .chapter-item{
+    padding-left:4vw;
+  }
+
 }
 
 

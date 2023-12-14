@@ -30,7 +30,11 @@ main {
   height: 200px;
   position: absolute;
   box-shadow: none;
+<<<<<<< HEAD
   background-color: none;
+=======
+  background-color: transparent;
+>>>>>>> a739ac0 (update main with development.)
   top: 0;
   left: 150px;
 }
@@ -38,6 +42,7 @@ main {
   background-image: url("/images/desk-top-feather-pen.jpg");
   background-size: cover;
   position: relative;
+<<<<<<< HEAD
   width: 470px;
   height: 320px;
   transform: rotate(-85deg);
@@ -50,6 +55,17 @@ main {
 }
 .book {
   margin-left: 20%;
+=======
+  width: 450px;
+  height: 320px;
+  transform: rotate(-35deg);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.445);
+  z-index: -1;
+  overflow: -moz-hidden-unscrollable;
+}
+.book {
+  margin-left: 30%;
+>>>>>>> a739ac0 (update main with development.)
   position: relative;
   width: 330px;
   height: 200px;
@@ -57,6 +73,7 @@ main {
 }
 div {
   position: absolute;
+<<<<<<< HEAD
   width: 500px;
   height: 400px;
   text-align: center;
@@ -157,12 +174,100 @@ div {
 .register h1 {
   font-size: 3.3rem;
   padding-top: 3rem;
+=======
+  width: 320px;
+  height: 400px;
+  text-align: center;
+}
+.cover, .login, .register {
+  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.445);
+}
+.login,
+.register {
+  display: flex;
+  flex-direction: column;
+  background-image: url("/images/old-paper.jpg");
+  background-size: 100% 100%;
+  z-index: 1;
+  text-align: center;
+  align-items: center;
+  color: rgba(72, 52, 37, 0.686);
+}
+.register {
+  border-bottom: solid 5px rgb(72, 52, 37);
+  border-top: solid 5px rgb(72, 52, 37);
+  border-right: solid 5px rgb(72, 52, 37);
+  border-left: solid 1px rgb(118, 74, 40);
+  border-radius: 0 3px 3px 0;
+}
+.login {
+  transform-origin: left center;
+  transition:
+    transform 2s,
+    left 2s;
+  z-index: 1;
+  border-left: solid 1px rgb(118, 74, 40);
+  width: 315px;
+  height: 390px;
+  margin-top: 5px;
+}
+.register {
+  z-index: 0;
+}
+.cover {
+  transform-origin: left center;
+  transition:
+    transform 2s,
+    left 2s;
+  z-index: 2;
+  background-image: url("/images/cover.jpg");
+  background-size: 100% 100%;
+  border-radius: 3px;
+}
+.cover h1,
+.cover h2,
+.cover h3,
+.cover p,
+.cover h4,
+.cover button {
+  color: rgba(198, 158, 58, 0.752);
+  margin-top: 10px;
+  margin-left: 35%;
+  margin-right: 25%;
+  border-radius: 25px;
+}
+.cover button {
+  font-size: 2rem;
+  font-family: inherit;
+  background: none;
+  border: solid 0.5px rgba(198, 158, 58, 0.595);
+  cursor: pointer;
+}
+.cover button:hover {
+  color: #f6f1e698;
+}
+.cover h2 {
+  margin-top: 20px;
+  font-size: 2.4rem;
+  font-weight: bolder;
+}
+.cover p {
+  font-size: 2rem;
+}
+.login h2,
+.register h2 {
+  font-size: 2.4rem;
+>>>>>>> a739ac0 (update main with development.)
 }
 .login label,
 .register label {
   font-weight: bold;
   color: rgba(72, 52, 37, 0.686);
+<<<<<<< HEAD
   font-size: 2.5rem;
+=======
+  font-size: 1.8rem;
+>>>>>>> a739ac0 (update main with development.)
 }
 #loginForm input,
 #registerForm input {
@@ -182,6 +287,7 @@ div {
 #loginForm,
 #registerForm {
   width: 70%;
+<<<<<<< HEAD
   margin-top: 20px;
 }
 #loginForm button,
@@ -190,12 +296,23 @@ div {
   padding-left: 10px;
   padding-right: 10px;
   font-size: 3rem;
+=======
+  margin-top: -20px;
+}
+#loginForm button,
+#registerForm button {
+  margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 1.8rem;
+>>>>>>> a739ac0 (update main with development.)
   font-family: inherit;
   background: none;
   border: solid 1px rgba(72, 52, 37, 0.686);
   border-radius: 50px;
   cursor: pointer;
   margin-bottom: -10px;
+<<<<<<< HEAD
   font-weight: 900;
   text-decoration: underline;
   color: rgba(72, 52, 37, 0.686);
@@ -204,6 +321,11 @@ div {
 button#registerButton:hover {
   color: limegreen;
   text-decoration: none;
+=======
+  font-weight: bold;
+  text-decoration: underline;
+  color: rgba(72, 52, 37, 0.686);
+>>>>>>> a739ac0 (update main with development.)
 }
 .small {
   font-size: 1.3rem;
@@ -216,19 +338,27 @@ button#registerButton:hover {
   justify-content: center;
   align-items: center;
   color: rgba(72, 52, 37, 0.686);
+<<<<<<< HEAD
   font-size: 3rem;
   gap: 0.3rem;
+=======
+>>>>>>> a739ac0 (update main with development.)
 }
 .smallbutton,
 .backbutton {
   cursor: pointer;
+<<<<<<< HEAD
   font-size: 2.5rem;
+=======
+  font-size: 1.3rem;
+>>>>>>> a739ac0 (update main with development.)
   border: none;
   background: none;
   font-family: inherit;
   font-weight: bold;
   text-decoration: underline;
   color: rgba(72, 52, 37, 0.686);
+<<<<<<< HEAD
   margin-bottom: 0.3rem;
 }
 .smallbutton:hover,
@@ -238,32 +368,83 @@ button#registerButton:hover {
 }
 p.small {
   font-size: 2.5rem;
+=======
+>>>>>>> a739ac0 (update main with development.)
 }
+#loginForm button.loginBtn:hover,
+button#registerButton:hover {
+  color: limegreen;
+  text-decoration: none;
+}
+.smallbutton:hover,
+.backbutton:hover {
+  text-decoration: none;
+  color: #7f5908;
+}
+
 @keyframes writeEffect {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
+  from {
+    width: 0;
   }
-  
-  #welcomeText {
-    font-size: 5rem;
-    margin: 5px;
-    padding: 10px;
-    overflow: hidden;
-    white-space: nowrap;
-    animation: writeEffect 4s cubic-bezier(0, 0, 0.58, 1) forwards;
-    color: rgba(48, 31, 16, 0.675);
+  to {
+    width: 100%;
+  }
+}
+#welcomeText {
+  font-size: 5rem;
+  margin: 5px;
+  padding: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: writeEffect 4s cubic-bezier(0, 0, 0.58, 1) forwards;
+  color: rgba(48, 31, 16, 0.675);
+}
+header {
+  width: 300px;
+  background-image: url("/images/desk-top-feather-pen.jpg");
+  rotate: 10deg;
+  background-position: left bottom;
+  background-size: 160% 170%;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
+}
+
+p.userNotFound {
+  font-size: 3rem;
+  font-weight: 900;
+  padding: 5rem 3rem;
+  color: #180d04ac;
+  text-align: center;
+  animation: writeEffect 3s cubic-bezier(0, 0, 0.58, 1) forwards;
+}
+
+/* Styles for small screens */
+@media only screen and (max-width: 600px) {
+  .book {
+    margin-left: 90px;
+    margin-top: 100px;
   }
   header {
-    background-image: url('/images/desk-top-feather-pen.jpg');
-    rotate: 10deg;
-    background-position: left bottom;
-    background-size: 160% 170%;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
+    margin-left: 150px;
   }
+  .paper {
+    top: 27%;
+    right: -21%;
+  }
+  #cover,
+  #login,
+  #register {
+    position: absolute;
+    top: -38%;
+  }
+  p.userNotFound {
+    font-size: 2.7rem;
+    font-weight: 900;
+    padding: 5.5rem 3rem;
+    text-align: center;
+    color: #180d04ac;
+    animation: writeEffect 3s cubic-bezier(0, 0, 0.58, 1) forwards;
+  }
+<<<<<<< HEAD
   /* Styles for small screens */
 @media only screen and (max-width: 600px) {
   body {
@@ -319,5 +500,25 @@ p.small {
     margin-top: 840px;
     margin-left: 150px;
     transform: rotate(250deg);
+=======
+}
+@media only screen and (max-width: 1072px) {
+  .candle {
+    left: 0;
+  }
+  .paper {
+    position: absolute;
+    margin-top: 380px;
+    margin-left: 350px;
+  }
+
+  p.userNotFound {
+    font-size: 2.3rem;
+    font-weight: 900;
+    text-align: center;
+    padding: 6rem 3rem;
+    color: #180d04ac;
+    animation: writeEffect 3s cubic-bezier(0, 0, 0.58, 1) forwards;
+>>>>>>> a739ac0 (update main with development.)
   }
 }

@@ -38,21 +38,9 @@ const options = {
     }
 };
 
-const customEffect = (editor) =>{
-    const quill = editor;
-    //const currentSelect = quill.getSelection();
-    console.log('custom effect')
-}
-
-
-
 function makeEditor(selector){
-    const start = performance.now();
-    const elem = document.querySelector(selector).parentElement;
     const Editor = new Quill(selector, options)
     QuillOb.editor = Editor;
-    const Toolbar = Editor.container.previousSibling;
-    console.log(Toolbar.querySelectorAll('.ql-font-size .ql-picker-options .ql-picker-item'))
     let TextChange = null;
     Editor.on('text-change', ()=>{
         isTextChanged = true;
@@ -63,8 +51,6 @@ function makeEditor(selector){
             getEditorData(currentChapter)
         }, 200)
     })
-    const end = performance.now();
-    console.log(`Result: ${end-start}`)
     return Editor;
 }
 
@@ -72,7 +58,6 @@ function getEditorData(chapter){
     if(chapter != sessionStorage.getItem('chapterIndex')){
         return
     }
-    console.log('running too much')
     if(!isTextChanged) return null;
     const contents = QuillOb.editor.getContents();
     saveQuillData(contents);
@@ -81,11 +66,8 @@ function getEditorData(chapter){
 }
 
 function setEditorData(content){
-    console.log(content.ops)
     QuillOb.editor.setText('');
-    for(let i = 0; i < content.ops.length; i++){
-        setTimeout(()=>{unpackData({ops: [content.ops[i]]})}, 0);
-    }
+    setTimeout(()=>{unpackData({ops: content.ops})}, 0);
     setTimeout(()=>{QuillOb.editor.history.clear()}, 200)
 }
 
@@ -99,7 +81,7 @@ function closeEditor(){
         QuillOb.editor = null
         document.querySelector('.writing-area').innerHTML =`
         <div class="editor">
-          <button class="new-project" id="no-project-btn">Start A New Project</button>
+          <button class="new-project" id="no-project-btn">New Project</button>
         </div>
         `
     }
@@ -113,7 +95,6 @@ function clearHistory(){
 function getEditorDataSchedule(delay = 5000 ,func){
     let timeoutId;
     return function () {
-        console.log('run')
         
         if(!QuillOb.editor || !(QuillOb.editor instanceof Quill)){
             clearTimeout(timeoutId);

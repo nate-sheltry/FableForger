@@ -15,8 +15,3 @@ import {
   deleteProject,
 } from "./indexManager.js";
 
-//getProjects();
-
-// makeEditor(".editor");
-
-// console.log(document.querySelector('.ql-font-size .ql-picker-options .ql-picker-item'))
