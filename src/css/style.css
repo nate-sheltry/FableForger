@@ -344,7 +344,7 @@ left: 0;
 .item-card {
   position:relative;
   border-radius: 20px;
-  width: 60vw;
+  width: 50vw;
   height: 60vh;
   padding-top: 1em;
   background-image: url(/images/old-paper-texture.png);
@@ -570,4 +570,8 @@ left: 0;
   #toggleListBtn {
     left: -14%;
   }
+  .item-card {
+ 
+    width: 70vw;
+    height: 60vh;}
 }
