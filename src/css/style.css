@@ -132,7 +132,8 @@ header h1 {
   rotate: -1deg;
   background-size: 100% 100%;
   margin-top: 35px;
-  padding-bottom: 70px;
+  padding-bottom:32px;
+  margin-bottom: 35px;
   margin-right: 15px;
   overflow-y: hidden;
   min-height: 67.7vmin;
@@ -576,7 +577,7 @@ footer p {
     position: relative;
   }
   .ql-container.ql-snow {
-    height: 200px;
+    height:100%;
   }
   #userStatus {
     margin-top: 80px;
