@@ -203,6 +203,14 @@ button#registerButton:hover {
   color: limegreen;
   text-decoration: none;
 }
+.smallbutton:hover,
+.backbutton:hover {
+  text-decoration: none;
+  color: #7f5908;
+}
+p.small {
+  font-size: 2.5rem;
+}
 @keyframes writeEffect {
   from {
     width: 0;
