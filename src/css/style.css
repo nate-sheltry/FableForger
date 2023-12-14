@@ -485,9 +485,9 @@ left: 0;
     overflow: hidden;
   }
 
-  .listBtns {
+  .listBtns, .listBtns-left {
     position: relative;
-    bottom: 5%;
+    bottom: 20%;
     margin: 1rem;
   }
 

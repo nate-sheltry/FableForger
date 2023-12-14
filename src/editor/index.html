@@ -17,19 +17,22 @@
       <div class="toggleoutline">
         <div class="outline">
           <h2>Outline</h2>
-          <button
-            class="back left-corner-button"
-            id="left-panel-back"
-            title="Return to projects directory"
-          >〈
-          </button>
-          <button
-            class="new-project right-corner-button"
-            id="left-panel-btn"
-            title="Add item to list"
-          >
-            +
-          </button>
+          <div class="listBtns-left">
+            <button
+              class="back left-corner-button"
+              id="left-panel-back"
+              title="Return to projects directory"
+            >
+              〈
+            </button>
+            <button
+              class="new-project right-corner-button"
+              id="left-panel-btn"
+              title="Add item to list"
+            >
+              +
+            </button>
+          </div>
           <h3 class="subtitle">Projects</h3>
           <div class="content"></div>
         </div>
@@ -48,7 +51,8 @@
               class="back left-corner-button"
               id="right-panel-back"
               title="Return to lists! directory"
-            >〈
+            >
+              〈
             </button>
             <button
               class="right-corner-button"
@@ -70,13 +74,13 @@
           <button id="toggleListBtn">List</button>
         </div>
       </div>
-      <div class="load-content hidden" style="display:none;">
-        <img src="/images/old-paper-texture.png" alt="Load resource">
+      <div class="load-content hidden" style="display: none">
+        <img src="/images/old-paper-texture.png" alt="Load resource" />
       </div>
     </main>
     <script src="../js/script.js" type="module"></script>
     <script src="../js/login-status.js" defer></script>
-    <script src="../js/toggleOutlineList.js"  defer></script>
+    <script src="../js/toggleOutlineList.js" defer></script>
     <footer><p>Footer info © 2023</p></footer>
   </body>
 </html>
