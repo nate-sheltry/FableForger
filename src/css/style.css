@@ -354,8 +354,8 @@ left: 0;
 .item-card {
   position:relative;
   border-radius: 20px;
-  width: 30em;
-  height: 35em;
+  width: 50vw;
+  height: 60vh;
   padding-top: 1em;
   background-image: url(/images/old-paper-texture.png);
   background-position: right top;
@@ -618,6 +618,12 @@ left: 0;
   #toggleListBtn {
     left: -14%;
   }
+
+  .item-card {
+ 
+    width: 70vw;
+    }
+
   .project-item, .chapter-item{
     padding-left:1em;
   }
@@ -627,4 +633,5 @@ left: 0;
   .project-item, .chapter-item{
     padding-left:4vw;
   }
+
 }
