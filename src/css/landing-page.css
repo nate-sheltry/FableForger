@@ -198,6 +198,11 @@ div {
   text-decoration: underline;
   color: rgba(72, 52, 37, 0.686);
 }
+#loginForm button.loginBtn:hover,
+button#registerButton:hover {
+  color: limegreen;
+  text-decoration: none;
+}
 @keyframes writeEffect {
   from {
     width: 0;
