@@ -371,7 +371,7 @@ left: 0;
 .item-card .item-description,
 .item-card .item-header {
   margin-top: 1em;
-  background-color: var(--ivory);
+  background-color: rgba(244, 240, 236, 0.4);
   border-radius: 10px;
   text-overflow: ellipsis;
   overflow-y: scroll;
