@@ -60,6 +60,8 @@ function saveData(element, db, dbObj) {
       setTimeout(() => {
         messageElement.remove();
       }, 3000);
+      const closeEvent = new CustomEvent('popupClosed');
+      document.dispatchEvent(closeEvent);
     };
     updateRequest.onerror = (event) => {
       console.error("Error updating item:", event.target.error);
@@ -124,10 +126,12 @@ function deleteConfirmation(element, db, dbObj) {
           messageElement.remove();
         }, 3000);
         const items = document.querySelectorAll(".item-container");
-        for(let i = 0; i < items.length; i++){
-          console.log(i)
-          items[i].setAttribute("data-index", i)
+        for (let i = 0; i < items.length; i++) {
+          items[i].setAttribute("data-index", i);
         }
+        // Dispatch the event to signal closing the popup and hiding the item card container
+        const closeEvent = new CustomEvent('popupClosed');
+        document.dispatchEvent(closeEvent);
       };
       updateRequest.onerror = (event) => {
         console.error("Error updating item:", event.target.error);
