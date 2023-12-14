@@ -1,9 +1,9 @@
 document
   .getElementById("toggleOutlineBtn")
-  .addEventListener("click", function () {
+  .addEventListener("pointerdown", function () {
     document.querySelector(".toggleoutline").classList.toggle("show");
   });
 
-document.getElementById("toggleListBtn").addEventListener("click", function () {
+document.getElementById("toggleListBtn").addEventListener("pointerdown", function () {
   document.querySelector(".togglelist").classList.toggle("show");
 });
