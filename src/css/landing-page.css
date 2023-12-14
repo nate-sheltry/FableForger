@@ -118,6 +118,9 @@ div {
   border: solid 0.5px rgba(198, 158, 58, 0.595);
   cursor: pointer;
 }
+.cover button:hover {
+  color: #f6f1e698;
+}
 .cover h2 {
   margin-top: 20px;
   font-size: 2.4rem;
