@@ -55,6 +55,8 @@ div {
   width: 320px;
   height: 400px;
   text-align: center;
+}
+.cover, .login, .register {
   box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.445);
 }
 .login,
