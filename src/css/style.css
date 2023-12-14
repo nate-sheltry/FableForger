@@ -451,6 +451,7 @@ footer p {
   color:var(--ivory)
 }
 .item-container{
+  text-align:left;
   transition:color .15s;
 }
 .item-container:hover{
