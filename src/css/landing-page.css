@@ -29,7 +29,7 @@ main {
   height: 200px;
   position: absolute;
   box-shadow: none;
-  background-color: none;
+  background-color: transparent;
   top: 0;
   left: 150px;
 }
