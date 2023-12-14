@@ -17,20 +17,22 @@
       <div class="toggleoutline">
         <div class="outline">
           <h2>Outline</h2>
-          <button
-            class="back left-corner-button"
-            id="left-panel-back"
-            title="Return to projects directory"
-          >
-            &#9001;
-          </button>
-          <button
-            class="new-project right-corner-button"
-            id="left-panel-btn"
-            title="Add item to list"
-          >
-            +
-          </button>
+          <div class="listBtns-left">
+            <button
+              class="back left-corner-button"
+              id="left-panel-back"
+              title="Return to projects directory"
+            >
+              〈
+            </button>
+            <button
+              class="new-project right-corner-button"
+              id="left-panel-btn"
+              title="Add item to list"
+            >
+              +
+            </button>
+          </div>
           <h3 class="subtitle">Projects</h3>
           <div class="content"></div>
         </div>
@@ -43,13 +45,14 @@
       </div>
       <div class="togglelist">
         <div class="list-bar">
+          <h3 class="list-header">Lists</h3>
           <div class="listBtns">
             <button
               class="back left-corner-button"
               id="right-panel-back"
               title="Return to lists! directory"
             >
-              &#9001;
+              〈
             </button>
             <button
               class="right-corner-button"
@@ -61,28 +64,23 @@
             </button>
           </div>
           <div class="custom-list" data-list-id="1">
-            <h3 class="list-header">Lists</h3>
-
             <ul class="list-list"></ul>
           </div>
           <div class="custom-lists"></div>
           <div class="list-items-area" style="display: none">
-            <h2 class="list-name"></h2>
-            <ul class="items-list">
-              <button class="back-btn">Back</button>
-            </ul>
+            <button class="back-btn">Back</button>
             <button class="add-item-btn">+</button>
           </div>
           <button id="toggleListBtn">List</button>
         </div>
       </div>
-      <div class="load-content hidden" style="display:none;">
-        <img src="/images/old-paper-texture.png" alt="Load resource">
+      <div class="load-content hidden" style="display: none">
+        <img src="/images/old-paper-texture.png" alt="Load resource" />
       </div>
     </main>
-    <script src="../js/script.js" type="module" defer></script>
-    <script src="../js/login-status.js" type="module" defer></script>
-    <script src="../js/toggleOutlineList.js" type="module" defer></script>
+    <script src="../js/script.js" type="module"></script>
+    <script src="../js/login-status.js" defer></script>
+    <script src="../js/toggleOutlineList.js" defer></script>
     <footer><p>Footer info © 2023</p></footer>
   </body>
 </html>

@@ -262,7 +262,15 @@ function loginUser(db, username, password) {
         }
       };
     } else {
-      console.error("User not found for the provided username.");
+      let userNotFound = document.createElement("p");
+      userNotFound.textContent =
+        "Please check your username and password, and then try again!";
+      let paper = document.querySelector(".paper");
+      userNotFound.className = "userNotFound";
+      paper.append(userNotFound);
+      console.warn(
+        "User not found for the provided username. Please register or check your username and password and then try again!"
+      );
     }
   };
 }

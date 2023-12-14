@@ -42,6 +42,9 @@ h3 {
 .list-bar h3 {
   color: var(--ivory);
 }
+.list-bar{
+  padding:20px;
+}
 h1,
 h2,
 h3,
@@ -54,7 +57,7 @@ p {
   color: var(--tertiary-color);
 }
 header {
-  background-color: none;
+  background-color:transparent;
   text-align: center;
 }
 header h1 {
@@ -129,7 +132,8 @@ header h1 {
   rotate: -1deg;
   background-size: 100% 100%;
   margin-top: 35px;
-  padding-bottom: 70px;
+  padding-bottom:32px;
+  margin-bottom: 35px;
   margin-right: 15px;
   overflow-y: hidden;
   min-height: 67.7vmin;
@@ -261,7 +265,7 @@ footer {
   position: absolute;
   bottom: 0;
   left: 50%;
-  background-color: none;
+  background-color: transparent;
   color: var(--secondary-color);
   text-align: center;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.63);
@@ -276,17 +280,23 @@ footer p {
   text-align: center;
 }
 .right-corner-button {
-  right: 1.7em;
-  top: 2em;
+  right: 25px;
+  top: .5em;
+  filter:drop-shadow(1px 0px 2px black);
+  text-shadow:-1px 0px 2px black;
 }
 .left-corner-button {
-  right: 3.5em;
-  top: 2em;
+  right: 2.5em;
+  top: .5em;
+  filter:drop-shadow(1px 0px 2px black);
+  text-shadow:-1px 0px 2px black;
 }
 #left-panel-back,
 #right-panel-back {
-  transform: scale(3, 1);
+  transform: scale(1.5, .8);
   font-weight: normal;
+  margin:0;
+  padding:0;
 }
 .right-corner-button,
 .left-corner-button {
@@ -301,10 +311,6 @@ footer p {
   color: rgba(221, 178, 67, 0.963);
   transition: color 0.1s;
   cursor: pointer;
-}
-.right-corner-button {
-  position: absolute;
-  right: 25px;
 }
 .right-corner-button:hover,
 .left-corner-button:hover {
@@ -327,6 +333,10 @@ footer p {
   padding: 0.5em 0em 0.5em 1em;
   transition: color 0.1s;
   font-size: 1.8rem;
+  text-align:left;
+}
+.chapter-item::before, .project-item::before{
+  content:" - ";
 }
 .project-item:hover,
 .chapter-item:hover {
@@ -434,15 +444,50 @@ left: 0;
 #toggleListBtn {
   display: none;
 }
+.list-bar .list-header{
+  font-size:2rem;
+}
+.list-bar{
+  font-size:2rem;
+  text-shadow:.5px 0px .5px;
+}
+.custom-lists{
+  display:flex;
+  flex-direction:column;
+}
+.list-button{
+  border:none;
+  outline:none;
+  background:none;
+  font-family:Stalemate, sans-serif;
+  font-size:2rem;
+  text-shadow:.5px 0px .5px;
+  transition: color .15s;
+  text-align:left;
+  padding-left:.5em;
+}
+.list-button::before, .item-container::before{
+  content:" - "
+}
+.list-button:hover{
+  color:var(--ivory)
+}
+.item-container{
+  text-align:left;
+  transition:color .15s;
+}
+.item-container:hover{
+  color:var(--ivory);
+}
 @media only screen and (max-width: 768px) {
   html,
   body {
     overflow: hidden;
   }
 
-  .listBtns {
+  .listBtns, .listBtns-left {
     position: relative;
-    bottom: 5%;
+    bottom: 20%;
     margin: 1rem;
   }
 
@@ -487,7 +532,7 @@ left: 0;
     border-top-right-radius: 15px;
   }
   .toggleoutline {
-    position: absolut;
+    position: absolute;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
@@ -553,7 +598,7 @@ left: 0;
     position: relative;
   }
   .ql-container.ql-snow {
-    height: 200px;
+    height:100%;
   }
   #userStatus {
     margin-top: 80px;
@@ -565,13 +610,28 @@ left: 0;
   .main-editor {
     height: 200px;
   }
+  .project-item, .chapter-item{
+    padding-left:2.5em;
+  }
 }
 @media only screen and (max-width: 425px) {
   #toggleListBtn {
     left: -14%;
   }
+
   .item-card {
  
     width: 70vw;
     }
+
+  .project-item, .chapter-item{
+    padding-left:1em;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .project-item, .chapter-item{
+    padding-left:4vw;
+  }
+
 }

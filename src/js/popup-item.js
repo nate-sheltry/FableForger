@@ -24,7 +24,7 @@ function getData(element) {
 }
 
 function saveData(element, db, dbObj) {
-  element.addEventListener("click", (e) => {
+  element.addEventListener("pointerdown", (e) => {
     console.log("Save button clicked"); // Log to confirm button click
 
     const [title, description, listId, itemIndex] = getData(

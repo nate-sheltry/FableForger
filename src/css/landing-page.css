@@ -4,7 +4,6 @@
 *:after {
   box-sizing: border-box;
 }
-
 body {
   background-image: url("/images/wooden-table.png");
   background-size: cover;
@@ -29,7 +28,7 @@ main {
   height: 200px;
   position: absolute;
   box-shadow: none;
-  background-color: none;
+  background-color: transparent;
   top: 0;
   left: 150px;
 }
@@ -69,7 +68,6 @@ div {
   align-items: center;
   color: rgba(72, 52, 37, 0.686);
 }
-
 .register {
   border-bottom: solid 5px rgb(72, 52, 37);
   border-top: solid 5px rgb(72, 52, 37);
@@ -88,7 +86,6 @@ div {
   height: 390px;
   margin-top: 5px;
 }
-
 .register {
   z-index: 0;
 }
@@ -102,7 +99,6 @@ div {
   background-size: 100% 100%;
   border-radius: 3px;
 }
-
 .cover h1,
 .cover h2,
 .cover h3,
@@ -122,7 +118,10 @@ div {
   border: solid 0.5px rgba(198, 158, 58, 0.595);
   cursor: pointer;
 }
-.cover h1 {
+.cover button:hover {
+  color: #f6f1e698;
+}
+.cover h2 {
   margin-top: 20px;
   font-size: 2.4rem;
   font-weight: bolder;
@@ -130,8 +129,8 @@ div {
 .cover p {
   font-size: 2rem;
 }
-.login h1,
-.register h1 {
+.login h2,
+.register h2 {
   font-size: 2.4rem;
 }
 .login label,
@@ -199,6 +198,17 @@ div {
   text-decoration: underline;
   color: rgba(72, 52, 37, 0.686);
 }
+#loginForm button.loginBtn:hover,
+button#registerButton:hover {
+  color: limegreen;
+  text-decoration: none;
+}
+.smallbutton:hover,
+.backbutton:hover {
+  text-decoration: none;
+  color: #7f5908;
+}
+
 @keyframes writeEffect {
   from {
     width: 0;
@@ -207,7 +217,6 @@ div {
     width: 100%;
   }
 }
-
 #welcomeText {
   font-size: 5rem;
   margin: 5px;
@@ -225,6 +234,16 @@ header {
   background-size: 160% 170%;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.445);
 }
+
+p.userNotFound {
+  font-size: 3rem;
+  font-weight: 900;
+  padding: 5rem 3rem;
+  color: #180d04ac;
+  text-align: center;
+  animation: writeEffect 3s cubic-bezier(0, 0, 0.58, 1) forwards;
+}
+
 /* Styles for small screens */
 @media only screen and (max-width: 600px) {
   .book {
@@ -234,6 +253,24 @@ header {
   header {
     margin-left: 150px;
   }
+  .paper {
+    top: 27%;
+    right: -21%;
+  }
+  #cover,
+  #login,
+  #register {
+    position: absolute;
+    top: -38%;
+  }
+  p.userNotFound {
+    font-size: 2.7rem;
+    font-weight: 900;
+    padding: 5.5rem 3rem;
+    text-align: center;
+    color: #180d04ac;
+    animation: writeEffect 3s cubic-bezier(0, 0, 0.58, 1) forwards;
+  }
 }
 @media only screen and (max-width: 1072px) {
   .candle {
@@ -241,7 +278,16 @@ header {
   }
   .paper {
     position: absolute;
-    margin-top: 570px;
-    margin-left: 20px;
+    margin-top: 380px;
+    margin-left: 350px;
+  }
+
+  p.userNotFound {
+    font-size: 2.3rem;
+    font-weight: 900;
+    text-align: center;
+    padding: 6rem 3rem;
+    color: #180d04ac;
+    animation: writeEffect 3s cubic-bezier(0, 0, 0.58, 1) forwards;
   }
 }

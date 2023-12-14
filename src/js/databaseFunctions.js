@@ -163,7 +163,7 @@ function addChapter(db, event) {
 
 function createProjectElement(db, cursor, index, id, projectName) {
   const projectItem = document.createElement("a");
-  projectItem.textContent = `- ${projectName}`;
+  projectItem.textContent = `${projectName}`;
   projectItem.classList.toggle("project-item", true);
   projectItem.setAttribute("data-id", id);
   document.querySelector(".outline .content").append(projectItem);
@@ -243,7 +243,7 @@ function createProjectElement(db, cursor, index, id, projectName) {
 
 function createChapterElement(db, event, index, projectName) {
   const chapterItem = document.createElement("a");
-  chapterItem.textContent = `- ${projectName}`;
+  chapterItem.textContent = `${projectName}`;
   chapterItem.classList.toggle("chapter-item", true);
   chapterItem.setAttribute("data-index", index);
   const projectId = document

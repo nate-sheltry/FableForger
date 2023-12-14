@@ -82,7 +82,7 @@ const IDB = () => {
   const rightBtn = document.getElementById("add-custom-list-btn");
   const noProjectBtn = document.getElementById("no-project-btn");
 
-  leftBtn.addEventListener("click", (e) => {
+  leftBtn.addEventListener("pointerdown", (e) => {
     if (e.target.classList.contains("new-project")) {
       addProject(db, e);
     } else if (e.target.classList.contains("new-chapter")) {
@@ -90,7 +90,7 @@ const IDB = () => {
     }
   });
 
-  noProjectBtn.addEventListener("click", (e) => {
+  noProjectBtn.addEventListener("pointerdown", (e) => {
     addProject(db, e);
   });
 
@@ -109,10 +109,10 @@ const IDB = () => {
       "editor-area",
       !editor.classList.contains("editor-area"),
     );
-    
+
     document.querySelector(".outline .subtitle").textContent = "Projects";
     const noProjectBtn = document.getElementById("no-project-btn");
-    noProjectBtn.addEventListener("click", (e) => {
+    noProjectBtn.addEventListener("pointerdown", (e) => {
       addProject(db, e);
     });
     rightBtn.setAttribute("data-id", null);

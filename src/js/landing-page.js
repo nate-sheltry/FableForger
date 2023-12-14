@@ -7,17 +7,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (beginButton) {
     // Attach a click event listener to the Begin button
-    beginButton.addEventListener("click", flipCover);
+    beginButton.addEventListener("pointerdown", flipCover);
   }
 
   if (smallButton) {
     // Attach a click event listener to the small button
-    smallButton.addEventListener("click", flipLogin);
+    smallButton.addEventListener("pointerdown", flipLogin);
   }
 
   if (backButton) {
     // Attach a click event listener to the Register button
-    backButton.addEventListener("click", flipRegistration);
+    backButton.addEventListener("pointerdown", flipRegistration);
   }
 });
 
