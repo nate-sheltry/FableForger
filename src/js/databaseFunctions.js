@@ -690,6 +690,7 @@ const projectId = document
   .querySelector(".outline .subtitle")
   .getAttribute("data-id");
 //export default projectId;
+
 export {
   addProject,
   addChapter,
