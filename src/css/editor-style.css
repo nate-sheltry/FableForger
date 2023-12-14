@@ -25,6 +25,10 @@
 
 .ql-editor{
   height:100%;
+  font-size:1rem;
+}
+.ql-editor * {
+  color:black;
 }
 
 .ql-toolbar * * {
